@@ -1,4 +1,4 @@
-package plasmus777.github.com.ProjetoAcoesAdatech;
+package plasmus777.github.com.ProjetoAcoesAdatech.main;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
