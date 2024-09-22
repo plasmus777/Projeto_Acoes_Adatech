@@ -1,4 +1,4 @@
-package plasmus777.github.com.ProjetoAcoesAdatech;
+package plasmus777.github.com.projetoAcoesAdatech;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
