@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 
 @Data
 public class AcaoApi {
-    private BigDecimal c;
-    private BigDecimal d;
-    private BigDecimal dp;
-    private BigDecimal h;
-    private BigDecimal l;
-    private BigDecimal o;
-    private BigDecimal pc;
+    private BigDecimal c; //Current price
+    private BigDecimal d; //Change
+    private BigDecimal dp; //Percent change
+    private BigDecimal h; //High price of the day
+    private BigDecimal l; //Low price of the day
+    private BigDecimal o; //Open price of the day
+    private BigDecimal pc; //Previous close price
 }
