@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "renda_fixa")
+@Table(name = "Rendas_fixas")
 public class RendaFixa extends AtivoFinanceiro {
 
     @Column(name= "taxa_retorno", precision = 10, scale = 2)

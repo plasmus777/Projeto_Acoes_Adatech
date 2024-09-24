@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "acao")
+@Table(name = "Acoes")
 public class Acao extends AtivoFinanceiro {
     @Column(name = "codigo_negociacao")
     private String codigoNegociacao;

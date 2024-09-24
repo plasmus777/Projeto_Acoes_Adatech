@@ -21,7 +21,7 @@ public class ApiAtivosFinanceirosClient {
     }
 
     public Acao buscarAcao(String ticker) {
-        ResponseEntity<Acao> response = restTemplate.getForEntity(apiUrl + "/acao/" + ticker, Acao.class);
+        ResponseEntity<Acao> response = restTemplate.getForEntity(apiUrl + "/acoes/" + ticker, Acao.class);
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             return response.getBody();
         }
@@ -29,7 +29,7 @@ public class ApiAtivosFinanceirosClient {
     }
 
     public FundoImobiliario buscarFundoImobiliario(String ticker) {
-        ResponseEntity<FundoImobiliario> response = restTemplate.getForEntity(apiUrl + "/fundoImobiliario/" + ticker, FundoImobiliario.class);
+        ResponseEntity<FundoImobiliario> response = restTemplate.getForEntity(apiUrl + "/fundosImobiliarios/" + ticker, FundoImobiliario.class);
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             return response.getBody();
         }
@@ -37,7 +37,7 @@ public class ApiAtivosFinanceirosClient {
     }
 
     public RendaFixa buscarRendaFixa(String ticker) {
-        ResponseEntity<RendaFixa> response = restTemplate.getForEntity(apiUrl + "/rendaFixa/" + ticker, RendaFixa.class);
+        ResponseEntity<RendaFixa> response = restTemplate.getForEntity(apiUrl + "/rendasFixas/" + ticker, RendaFixa.class);
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             return response.getBody();
         }

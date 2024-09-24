@@ -3,6 +3,7 @@ package plasmus777.github.com.projetoAcoesAdatech.controller;
 import org.springframework.web.bind.annotation.*;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.service.RestService;
+import plasmus777.github.com.projetoAcoesAdatech.service.UsuarioService;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,13 +12,13 @@ import java.util.Optional;
 @RequestMapping("api/v1/usuarios")
 public class UsuarioController {
 
-    private final RestService<Usuario> usuarioService;
+    private final UsuarioService usuarioService;
 
-    public UsuarioController(RestService<Usuario> usuarioService){
+    public UsuarioController(UsuarioService usuarioService){
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping()
+    @GetMapping
     public List<Usuario> obterUsuarios() {
         return usuarioService.obterLista();
     }
