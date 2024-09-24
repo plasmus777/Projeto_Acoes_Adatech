@@ -14,21 +14,21 @@ public abstract class AtivoFinanceiro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(name = "nome", nullable = false, length = 255)
     private String nome;
 
-    @Column(nullable = false)
+    @Column(name = "valor_atual", nullable = false, precision = 10, scale = 2)
     private BigDecimal valorAtual;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDate dataCadastro;
-
-    @Column
-    private Boolean favorito = false;
-
-    @Column
+    @Column(name = "preco_compra", precision = 10, scale = 2)
     private BigDecimal precoCompra;
 
-    @Column
-    private BigDecimal precoVenda;
+    @Column(name = "data_cadastro", nullable = false, updatable = false)
+    private LocalDate dataCadastro;
+
+    @ManyToOne
+    @JoinColumn(name="usuario_id", nullable=false)
+    private Usuario usuario;
+
+    public abstract BigDecimal getPrecoVenda();
 }

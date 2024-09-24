@@ -1,4 +1,4 @@
-package plasmus777.github.com.projetoAcoesAdatech.service.notification;
+package plasmus777.github.com.projetoAcoesAdatech.service;
 
 import org.springframework.stereotype.Service;
 

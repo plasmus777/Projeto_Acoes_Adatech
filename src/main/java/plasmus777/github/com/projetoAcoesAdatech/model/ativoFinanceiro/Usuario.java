@@ -23,12 +23,12 @@ public class Usuario {
     @Column(nullable = false, length = 255)
     private String senha;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Acao> acoesFavoritas;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FundoImobiliario> fundosImobiliariosFavoritos;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<RendaFixa> rendasFixasFavoritas;
 }

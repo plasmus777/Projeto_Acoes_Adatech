@@ -1,7 +1,6 @@
-package plasmus777.github.com.projetoAcoesAdatech.monitoramento;
+package plasmus777.github.com.projetoAcoesAdatech.service;
 
 import plasmus777.github.com.projetoAcoesAdatech.api.ApiAtivosFinanceirosClient;
-import plasmus777.github.com.projetoAcoesAdatech.service.notification.NotificacaoService;
 
 public class MonitoramentoService {
 
