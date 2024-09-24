@@ -2,6 +2,7 @@ package plasmus777.github.com.projetoAcoesAdatech.controller;
 
 import org.springframework.web.bind.annotation.*;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Usuario;
+import plasmus777.github.com.projetoAcoesAdatech.service.RestService;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +11,9 @@ import java.util.Optional;
 @RequestMapping("api/v1/usuarios")
 public class UsuarioController {
 
-    private final UsuarioService usuarioService;
+    private final RestService<Usuario> usuarioService;
 
-    public UsuarioController(UsuarioService usuarioService){
+    public UsuarioController(RestService<Usuario> usuarioService){
         this.usuarioService = usuarioService;
     }
 
