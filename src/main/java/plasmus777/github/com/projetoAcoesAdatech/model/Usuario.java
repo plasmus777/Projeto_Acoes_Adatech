@@ -1,7 +1,10 @@
-package plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro;
+package plasmus777.github.com.projetoAcoesAdatech.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
+import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
+import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
 
 import java.util.List;
 

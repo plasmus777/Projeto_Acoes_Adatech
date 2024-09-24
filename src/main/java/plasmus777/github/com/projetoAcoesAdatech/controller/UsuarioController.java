@@ -1,7 +1,7 @@
 package plasmus777.github.com.projetoAcoesAdatech.controller;
 
 import org.springframework.web.bind.annotation.*;
-import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Usuario;
+import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.service.RestService;
 
 import java.util.List;
