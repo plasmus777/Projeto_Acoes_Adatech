@@ -39,7 +39,13 @@ public class UsuarioService implements RestService<Usuario>{
                 u.setAcoesFavoritas(usuario.getAcoesFavoritas());
                 u.setFundosImobiliariosFavoritos(usuario.getFundosImobiliariosFavoritos());
                 u.setRendasFixasFavoritas(usuario.getRendasFixasFavoritas());
-                return true;
+
+                try {
+                    usuarioRepository.save(u);
+                    return true;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
         return false;
