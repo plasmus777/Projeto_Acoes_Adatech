@@ -2,7 +2,7 @@ package plasmus777.github.com.projetoAcoesAdatech.controller;
 
 import org.springframework.web.bind.annotation.*;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
-import plasmus777.github.com.projetoAcoesAdatech.service.RestService;
+import plasmus777.github.com.projetoAcoesAdatech.service.FundoImobiliarioService;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +11,9 @@ import java.util.Optional;
 @RequestMapping("api/v1/fundosimobiliarios")
 public class FundoImobiliarioController {
 
-    private final RestService<FundoImobiliario> fundoImobiliarioService;
+    private final FundoImobiliarioService fundoImobiliarioService;
 
-    public FundoImobiliarioController(RestService<FundoImobiliario> fundoImobiliarioService){
+    public FundoImobiliarioController(FundoImobiliarioService fundoImobiliarioService){
         this.fundoImobiliarioService = fundoImobiliarioService;
     }
 

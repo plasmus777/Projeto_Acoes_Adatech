@@ -2,7 +2,7 @@ package plasmus777.github.com.projetoAcoesAdatech.controller;
 
 import org.springframework.web.bind.annotation.*;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
-import plasmus777.github.com.projetoAcoesAdatech.service.RestService;
+import plasmus777.github.com.projetoAcoesAdatech.service.RendaFixaService;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +11,9 @@ import java.util.Optional;
 @RequestMapping("api/v1/rendasfixas")
 public class RendaFixaController {
 
-    private final RestService<RendaFixa> rendaFixaService;
+    private final RendaFixaService rendaFixaService;
 
-    public RendaFixaController(RestService<RendaFixa> rendaFixaService){
+    public RendaFixaController(RendaFixaService rendaFixaService){
         this.rendaFixaService = rendaFixaService;
     }
 

@@ -1,10 +1,12 @@
 package plasmus777.github.com.projetoAcoesAdatech.service;
 
+import org.springframework.stereotype.Service;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class AcaoService implements RestService<Acao> {
 
 

@@ -2,7 +2,7 @@ package plasmus777.github.com.projetoAcoesAdatech.controller;
 
 import org.springframework.web.bind.annotation.*;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
-import plasmus777.github.com.projetoAcoesAdatech.service.RestService;
+import plasmus777.github.com.projetoAcoesAdatech.service.AcaoService;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +11,9 @@ import java.util.Optional;
 @RequestMapping("api/v1/acoes")
 public class AcaoController {
 
-    private final RestService<Acao> acaoService;
+    private final AcaoService acaoService;
 
-    public AcaoController(RestService<Acao> acaoService){
+    public AcaoController(AcaoService acaoService){
         this.acaoService = acaoService;
     }
 
