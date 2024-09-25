@@ -13,4 +13,5 @@ public class AcaoApi {
     private BigDecimal l; //Low price of the day
     private BigDecimal o; //Open price of the day
     private BigDecimal pc; //Previous close price
+    private Long t; //Timestamp
 }
