@@ -62,6 +62,13 @@
 			<version>2.3.232</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- Spring Boot Starter Mail -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
