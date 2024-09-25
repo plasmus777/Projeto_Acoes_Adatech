@@ -47,7 +47,7 @@ public class UsuarioService implements RestService<Usuario>{
                     usuarioRepository.save(u);
                     return ResponseEntity.status(HttpStatus.CREATED).body("Usuário atualizado com sucesso.");
                 }catch (Exception e){
-                    throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar o usuário atualizado.");
+                    throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar o usuário a ser atualizado.");
                 }
             }
         }
@@ -60,7 +60,7 @@ public class UsuarioService implements RestService<Usuario>{
             usuarioRepository.save(usuario);
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso.");
         } catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar o usuário cadastrado.");
+            throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar o usuário a ser cadastrado.");
         }
     }
 
