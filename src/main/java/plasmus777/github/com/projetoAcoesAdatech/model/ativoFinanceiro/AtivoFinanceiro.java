@@ -1,5 +1,6 @@
 package plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
@@ -29,6 +30,7 @@ public abstract class AtivoFinanceiro {
 
     @ManyToOne
     @JoinColumn(name="usuario_id", nullable=false)
+    @JsonIgnoreProperties({"acoesFavoritas","fundosImobiliariosFavoritos", "rendasFixasFavoritas"})
     private Usuario usuario;
 
     @Column(name = "preco_minimo", nullable = false)

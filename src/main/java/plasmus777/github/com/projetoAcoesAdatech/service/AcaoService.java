@@ -3,10 +3,12 @@ package plasmus777.github.com.projetoAcoesAdatech.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 import plasmus777.github.com.projetoAcoesAdatech.repository.AcaoRepository;
+import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +16,11 @@ import java.util.Optional;
 public class AcaoService implements RestService<Acao> {
 
     private final AcaoRepository acaoRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public AcaoService(AcaoRepository acaoRepository){
+    public AcaoService(AcaoRepository acaoRepository, UsuarioRepository usuarioRepository){
         this.acaoRepository = acaoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -51,7 +55,7 @@ public class AcaoService implements RestService<Acao> {
                     acaoRepository.save(a);
                     return ResponseEntity.status(HttpStatus.CREATED).body("Ação atualizada com sucesso.");
                 }catch (Exception e){
-                    throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar a ação atualizada.");
+                    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O repositório não pôde salvar a ação atualizada.\n" + e.getLocalizedMessage());
                 }
             }
         }
@@ -61,10 +65,17 @@ public class AcaoService implements RestService<Acao> {
     @Override
     public ResponseEntity<String> cadastrar(Acao acao) {
         try{
-            acaoRepository.save(acao);
+            acao.setDataCadastro(LocalDateTime.now());
+
+            List<Acao> lista = acao.getUsuario().getAcoesFavoritas();
+            if(lista == null) lista = new ArrayList<>();
+            lista.add(acao);
+            acao.getUsuario().setAcoesFavoritas(lista);
+
+            usuarioRepository.save(acao.getUsuario());
             return ResponseEntity.status(HttpStatus.CREATED).body("Ação cadastrada com sucesso.");
         } catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar a ação a ser cadastrada.");
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O repositório não pôde salvar a ação a ser cadastrada.\n" + e.getLocalizedMessage());
         }
     }
 
@@ -77,7 +88,7 @@ public class AcaoService implements RestService<Acao> {
                 acaoRepository.delete(a);
                 return ResponseEntity.status(HttpStatus.OK).body("Ação apagada com sucesso.");
             } catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde apagar a ação.");
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O repositório não pôde apagar a ação.\n" + e.getLocalizedMessage());
             }
         }
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("A ação não pôde ser apagada.");

@@ -1,5 +1,6 @@
 package plasmus777.github.com.projetoAcoesAdatech.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
@@ -27,11 +28,14 @@ public class Usuario {
     private String senha;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("usuario")
     private List<Acao> acoesFavoritas;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("usuario")
     private List<FundoImobiliario> fundosImobiliariosFavoritos;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("usuario")
     private List<RendaFixa> rendasFixasFavoritas;
 }
