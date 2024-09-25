@@ -28,7 +28,7 @@ public class FinnhubClient {
 
     //Busca informações sobre ativos financeiros através de um código, e retorna um objeto do tipo SearchAtivoApi.
     public SearchAtivoApi buscarInformacoesAtivos(String codigo) {
-        String url = String.format("%s/stock/quote?symbol=%s&token=%s", baseUrl, codigo, apiKey);
+        String url = String.format("%s/stock/search?q=%s&token=%s", baseUrl, codigo, apiKey);
         return restTemplate.getForObject(url, SearchAtivoApi.class);
     }
 

@@ -18,10 +18,10 @@ public abstract class AtivoFinanceiro {
     @Column(name = "nome", nullable = false, length = 255)
     private String nome;
 
-    @Column(name = "valor_atual", nullable = false, precision = 10, scale = 2)
-    private BigDecimal valorAtual;
+    @Column(name = "preco_atual", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precoAtual;
 
-    @Column(name = "preco_compra", precision = 10, scale = 2)
+    @Column(name = "preco_compra", precision = 10, scale = 2, nullable = false)
     private BigDecimal precoCompra;
 
     @Column(name = "data_cadastro", nullable = false, updatable = false)
@@ -30,6 +30,12 @@ public abstract class AtivoFinanceiro {
     @ManyToOne
     @JoinColumn(name="usuario_id", nullable=false)
     private Usuario usuario;
+
+    @Column(name = "preco_minimo", nullable = false)
+    private BigDecimal precoMinimo;
+
+    @Column(name = "preco_maximo", nullable = false)
+    private BigDecimal precoMaximo;
 
     public abstract BigDecimal getPrecoVenda();
 }
