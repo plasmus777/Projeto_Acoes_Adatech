@@ -1,6 +1,9 @@
 package plasmus777.github.com.projetoAcoesAdatech.service;
 
 import plasmus777.github.com.projetoAcoesAdatech.api.ApiAtivosFinanceirosClient;
+import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.AtivoFinanceiro;
+
+import java.util.List;
 
 public class MonitoramentoService {
 
@@ -12,6 +15,4 @@ public class MonitoramentoService {
         this.notificacaoService = notificacaoService;
     }
 
-    public void verificarPrecos() {
-    }
 }
