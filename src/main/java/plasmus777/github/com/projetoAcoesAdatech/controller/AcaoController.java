@@ -1,5 +1,6 @@
 package plasmus777.github.com.projetoAcoesAdatech.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 import plasmus777.github.com.projetoAcoesAdatech.service.AcaoService;
@@ -30,17 +31,17 @@ public class AcaoController {
     }
 
     @PutMapping("/{id}")
-    public void atualizarAcao(@PathVariable Long id, @RequestBody Acao novaAcao){
-        acaoService.atualizar(id, novaAcao);
+    public ResponseEntity<String> atualizarAcao(@PathVariable Long id, @RequestBody Acao novaAcao){
+        return acaoService.atualizar(id, novaAcao);
     }
 
     @PostMapping
-    public void cadastrarAcao(@RequestBody Acao acao){
-        acaoService.cadastrar(acao);
+    public ResponseEntity<String> cadastrarAcao(@RequestBody Acao acao){
+        return acaoService.cadastrar(acao);
     }
 
     @DeleteMapping("/{id}")
-    public void apagarAcao(@PathVariable Long id){
-        acaoService.apagar(id);
+    public ResponseEntity<String> apagarAcao(@PathVariable Long id){
+        return acaoService.apagar(id);
     }
 }

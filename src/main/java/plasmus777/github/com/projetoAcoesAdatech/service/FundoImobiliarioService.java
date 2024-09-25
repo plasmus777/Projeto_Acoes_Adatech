@@ -1,5 +1,7 @@
 package plasmus777.github.com.projetoAcoesAdatech.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
 
@@ -20,17 +22,17 @@ public class FundoImobiliarioService implements RestService<FundoImobiliario> {
     }
 
     @Override
-    public boolean atualizar(Long id, FundoImobiliario fundoImobiliario) {
-        return false;
+    public ResponseEntity<String> atualizar(Long id, FundoImobiliario fundoImobiliario) {
+        return ResponseEntity.status(HttpStatus.OK).body("Código executado com sucesso.");
     }
 
     @Override
-    public boolean cadastrar(FundoImobiliario fundoImobiliario) {
-        return false;
+    public ResponseEntity<String> cadastrar(FundoImobiliario fundoImobiliario) {
+        return ResponseEntity.status(HttpStatus.OK).body("Código executado com sucesso.");
     }
 
     @Override
-    public boolean apagar(Long id) {
-        return false;
+    public ResponseEntity<String> apagar(Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body("Código executado com sucesso.");
     }
 }

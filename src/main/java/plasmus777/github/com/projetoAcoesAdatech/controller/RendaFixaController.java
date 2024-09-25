@@ -1,5 +1,6 @@
 package plasmus777.github.com.projetoAcoesAdatech.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
 import plasmus777.github.com.projetoAcoesAdatech.service.RendaFixaService;
@@ -30,17 +31,17 @@ public class RendaFixaController {
     }
 
     @PutMapping("/{id}")
-    public void atualizarRendaFixa(@PathVariable Long id, @RequestBody RendaFixa novaRendaFixa){
-        rendaFixaService.atualizar(id, novaRendaFixa);
+    public ResponseEntity<String> atualizarRendaFixa(@PathVariable Long id, @RequestBody RendaFixa novaRendaFixa){
+        return rendaFixaService.atualizar(id, novaRendaFixa);
     }
 
     @PostMapping
-    public void cadastrarRendaFixa(@RequestBody RendaFixa RendaFixa){
-        rendaFixaService.cadastrar(RendaFixa);
+    public ResponseEntity<String> cadastrarRendaFixa(@RequestBody RendaFixa RendaFixa){
+        return rendaFixaService.cadastrar(RendaFixa);
     }
 
     @DeleteMapping("/{id}")
-    public void apagarRendaFixa(@PathVariable Long id){
-        rendaFixaService.apagar(id);
+    public ResponseEntity<String> apagarRendaFixa(@PathVariable Long id){
+        return rendaFixaService.apagar(id);
     }
 }

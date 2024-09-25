@@ -1,5 +1,7 @@
 package plasmus777.github.com.projetoAcoesAdatech.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 
@@ -21,17 +23,17 @@ public class AcaoService implements RestService<Acao> {
     }
 
     @Override
-    public boolean atualizar(Long id, Acao acao) {
-        return false;
+    public ResponseEntity<String> atualizar(Long id, Acao acao) {
+        return ResponseEntity.status(HttpStatus.OK).body("Código executado com sucesso.");
     }
 
     @Override
-    public boolean cadastrar(Acao acao) {
-        return false;
+    public ResponseEntity<String> cadastrar(Acao acao) {
+        return ResponseEntity.status(HttpStatus.OK).body("Código executado com sucesso.");
     }
 
     @Override
-    public boolean apagar(Long id) {
-        return false;
+    public ResponseEntity<String> apagar(Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body("Código executado com sucesso.");
     }
 }

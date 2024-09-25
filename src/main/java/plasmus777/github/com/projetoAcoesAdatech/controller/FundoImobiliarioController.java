@@ -1,5 +1,6 @@
 package plasmus777.github.com.projetoAcoesAdatech.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
 import plasmus777.github.com.projetoAcoesAdatech.service.FundoImobiliarioService;
@@ -30,17 +31,17 @@ public class FundoImobiliarioController {
     }
 
     @PutMapping("/{id}")
-    public void atualizarFundoImobiliario(@PathVariable Long id, @RequestBody FundoImobiliario novoFundoImobiliario){
-        fundoImobiliarioService.atualizar(id, novoFundoImobiliario);
+    public ResponseEntity<String> atualizarFundoImobiliario(@PathVariable Long id, @RequestBody FundoImobiliario novoFundoImobiliario){
+        return fundoImobiliarioService.atualizar(id, novoFundoImobiliario);
     }
 
     @PostMapping
-    public void cadastrarFundoImobiliario(@RequestBody FundoImobiliario fundoImobiliario){
-        fundoImobiliarioService.cadastrar(fundoImobiliario);
+    public ResponseEntity<String> cadastrarFundoImobiliario(@RequestBody FundoImobiliario fundoImobiliario){
+        return fundoImobiliarioService.cadastrar(fundoImobiliario);
     }
 
     @DeleteMapping("/{id}")
-    public void apagarFundoImobiliario(@PathVariable Long id){
-        fundoImobiliarioService.apagar(id);
+    public ResponseEntity<String> apagarFundoImobiliario(@PathVariable Long id){
+        return fundoImobiliarioService.apagar(id);
     }
 }

@@ -1,6 +1,9 @@
 package plasmus777.github.com.projetoAcoesAdatech.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
 
@@ -27,7 +30,7 @@ public class UsuarioService implements RestService<Usuario>{
     }
 
     @Override
-    public boolean atualizar(Long id, Usuario usuario) {
+    public ResponseEntity<String> atualizar(Long id, Usuario usuario) {
         Optional<Usuario> opt = usuarioRepository.findUsuarioById(id);
         if(opt.isPresent()){
             Usuario u = opt.get();
@@ -42,38 +45,37 @@ public class UsuarioService implements RestService<Usuario>{
 
                 try {
                     usuarioRepository.save(u);
-                    return true;
+                    return ResponseEntity.status(HttpStatus.CREATED).body("Usuário atualizado com sucesso.");
                 }catch (Exception e){
-                    e.printStackTrace();
+                    throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar o usuário atualizado.");
                 }
             }
         }
-        return false;
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O usuário não pôde ser atualizado.");
     }
 
     @Override
-    public boolean cadastrar(Usuario usuario) {
+    public ResponseEntity<String> cadastrar(Usuario usuario) {
         try{
             usuarioRepository.save(usuario);
-            return true;
+            return ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso.");
         } catch (Exception e){
-            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar o usuário cadastrado.");
         }
-        return false;
     }
 
     @Override
-    public boolean apagar(Long id) {
+    public ResponseEntity<String> apagar(Long id) {
         Optional<Usuario> opt = usuarioRepository.findUsuarioById(id);
         if(opt.isPresent()){
             Usuario u = opt.get();
             try{
                 usuarioRepository.delete(u);
-                return true;
+                return ResponseEntity.status(HttpStatus.OK).body("Usuário apagado com sucesso.");
             } catch (Exception e){
-                e.printStackTrace();
+                throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde apagar o usuário.");
             }
         }
-        return false;
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O usuário não pôde ser apagado.");
     }
 }

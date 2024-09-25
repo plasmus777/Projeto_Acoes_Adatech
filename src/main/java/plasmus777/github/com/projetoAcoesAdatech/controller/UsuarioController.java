@@ -1,5 +1,6 @@
 package plasmus777.github.com.projetoAcoesAdatech.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.service.RestService;
@@ -31,17 +32,17 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public void atualizarUsuario(@PathVariable Long id, @RequestBody Usuario novoUsuario){
-        usuarioService.atualizar(id, novoUsuario);
+    public ResponseEntity<String> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario novoUsuario){
+        return usuarioService.atualizar(id, novoUsuario);
     }
 
     @PostMapping
-    public void cadastrarUsuario(@RequestBody Usuario usuario){
-        usuarioService.cadastrar(usuario);
+    public ResponseEntity<String> cadastrarUsuario(@RequestBody Usuario usuario){
+        return usuarioService.cadastrar(usuario);
     }
 
     @DeleteMapping("/{id}")
-    public void apagarUsuario(@PathVariable Long id){
-        usuarioService.apagar(id);
+    public ResponseEntity<String> apagarUsuario(@PathVariable Long id){
+        return usuarioService.apagar(id);
     }
 }

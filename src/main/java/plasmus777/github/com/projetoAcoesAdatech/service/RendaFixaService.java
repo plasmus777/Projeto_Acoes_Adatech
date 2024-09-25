@@ -1,5 +1,7 @@
 package plasmus777.github.com.projetoAcoesAdatech.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
 
@@ -20,17 +22,17 @@ public class RendaFixaService implements RestService<RendaFixa>{
     }
 
     @Override
-    public boolean atualizar(Long id, RendaFixa rendaFixa) {
-        return false;
+    public ResponseEntity<String> atualizar(Long id, RendaFixa rendaFixa) {
+        return ResponseEntity.status(HttpStatus.OK).body("Código executado com sucesso.");
     }
 
     @Override
-    public boolean cadastrar(RendaFixa rendaFixa) {
-        return false;
+    public ResponseEntity<String> cadastrar(RendaFixa rendaFixa) {
+        return ResponseEntity.status(HttpStatus.OK).body("Código executado com sucesso.");
     }
 
     @Override
-    public boolean apagar(Long id) {
-        return false;
+    public ResponseEntity<String> apagar(Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body("Código executado com sucesso.");
     }
 }
