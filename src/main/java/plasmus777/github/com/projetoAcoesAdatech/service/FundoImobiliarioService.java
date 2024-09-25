@@ -3,10 +3,12 @@ package plasmus777.github.com.projetoAcoesAdatech.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
 import plasmus777.github.com.projetoAcoesAdatech.repository.FundoImobiliarioRepository;
+import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +16,11 @@ import java.util.Optional;
 public class FundoImobiliarioService implements RestService<FundoImobiliario> {
 
     private final FundoImobiliarioRepository fundoImobiliarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public FundoImobiliarioService(FundoImobiliarioRepository fundoImobiliarioRepository){
+    public FundoImobiliarioService(FundoImobiliarioRepository fundoImobiliarioRepository, UsuarioRepository usuarioRepository){
         this.fundoImobiliarioRepository = fundoImobiliarioRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class FundoImobiliarioService implements RestService<FundoImobiliario> {
 
     @Override
     public Optional<FundoImobiliario> obter(Long id) {
-        return fundoImobiliarioRepository.findById(id);
+        return fundoImobiliarioRepository.findFundoImobiliarioById(id);
     }
 
     @Override
@@ -49,9 +53,9 @@ public class FundoImobiliarioService implements RestService<FundoImobiliario> {
 
                 try {
                     fundoImobiliarioRepository.save(f);
-                    return ResponseEntity.status(HttpStatus.CREATED).body("Fundo imobiliário atualizado com sucesso.");
+                    return ResponseEntity.status(HttpStatus.CREATED).body("Fundo Imobiliário atualizado com sucesso.");
                 }catch (Exception e){
-                    throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar o fundo imobiliário atualizado.");
+                    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O repositório não pôde salvar o fundo imobiliário atualizado.\n" + e.getLocalizedMessage());
                 }
             }
         }
@@ -61,10 +65,17 @@ public class FundoImobiliarioService implements RestService<FundoImobiliario> {
     @Override
     public ResponseEntity<String> cadastrar(FundoImobiliario fundoImobiliario) {
         try{
-            fundoImobiliarioRepository.save(fundoImobiliario);
+            fundoImobiliario.setDataCadastro(LocalDateTime.now());
+
+            List<FundoImobiliario> lista = fundoImobiliario.getUsuario().getFundosImobiliariosFavoritos();
+            if(lista == null) lista = new ArrayList<>();
+            lista.add(fundoImobiliario);
+            fundoImobiliario.getUsuario().setFundosImobiliariosFavoritos(lista);
+
+            usuarioRepository.save(fundoImobiliario.getUsuario());
             return ResponseEntity.status(HttpStatus.CREATED).body("Fundo imobiliário cadastrado com sucesso.");
         } catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar o fundo imobiliário a ser cadastrado.");
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O repositório não pôde salvar o fundo imobiliário a ser cadastrado.\n" + e.getLocalizedMessage());
         }
     }
 
@@ -77,7 +88,7 @@ public class FundoImobiliarioService implements RestService<FundoImobiliario> {
                 fundoImobiliarioRepository.delete(f);
                 return ResponseEntity.status(HttpStatus.OK).body("Fundo imobiliário apagado com sucesso.");
             } catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde apagar o fundo imobiliário.");
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O repositório não pôde apagar o fundo imobiliário.\n" + e.getLocalizedMessage());
             }
         }
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O fundo imobiliário não pôde ser apagado.");
