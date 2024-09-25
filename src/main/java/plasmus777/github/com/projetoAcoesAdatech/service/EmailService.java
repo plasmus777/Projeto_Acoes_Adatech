@@ -1,4 +1,4 @@
-package com.plasmus777.service;
+package plasmus777.github.com.projetoAcoesAdatech.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

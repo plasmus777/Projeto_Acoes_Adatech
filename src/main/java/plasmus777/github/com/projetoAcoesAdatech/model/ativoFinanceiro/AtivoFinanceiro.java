@@ -5,7 +5,7 @@ import lombok.Data;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
@@ -25,7 +25,7 @@ public abstract class AtivoFinanceiro {
     private BigDecimal precoCompra;
 
     @Column(name = "data_cadastro", nullable = false, updatable = false)
-    private LocalDate dataCadastro;
+    private LocalDateTime dataCadastro;
 
     @ManyToOne
     @JoinColumn(name="usuario_id", nullable=false)

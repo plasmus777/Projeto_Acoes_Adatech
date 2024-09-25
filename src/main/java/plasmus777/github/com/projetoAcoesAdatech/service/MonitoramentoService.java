@@ -2,7 +2,6 @@ package plasmus777.github.com.projetoAcoesAdatech.service;
 
 import org.springframework.stereotype.Service;
 import plasmus777.github.com.projetoAcoesAdatech.api.ApiAtivosFinanceirosClient;
-import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.AtivoFinanceiro;
 
 import java.util.List;
 
@@ -10,11 +9,9 @@ import java.util.List;
 public class MonitoramentoService {
 
     private final ApiAtivosFinanceirosClient apiClient;
-    private final NotificacaoService notificacaoService;
 
-    public MonitoramentoService(ApiAtivosFinanceirosClient apiClient, NotificacaoService notificacaoService) {
+    public MonitoramentoService(ApiAtivosFinanceirosClient apiClient) {
         this.apiClient = apiClient;
-        this.notificacaoService = notificacaoService;
     }
 
 }

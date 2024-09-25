@@ -1,4 +1,4 @@
-package com.plasmus777.email;
+package plasmus777.github.com.projetoAcoesAdatech.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
