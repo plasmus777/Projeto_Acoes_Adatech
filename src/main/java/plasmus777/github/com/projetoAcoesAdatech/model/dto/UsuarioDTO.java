@@ -7,10 +7,11 @@ import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImob
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class UsuarioDTO {
+public class UsuarioDTO  implements DTO<UsuarioDTO, Usuario>{
 
-    @Size(min = 3, max = 20, message = "O nome deve ter entre 3 a 20 caracteres")
+    @Size(min = 3, max = 20, message = "O nome deve ter entre 3 a 100 caracteres")
     @NotBlank(message = "O nome não pode estar em branco.")
     private String nome;
 
@@ -23,16 +24,13 @@ public class UsuarioDTO {
             message = "A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial")
     private String senha;
 
-    @NotEmpty(message = "A lista de ações favoritas não pode estar vazia.")
-    @Size(max = 10, message = "Você só pode ter até 10 ações favoritas.")
+    @Size(max = 1000, message = "Você pode favoritar no máximo 1000 ações.")
     private List<Acao> acoesFavoritas;
 
-    @NotEmpty(message = "A lista de fundos imobiliários favoritos não pode estar vazia.")
-    @Size(max = 5, message = "Você só pode ter até 5 fundos imobiliários favoritos.")
+    @Size(max = 1000, message = "Você pode favoritar no máximo 1000 fundos imobiliários.")
     private List<FundoImobiliario> fundosImobiliariosFavoritos;
 
-    @NotEmpty(message = "A lista de rendas fixas favoritas não pode estar vazia.")
-    @Size(max = 5, message = "Você só pode ter até 5 rendas fixas favoritas.")
+    @Size(max = 1000, message = "Você pode favoritar no máximo 1000 rendas fixas.")
     private List<RendaFixa> rendasFixasFavoritas;
 
 
@@ -84,14 +82,35 @@ public class UsuarioDTO {
         this.rendasFixasFavoritas = rendasFixasFavoritas;
     }
 
+
+    @Override
     public Usuario toEntity() {
         Usuario usuario = new Usuario();
         usuario.setNome(this.nome);
         usuario.setEmail(this.email);
         usuario.setSenha(this.senha);
-        usuario.setAcoesFavoritas(this.acoesFavoritas);
-        usuario.setFundosImobiliariosFavoritos(this.fundosImobiliariosFavoritos);
-        usuario.setRendasFixasFavoritas(this.rendasFixasFavoritas);
+
+        if (this.acoesFavoritas != null) {
+            usuario.setAcoesFavoritas(this.acoesFavoritas.stream()
+                    .distinct()
+                    .limit(1000)
+                    .collect(Collectors.toList()));
+        }
+
+        if (this.fundosImobiliariosFavoritos != null) {
+            usuario.setFundosImobiliariosFavoritos(this.fundosImobiliariosFavoritos.stream()
+                    .distinct()
+                    .limit(1000)
+                    .collect(Collectors.toList()));
+        }
+
+        if (this.rendasFixasFavoritas != null) {
+            usuario.setRendasFixasFavoritas(this.rendasFixasFavoritas.stream()
+                    .distinct()
+                    .limit(1000)
+                    .collect(Collectors.toList()));
+        }
+
         return usuario;
     }
 
