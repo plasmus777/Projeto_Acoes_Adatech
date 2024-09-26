@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class UsuarioDTO  implements DTO<UsuarioDTO, Usuario>{
 
-    @Size(min = 3, max = 20, message = "O nome deve ter entre 3 a 100 caracteres")
+    @Size(min = 3, max = 100, message = "O nome deve ter entre 3 a 100 caracteres")
     @NotBlank(message = "O nome não pode estar em branco.")
     private String nome;
 
