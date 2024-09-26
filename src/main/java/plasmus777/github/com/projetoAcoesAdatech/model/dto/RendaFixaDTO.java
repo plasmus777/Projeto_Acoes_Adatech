@@ -26,7 +26,7 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa>{
 
     }
 
-
+    // gs
     public BigDecimal getTaxaRetorno() {
         return taxaRetorno;
     }
@@ -42,6 +42,8 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa>{
     public void setDataVencimento(LocalDateTime dataVencimento) {
         this.dataVencimento = dataVencimento;
     }
+
+    //
 
     public RendaFixa toEntity() {
         RendaFixa rendaFixa = new RendaFixa();
