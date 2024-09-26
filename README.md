@@ -10,7 +10,7 @@ Este projeto foi criado para ajudar investidores a monitorar suas carteiras e to
 - 🚨 **Alertas de preço**: Configure notificações para alertar sobre:
   - Valor mínimo (indicado para compra).
   - Valor máximo (indicado para venda).
-- 📩 **Notificações automáticas**: Receba alertas por email ou SMS quando os ativos atingirem os limites configurados.
+- 📩 **Notificações automáticas**: Receba alertas por e-mail quando os ativos atingirem os limites configurados.
 - 📊 **Relatórios detalhados**: Gere relatórios sobre a performance dos ativos cadastrados, auxiliando na análise de investimentos.
 
 ## Tecnologias Utilizadas 🛠️
@@ -20,7 +20,7 @@ Este projeto foi criado para ajudar investidores a monitorar suas carteiras e to
 | **Java**    | Linguagem principal utilizada no projeto. | ![Java](https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg) |
 | **Spring Boot** | Framework usado para construção da API. | ![Spring Boot](https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg) |
 | **MySQL**   | Banco de dados utilizado para armazenar informações sobre ativos e usuários. | ![MySQL](https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg) |
-| **Notificações via Email/SMS** | Integração com serviços de notificação para alertas automáticos. | 📧📱 |
+| **Notificações via E-mail** | Integração com serviços de notificação para alertas automáticos. | 📧 |
 
 ## Requisitos 📋
 - **Java 17+** (ou versão mais recente)
