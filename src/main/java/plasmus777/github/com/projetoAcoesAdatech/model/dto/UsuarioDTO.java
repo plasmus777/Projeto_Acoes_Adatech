@@ -1,6 +1,9 @@
 package plasmus777.github.com.projetoAcoesAdatech.model.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
@@ -9,7 +12,7 @@ import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UsuarioDTO  implements DTO<UsuarioDTO, Usuario>{
+public class UsuarioDTO implements DTO<UsuarioDTO, Usuario> {
 
     @Size(min = 3, max = 100, message = "O nome deve ter entre 3 a 100 caracteres")
     @NotBlank(message = "O nome não pode estar em branco.")
@@ -32,7 +35,6 @@ public class UsuarioDTO  implements DTO<UsuarioDTO, Usuario>{
 
     @Size(max = 1000, message = "Você pode favoritar no máximo 1000 rendas fixas.")
     private List<RendaFixa> rendasFixasFavoritas;
-
 
     public String getNome() {
         return nome;
@@ -82,7 +84,6 @@ public class UsuarioDTO  implements DTO<UsuarioDTO, Usuario>{
         this.rendasFixasFavoritas = rendasFixasFavoritas;
     }
 
-
     @Override
     public Usuario toEntity() {
         Usuario usuario = new Usuario();
@@ -114,6 +115,7 @@ public class UsuarioDTO  implements DTO<UsuarioDTO, Usuario>{
         return usuario;
     }
 
+    @Override
     public UsuarioDTO fromEntity(Usuario usuario) {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNome(usuario.getNome());
@@ -124,5 +126,4 @@ public class UsuarioDTO  implements DTO<UsuarioDTO, Usuario>{
         dto.setRendasFixasFavoritas(usuario.getRendasFixasFavoritas());
         return dto;
     }
-
 }
