@@ -31,7 +31,7 @@ public class RendaFixaController {
         return opt.orElse(null);
     }
 
-    @GetMapping("/codigo/{codigoFii}")
+    @GetMapping("/codigo/{codigo}")
     public RendaFixaDTO obterRendaFixaPorCodigo(@PathVariable String codigo){
         Optional<RendaFixaDTO> opt = rendaFixaService.obterPorCodigo(codigo);
 
