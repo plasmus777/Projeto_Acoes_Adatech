@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import plasmus777.github.com.projetoAcoesAdatech.api.FinnhubClient;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
+import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiroApi.AcaoApi;
 import plasmus777.github.com.projetoAcoesAdatech.dto.UsuarioDTO;
 
@@ -38,13 +39,19 @@ public class MonitoramentoService {
                             if(a.getPrecoAtual().compareTo(a.getPrecoMinimo()) < 0){
                                 emailService.enviarEmail(u.getEmail(), "Projeto Ações Adatech - Ação Cadastrada Abaixo do Mínimo", "Olá " + u.getNome() + ",\n\n" +
                                         "Nosso sistema detectou que uma ação registrada pela sua conta possui preço atual abaixo do valor mínimo configurado.\n\n" +
-                                        "Estamos a disposição para ajudar,\n" +
+                                        "Nome do ativo: " + a.getNome() + "\n" +
+                                        "Valor atual do ativo: " + a.getPrecoAtual() + "\n" +
+                                        "Valores mínimos/máximos do ativo: " + a.getPrecoMinimo() + "; " + a.getPrecoMaximo() + "\n\n" +
+                                        "Estamos à disposição para ajudar,\n" +
                                         "- Equipe do Projeto Ações Adatech");
                             }
                             if(a.getPrecoAtual().compareTo(a.getPrecoMaximo()) > 0){
                                 emailService.enviarEmail(u.getEmail(), "Projeto Ações Adatech - Ação Cadastrada Acima do Máximo", "Olá " + u.getNome() + ",\n\n" +
                                         "Nosso sistema detectou que uma ação registrada pela sua conta possui preço atual acima do valor máximo configurado.\n\n" +
-                                        "Estamos a disposição para ajudar,\n" +
+                                        "Nome do ativo: " + a.getNome() + "\n" +
+                                        "Valor atual do ativo: " + a.getPrecoAtual() + "\n" +
+                                        "Valores mínimos/máximos do ativo: " + a.getPrecoMinimo() + "; " + a.getPrecoMaximo() + "\n\n" +
+                                        "Estamos à disposição para ajudar,\n" +
                                         "- Equipe do Projeto Ações Adatech");
                             }
                         }
@@ -62,7 +69,7 @@ public class MonitoramentoService {
                                         "Nome do ativo: " + f.getNome() + "\n" +
                                         "Valor atual do ativo: " + f.getPrecoAtual() + "\n" +
                                         "Valores mínimos/máximos do ativo: " + f.getPrecoMinimo() + "; " + f.getPrecoMaximo() + "\n\n" +
-                                        "Estamos a disposição para ajudar,\n" +
+                                        "Estamos à disposição para ajudar,\n" +
                                         "- Equipe do Projeto Ações Adatech");
                             }
                             if(f.getPrecoAtual().compareTo(f.getPrecoMaximo()) > 0){
@@ -71,7 +78,34 @@ public class MonitoramentoService {
                                         "Nome do ativo: " + f.getNome() + "\n" +
                                         "Valor atual do ativo: " + f.getPrecoAtual() + "\n" +
                                         "Valores mínimos/máximos do ativo: " + f.getPrecoMinimo() + "; " + f.getPrecoMaximo() + "\n\n" +
-                                        "Estamos a disposição para ajudar,\n" +
+                                        "Estamos à disposição para ajudar,\n" +
+                                        "- Equipe do Projeto Ações Adatech");
+                            }
+                        }
+                    }
+                }
+                List<RendaFixa> rendaFixas = u.getRendasFixasFavoritas();
+                if(rendaFixas != null && !(rendaFixas.isEmpty())){
+                    for(RendaFixa r: rendaFixas){
+                        AcaoApi acaoApi = finnhubClient.buscarInformacoesAtivo(r.getCodigo());
+                        if(acaoApi != null){
+                            r.setPrecoAtual(acaoApi.getPrecoAtual());
+                            if(r.getPrecoAtual().compareTo(r.getPrecoMinimo()) < 0){
+                                emailService.enviarEmail(u.getEmail(), "Projeto Ações Adatech - Renda Fixa Cadastrada Abaixo do Mínimo", "Olá " + u.getNome() + ",\n\n" +
+                                        "Nosso sistema detectou que uma renda fixa registrada pela sua conta possui preço atual abaixo do valor mínimo configurado.\n\n" +
+                                        "Nome do ativo: " + r.getNome() + "\n" +
+                                        "Valor atual do ativo: " + r.getPrecoAtual() + "\n" +
+                                        "Valores mínimos/máximos do ativo: " + r.getPrecoMinimo() + "; " + r.getPrecoMaximo() + "\n\n" +
+                                        "Estamos à disposição para ajudar,\n" +
+                                        "- Equipe do Projeto Ações Adatech");
+                            }
+                            if(r.getPrecoAtual().compareTo(r.getPrecoMaximo()) > 0){
+                                emailService.enviarEmail(u.getEmail(), "Projeto Ações Adatech - Renda Fixa Cadastrada Acima do Máximo", "Olá " + u.getNome() + ",\n\n" +
+                                        "Nosso sistema detectou que uma renda fixa registrada pela sua conta possui preço atual acima do valor máximo configurado.\n\n" +
+                                        "Nome do ativo: " + r.getNome() + "\n" +
+                                        "Valor atual do ativo: " + r.getPrecoAtual() + "\n" +
+                                        "Valores mínimos/máximos do ativo: " + r.getPrecoMinimo() + "; " + r.getPrecoMaximo() + "\n\n" +
+                                        "Estamos à disposição para ajudar,\n" +
                                         "- Equipe do Projeto Ações Adatech");
                             }
                         }
