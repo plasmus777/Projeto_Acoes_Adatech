@@ -1,5 +1,7 @@
 package plasmus777.github.com.projetoAcoesAdatech.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import plasmus777.github.com.projetoAcoesAdatech.service.FundoImobiliarioService
 import java.util.List;
 import java.util.Optional;
 
+@Tag(name = "FundoImobiliarioController", description = "Controller para gerenciar fundos imobiliários na aplicação")
 @RestController
 @RequestMapping("api/v1/fundosimobiliarios")
 public class FundoImobiliarioController {
@@ -19,11 +22,19 @@ public class FundoImobiliarioController {
         this.fundoImobiliarioService = fundoImobiliarioService;
     }
 
+    @Operation(
+            summary = "Retorna todos os fundos imobiliários cadastrados",
+            description = "Retorna uma lista de todos os fundos imobiliários cadastrados por usuários no sistema.",
+            tags = { "fundo imobiliário", "get" })
     @GetMapping()
     public List<FundoImobiliarioDTO> obterFundosImobiliarios() {
         return fundoImobiliarioService.obterLista();
     }
 
+    @Operation(
+            summary = "Retorna um fundo imobiliário específico cadastrado",
+            description = "Busca por um fundo imobiliário através de um identificador especificado e o retorna caso encontrado no sistema.",
+            tags = { "fundo imobiliário", "get" })
     @GetMapping("/id/{id}")
     public FundoImobiliarioDTO obterFundoImobiliario(@PathVariable Long id){
         Optional<FundoImobiliarioDTO> opt = fundoImobiliarioService.obter(id);
@@ -31,6 +42,10 @@ public class FundoImobiliarioController {
         return opt.orElse(null);
     }
 
+    @Operation(
+            summary = "Retorna um fundo imobiliário específico cadastrado",
+            description = "Busca por um fundo imobiliário através de um código de FII especificado e o retorna caso encontrado no sistema.",
+            tags = { "fundo imobiliário", "get" })
     @GetMapping("/codigo/{codigoFii}")
     public FundoImobiliarioDTO obterFundoImobiliarioPorCodigo(@PathVariable String codigoFii){
         Optional<FundoImobiliarioDTO> opt = fundoImobiliarioService.obterPorCodigoFii(codigoFii);
@@ -38,16 +53,28 @@ public class FundoImobiliarioController {
         return opt.orElse(null);
     }
 
+    @Operation(
+            summary = "Atualiza um fundo imobiliário específico cadastrado",
+            description = "Atualiza um fundo imobiliário através de um identificador especificado e retorna uma resposta.",
+            tags = { "fundo imobiliário", "put" })
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarFundoImobiliario(@PathVariable Long id, @Valid @RequestBody FundoImobiliarioDTO novoFundoImobiliario){
         return fundoImobiliarioService.atualizar(id, novoFundoImobiliario);
     }
 
+    @Operation(
+            summary = "Cadastra um fundo imobiliário no sistema",
+            description = "Cadastra um fundo imobiliário no sistema e retorna uma resposta.",
+            tags = { "fundo imobiliário", "post" })
     @PostMapping
     public ResponseEntity<String> cadastrarFundoImobiliario(@Valid @RequestBody FundoImobiliarioDTO fundoImobiliario){
         return fundoImobiliarioService.cadastrar(fundoImobiliario);
     }
 
+    @Operation(
+            summary = "Apaga um fundo imobiliário específico cadastrado",
+            description = "Apaga um fundo imobiliário do sistema através de um identificador especificado e retorna uma resposta.",
+            tags = { "fundo imobiliário", "delete" })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> apagarFundoImobiliario(@PathVariable Long id){
         return fundoImobiliarioService.apagar(id);
