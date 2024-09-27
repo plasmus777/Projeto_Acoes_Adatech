@@ -1,18 +1,15 @@
 package plasmus777.github.com.projetoAcoesAdatech.model.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 
 public class AcaoDTO implements DTO<AcaoDTO, Acao> {
 
-    @NotNull(message = "O código de negociação não pode ser nulo.")
+    @NotBlank(message = "O código de negociação não pode ser nulo.")
     @Pattern(regexp = "^[A-Z0-9]{1,5}$", message = "O código de negociação deve conter apenas letras e números, com até 5 caracteres.")
     @Size(min = 1, max = 5, message = "O código de negociação deve ter entre 1 a 5 caracteres.")
     private String codigoNegociacao;
@@ -21,7 +18,7 @@ public class AcaoDTO implements DTO<AcaoDTO, Acao> {
     @Min(value = 1, message = "A quantidade deve ser pelo menos 1.")
     private Integer quantidade;
 
-    @NotNull(message = "O nome não pode ser nulo.")
+    @NotBlank(message = "O nome não pode ser nulo.")
     @Size(min = 1, max = 100, message = "O nome deve ter no máximo 100 caracteres.")
     private String nome;
 
@@ -34,11 +31,12 @@ public class AcaoDTO implements DTO<AcaoDTO, Acao> {
     private BigDecimal precoCompra;
 
     @NotNull(message = "A data de cadastro não pode ser nula.")
-    private LocalDate dataCadastro;
+    private LocalDateTime dataCadastro;
 
-    @NotNull(message = "O usuário não pode ser nulo.")
-    @Size(min = 1, max = 50, message = "O usuário deve ter no máximo 50 caracteres.")
-    private String usuario;
+    @NotNull(message = "O e-mail do usuário não pode ser nulo.")
+    @Size(min = 1, max = 255, message = "O nome deve ter no máximo 100 caracteres.")
+    @Email(message = "O e-mail do usuário deve ser válido.")
+    private String usuarioEmail;
 
     @NotNull(message = "O preço mínimo não pode ser nulo.")
     @Min(value = 0, message = "O preço mínimo deve ser maior ou igual a 0.")
@@ -48,14 +46,14 @@ public class AcaoDTO implements DTO<AcaoDTO, Acao> {
     @Min(value = 0, message = "O preço máximo deve ser maior ou igual a 0.")
     private BigDecimal precoMaximo;
 
-    public AcaoDTO(String codigoNegociacao, Integer quantidade, String nome, BigDecimal precoAtual, BigDecimal precoCompra, LocalDate dataCadastro, String usuario, BigDecimal precoMinimo, BigDecimal precoMaximo) {
+    public AcaoDTO(String codigoNegociacao, Integer quantidade, String nome, BigDecimal precoAtual, BigDecimal precoCompra, LocalDateTime dataCadastro, String usuarioEmail, BigDecimal precoMinimo, BigDecimal precoMaximo) {
         this.codigoNegociacao = codigoNegociacao;
         this.quantidade = quantidade;
         this.nome = nome;
         this.precoAtual = precoAtual;
         this.precoCompra = precoCompra;
         this.dataCadastro = dataCadastro;
-        this.usuario = usuario;
+        this.usuarioEmail = usuarioEmail;
         this.precoMinimo = precoMinimo;
         this.precoMaximo = precoMaximo;
     }
@@ -83,12 +81,12 @@ public class AcaoDTO implements DTO<AcaoDTO, Acao> {
         return precoCompra;
     }
 
-    public LocalDate getDataCadastro() {
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getUsuarioEmail() {
+        return usuarioEmail;
     }
 
     public BigDecimal getPrecoMinimo() {
@@ -119,12 +117,12 @@ public class AcaoDTO implements DTO<AcaoDTO, Acao> {
         this.precoCompra = precoCompra;
     }
 
-    public void setDataCadastro(LocalDate dataCadastro) {
+    public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setUsuarioEmail(String usuarioEmail) {
+        this.usuarioEmail = usuarioEmail;
     }
 
     public void setPrecoMinimo(BigDecimal precoMinimo) {
@@ -144,7 +142,7 @@ public class AcaoDTO implements DTO<AcaoDTO, Acao> {
         acao.setPrecoAtual(this.precoAtual);
         acao.setPrecoCompra(this.precoCompra);
         acao.setDataCadastro(this.dataCadastro);
-        acao.setUsuario(this.usuario);
+        //acao.setUsuario(this.usuario)
         acao.setPrecoMinimo(this.precoMinimo);
         acao.setPrecoMaximo(this.precoMaximo);
         return acao;
@@ -162,7 +160,7 @@ public class AcaoDTO implements DTO<AcaoDTO, Acao> {
         dto.setPrecoAtual(acao.getPrecoAtual());
         dto.setPrecoCompra(acao.getPrecoCompra());
         dto.setDataCadastro(acao.getDataCadastro());
-        dto.setUsuario(acao.getUsuario());
+        dto.setUsuarioEmail(acao.getUsuario().getEmail());
         dto.setPrecoMinimo(acao.getPrecoMinimo());
         dto.setPrecoMaximo(acao.getPrecoMaximo());
         return dto;

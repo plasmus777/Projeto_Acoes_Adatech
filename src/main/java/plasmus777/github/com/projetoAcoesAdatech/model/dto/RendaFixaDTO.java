@@ -1,8 +1,6 @@
 package plasmus777.github.com.projetoAcoesAdatech.model.dto;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,7 +17,7 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
     @Future(message = "A data de vencimento deve ser uma data futura.")
     private LocalDateTime dataVencimento;
 
-    @NotNull(message = "O nome não pode ser nulo.")
+    @NotBlank(message = "O nome não pode ser nulo.")
     @Size(min = 1, max = 100, message = "O nome deve ter no máximo 100 caracteres.")
     private String nome;
 
@@ -34,9 +32,10 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
     @NotNull(message = "A data de cadastro não pode ser nula.")
     private LocalDateTime dataCadastro;
 
-    @NotNull(message = "O usuário não pode ser nulo.")
-    @Size(min = 1, max = 50, message = "O usuário deve ter no máximo 50 caracteres.")
-    private String usuario;
+    @NotNull(message = "O e-mail do usuário não pode ser nulo.")
+    @Size(min = 1, max = 255, message = "O nome deve ter no máximo 100 caracteres.")
+    @Email(message = "O e-mail do usuário deve ser válido.")
+    private String usuarioEmail;
 
     @NotNull(message = "O preço mínimo não pode ser nulo.")
     @DecimalMin(value = "0.00", inclusive = false, message = "O preço mínimo deve ser um valor positivo.")
@@ -49,14 +48,14 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
     public RendaFixaDTO() {
     }
 
-    public RendaFixaDTO(BigDecimal taxaRetorno, LocalDateTime dataVencimento, String nome, BigDecimal precoAtual, BigDecimal precoCompra, LocalDateTime dataCadastro, String usuario, BigDecimal precoMinimo, BigDecimal precoMaximo) {
+    public RendaFixaDTO(BigDecimal taxaRetorno, LocalDateTime dataVencimento, String nome, BigDecimal precoAtual, BigDecimal precoCompra, LocalDateTime dataCadastro, String usuarioEmail, BigDecimal precoMinimo, BigDecimal precoMaximo) {
         this.taxaRetorno = taxaRetorno;
         this.dataVencimento = dataVencimento;
         this.nome = nome;
         this.precoAtual = precoAtual;
         this.precoCompra = precoCompra;
         this.dataCadastro = dataCadastro;
-        this.usuario = usuario;
+        this.usuarioEmail = usuarioEmail;
         this.precoMinimo = precoMinimo;
         this.precoMaximo = precoMaximo;
     }
@@ -109,12 +108,12 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
         this.dataCadastro = dataCadastro;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getUsuarioEmail() {
+        return usuarioEmail;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setUsuarioEmail(String usuarioEmail) {
+        this.usuarioEmail = usuarioEmail;
     }
 
     public BigDecimal getPrecoMinimo() {
@@ -142,13 +141,14 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
         rendaFixa.setPrecoAtual(this.precoAtual);
         rendaFixa.setPrecoCompra(this.precoCompra);
         rendaFixa.setDataCadastro(this.dataCadastro);
-        rendaFixa.setUsuario(this.usuario);
+        //rendaFixa.setUsuario(this.usuario);
         rendaFixa.setPrecoMinimo(this.precoMinimo);
         rendaFixa.setPrecoMaximo(this.precoMaximo);
         return rendaFixa;
     }
 
-    public static RendaFixaDTO fromEntity(RendaFixa rendaFixa) {
+    @Override
+    public RendaFixaDTO fromEntity(RendaFixa rendaFixa) {
         if (rendaFixa == null) {
             return null;
         }
@@ -159,7 +159,7 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
         dto.setPrecoAtual(rendaFixa.getPrecoAtual());
         dto.setPrecoCompra(rendaFixa.getPrecoCompra());
         dto.setDataCadastro(rendaFixa.getDataCadastro());
-        dto.setUsuario(rendaFixa.getUsuario());
+        dto.setUsuarioEmail(rendaFixa.getUsuario().getEmail());
         dto.setPrecoMinimo(rendaFixa.getPrecoMinimo());
         dto.setPrecoMaximo(rendaFixa.getPrecoMaximo());
         return dto;

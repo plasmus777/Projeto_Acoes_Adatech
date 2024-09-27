@@ -1,18 +1,15 @@
 package plasmus777.github.com.projetoAcoesAdatech.model.dto;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
 
 public class FundoImobiliarioDTO implements DTO<FundoImobiliarioDTO, FundoImobiliario> {
 
-    @NotNull(message = "O código do FII não pode ser nulo.")
+    @NotBlank(message = "O código do FII não pode ser nulo.")
     @Pattern(regexp = "^[A-Z0-9]{1,10}$", message = "O código do FII deve conter apenas letras e números, com até 10 caracteres.")
     @Size(min = 1, max = 10, message = "O código do FII deve ter entre 1 e 10 caracteres.")
     private String codigoFii;
@@ -21,7 +18,7 @@ public class FundoImobiliarioDTO implements DTO<FundoImobiliarioDTO, FundoImobil
     @DecimalMin(value = "0.00", inclusive = false, message = "O rendimento mensal deve ser um valor positivo.")
     private BigDecimal rendimentoMensal;
 
-    @NotNull(message = "O nome não pode ser nulo.")
+    @NotBlank(message = "O nome não pode ser nulo.")
     @Size(min = 1, max = 100, message = "O nome deve ter no máximo 100 caracteres.")
     private String nome;
 
@@ -34,11 +31,12 @@ public class FundoImobiliarioDTO implements DTO<FundoImobiliarioDTO, FundoImobil
     private BigDecimal precoCompra;
 
     @NotNull(message = "A data de cadastro não pode ser nula.")
-    private LocalDate dataCadastro;
+    private LocalDateTime dataCadastro;
 
-    @NotNull(message = "O usuário não pode ser nulo.")
-    @Size(min = 1, max = 50, message = "O usuário deve ter no máximo 50 caracteres.")
-    private String usuario;
+    @NotNull(message = "O e-mail do usuário não pode ser nulo.")
+    @Size(min = 1, max = 255, message = "O nome deve ter no máximo 100 caracteres.")
+    @Email(message = "O e-mail do usuário deve ser válido.")
+    private String usuarioEmail;
 
     @NotNull(message = "O preço mínimo não pode ser nulo.")
     @DecimalMin(value = "0.00", inclusive = false, message = "O preço mínimo deve ser um valor positivo.")
@@ -51,14 +49,14 @@ public class FundoImobiliarioDTO implements DTO<FundoImobiliarioDTO, FundoImobil
     public FundoImobiliarioDTO() {
     }
 
-    public FundoImobiliarioDTO(String codigoFii, BigDecimal rendimentoMensal, String nome, BigDecimal precoAtual, BigDecimal precoCompra, LocalDate dataCadastro, String usuario, BigDecimal precoMinimo, BigDecimal precoMaximo) {
+    public FundoImobiliarioDTO(String codigoFii, BigDecimal rendimentoMensal, String nome, BigDecimal precoAtual, BigDecimal precoCompra, LocalDateTime dataCadastro, String usuarioEmail, BigDecimal precoMinimo, BigDecimal precoMaximo) {
         this.codigoFii = codigoFii;
         this.rendimentoMensal = rendimentoMensal;
         this.nome = nome;
         this.precoAtual = precoAtual;
         this.precoCompra = precoCompra;
         this.dataCadastro = dataCadastro;
-        this.usuario = usuario;
+        this.usuarioEmail = usuarioEmail;
         this.precoMinimo = precoMinimo;
         this.precoMaximo = precoMaximo;
     }
@@ -103,20 +101,20 @@ public class FundoImobiliarioDTO implements DTO<FundoImobiliarioDTO, FundoImobil
         this.precoCompra = precoCompra;
     }
 
-    public LocalDate getDataCadastro() {
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(LocalDate dataCadastro) {
+    public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getUsuarioEmail() {
+        return usuarioEmail;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setUsuarioEmail(String usuarioEmail) {
+        this.usuarioEmail = usuarioEmail;
     }
 
     public BigDecimal getPrecoMinimo() {
@@ -135,6 +133,7 @@ public class FundoImobiliarioDTO implements DTO<FundoImobiliarioDTO, FundoImobil
         this.precoMaximo = precoMaximo;
     }
 
+    @Override
     public FundoImobiliario toEntity() {
         FundoImobiliario fundoImobiliario = new FundoImobiliario();
         fundoImobiliario.setCodigoFii(this.codigoFii);
@@ -143,13 +142,14 @@ public class FundoImobiliarioDTO implements DTO<FundoImobiliarioDTO, FundoImobil
         fundoImobiliario.setPrecoAtual(this.precoAtual);
         fundoImobiliario.setPrecoCompra(this.precoCompra);
         fundoImobiliario.setDataCadastro(this.dataCadastro);
-        fundoImobiliario.setUsuario(this.usuario);
+        //fundoImobiliario.setUsuario(this.usuario);
         fundoImobiliario.setPrecoMinimo(this.precoMinimo);
         fundoImobiliario.setPrecoMaximo(this.precoMaximo);
         return fundoImobiliario;
     }
 
-    public static FundoImobiliarioDTO fromEntity(FundoImobiliario fundoImobiliario) {
+    @Override
+    public FundoImobiliarioDTO fromEntity(FundoImobiliario fundoImobiliario) {
         if (fundoImobiliario == null) {
             return null;
         }
@@ -160,7 +160,7 @@ public class FundoImobiliarioDTO implements DTO<FundoImobiliarioDTO, FundoImobil
         dto.setPrecoAtual(fundoImobiliario.getPrecoAtual());
         dto.setPrecoCompra(fundoImobiliario.getPrecoCompra());
         dto.setDataCadastro(fundoImobiliario.getDataCadastro());
-        dto.setUsuario(fundoImobiliario.getUsuario());
+        dto.setUsuarioEmail(fundoImobiliario.getUsuario().getEmail());
         dto.setPrecoMinimo(fundoImobiliario.getPrecoMinimo());
         dto.setPrecoMaximo(fundoImobiliario.getPrecoMaximo());
         return dto;
