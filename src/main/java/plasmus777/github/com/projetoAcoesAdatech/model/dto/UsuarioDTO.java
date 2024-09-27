@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
@@ -35,6 +36,9 @@ public class UsuarioDTO implements DTO<UsuarioDTO, Usuario> {
 
     @Size(max = 1000, message = "Você pode favoritar no máximo 1000 rendas fixas.")
     private List<RendaFixa> rendasFixasFavoritas;
+
+    public UsuarioDTO() {
+    }
 
     public String getNome() {
         return nome;
@@ -90,28 +94,24 @@ public class UsuarioDTO implements DTO<UsuarioDTO, Usuario> {
         usuario.setNome(this.nome);
         usuario.setEmail(this.email);
         usuario.setSenha(this.senha);
-
         if (this.acoesFavoritas != null) {
             usuario.setAcoesFavoritas(this.acoesFavoritas.stream()
                     .distinct()
                     .limit(1000)
                     .collect(Collectors.toList()));
         }
-
         if (this.fundosImobiliariosFavoritos != null) {
             usuario.setFundosImobiliariosFavoritos(this.fundosImobiliariosFavoritos.stream()
                     .distinct()
                     .limit(1000)
                     .collect(Collectors.toList()));
         }
-
         if (this.rendasFixasFavoritas != null) {
             usuario.setRendasFixasFavoritas(this.rendasFixasFavoritas.stream()
                     .distinct()
                     .limit(1000)
                     .collect(Collectors.toList()));
         }
-
         return usuario;
     }
 
