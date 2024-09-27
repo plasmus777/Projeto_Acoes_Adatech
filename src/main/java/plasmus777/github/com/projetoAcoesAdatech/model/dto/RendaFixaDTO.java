@@ -3,8 +3,10 @@ package plasmus777.github.com.projetoAcoesAdatech.model.dto;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
 
 public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
@@ -17,12 +19,46 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
     @Future(message = "A data de vencimento deve ser uma data futura.")
     private LocalDateTime dataVencimento;
 
-    public RendaFixaDTO(BigDecimal taxaRetorno, LocalDateTime dataVencimento) {
-        this.taxaRetorno = taxaRetorno;
-        this.dataVencimento = dataVencimento;
-    }
+    @NotNull(message = "O nome não pode ser nulo.")
+    @Size(min = 1, max = 100, message = "O nome deve ter no máximo 100 caracteres.")
+    private String nome;
+
+    @NotNull(message = "O preço atual não pode ser nulo.")
+    @DecimalMin(value = "0.00", inclusive = false, message = "O preço atual deve ser um valor positivo.")
+    private BigDecimal precoAtual;
+
+    @NotNull(message = "O preço de compra não pode ser nulo.")
+    @DecimalMin(value = "0.00", inclusive = false, message = "O preço de compra deve ser um valor positivo.")
+    private BigDecimal precoCompra;
+
+    @NotNull(message = "A data de cadastro não pode ser nula.")
+    private LocalDateTime dataCadastro;
+
+    @NotNull(message = "O usuário não pode ser nulo.")
+    @Size(min = 1, max = 50, message = "O usuário deve ter no máximo 50 caracteres.")
+    private String usuario;
+
+    @NotNull(message = "O preço mínimo não pode ser nulo.")
+    @DecimalMin(value = "0.00", inclusive = false, message = "O preço mínimo deve ser um valor positivo.")
+    private BigDecimal precoMinimo;
+
+    @NotNull(message = "O preço máximo não pode ser nulo.")
+    @DecimalMin(value = "0.00", inclusive = false, message = "O preço máximo deve ser um valor positivo.")
+    private BigDecimal precoMaximo;
 
     public RendaFixaDTO() {
+    }
+
+    public RendaFixaDTO(BigDecimal taxaRetorno, LocalDateTime dataVencimento, String nome, BigDecimal precoAtual, BigDecimal precoCompra, LocalDateTime dataCadastro, String usuario, BigDecimal precoMinimo, BigDecimal precoMaximo) {
+        this.taxaRetorno = taxaRetorno;
+        this.dataVencimento = dataVencimento;
+        this.nome = nome;
+        this.precoAtual = precoAtual;
+        this.precoCompra = precoCompra;
+        this.dataCadastro = dataCadastro;
+        this.usuario = usuario;
+        this.precoMinimo = precoMinimo;
+        this.precoMaximo = precoMaximo;
     }
 
     public BigDecimal getTaxaRetorno() {
@@ -41,19 +77,91 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
         this.dataVencimento = dataVencimento;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public BigDecimal getPrecoAtual() {
+        return precoAtual;
+    }
+
+    public void setPrecoAtual(BigDecimal precoAtual) {
+        this.precoAtual = precoAtual;
+    }
+
+    public BigDecimal getPrecoCompra() {
+        return precoCompra;
+    }
+
+    public void setPrecoCompra(BigDecimal precoCompra) {
+        this.precoCompra = precoCompra;
+    }
+
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public BigDecimal getPrecoMinimo() {
+        return precoMinimo;
+    }
+
+    public void setPrecoMinimo(BigDecimal precoMinimo) {
+        this.precoMinimo = precoMinimo;
+    }
+
+    public BigDecimal getPrecoMaximo() {
+        return precoMaximo;
+    }
+
+    public void setPrecoMaximo(BigDecimal precoMaximo) {
+        this.precoMaximo = precoMaximo;
+    }
+
     @Override
     public RendaFixa toEntity() {
         RendaFixa rendaFixa = new RendaFixa();
         rendaFixa.setTaxaRetorno(this.taxaRetorno);
         rendaFixa.setDataVencimento(this.dataVencimento);
+        rendaFixa.setNome(this.nome);
+        rendaFixa.setPrecoAtual(this.precoAtual);
+        rendaFixa.setPrecoCompra(this.precoCompra);
+        rendaFixa.setDataCadastro(this.dataCadastro);
+        rendaFixa.setUsuario(this.usuario);
+        rendaFixa.setPrecoMinimo(this.precoMinimo);
+        rendaFixa.setPrecoMaximo(this.precoMaximo);
         return rendaFixa;
     }
 
-    @Override
-    public RendaFixaDTO fromEntity(RendaFixa rendaFixa) {
+    public static RendaFixaDTO fromEntity(RendaFixa rendaFixa) {
+        if (rendaFixa == null) {
+            return null;
+        }
         RendaFixaDTO dto = new RendaFixaDTO();
         dto.setTaxaRetorno(rendaFixa.getTaxaRetorno());
         dto.setDataVencimento(rendaFixa.getDataVencimento());
+        dto.setNome(rendaFixa.getNome());
+        dto.setPrecoAtual(rendaFixa.getPrecoAtual());
+        dto.setPrecoCompra(rendaFixa.getPrecoCompra());
+        dto.setDataCadastro(rendaFixa.getDataCadastro());
+        dto.setUsuario(rendaFixa.getUsuario());
+        dto.setPrecoMinimo(rendaFixa.getPrecoMinimo());
+        dto.setPrecoMaximo(rendaFixa.getPrecoMaximo());
         return dto;
     }
 }
