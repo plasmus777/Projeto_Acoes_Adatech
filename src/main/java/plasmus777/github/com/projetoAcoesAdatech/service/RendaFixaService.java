@@ -3,6 +3,8 @@ package plasmus777.github.com.projetoAcoesAdatech.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import plasmus777.github.com.projetoAcoesAdatech.dto.RendaFixaDTO;
+import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
 import plasmus777.github.com.projetoAcoesAdatech.repository.RendaFixaRepository;
 import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RendaFixaService implements RestService<RendaFixa>{
+public class RendaFixaService implements RestService<RendaFixaDTO>{
 
     private final RendaFixaRepository rendaFixaRepository;
     private final UsuarioRepository usuarioRepository;
@@ -24,34 +26,43 @@ public class RendaFixaService implements RestService<RendaFixa>{
     }
 
     @Override
-    public List<RendaFixa> obterLista() {
-        return rendaFixaRepository.findAll();
+    public List<RendaFixaDTO> obterLista() {
+        return rendaFixaRepository
+                .findAll()
+                .stream()
+                .map(RendaFixaDTO::fromEntity)
+                .toList();
     }
 
     @Override
-    public Optional<RendaFixa> obter(Long id) {
-        return rendaFixaRepository.findRendaFixaById(id);
+    public Optional<RendaFixaDTO> obter(Long id) {
+        return rendaFixaRepository.findRendaFixaById(id).map(RendaFixaDTO::fromEntity);
+    }
+
+    public Optional<RendaFixaDTO> obterPorCodigo(String codigo){
+        return rendaFixaRepository.findRendaFixaByCodigo(codigo).map(RendaFixaDTO::fromEntity);
     }
 
     @Override
-    public ResponseEntity<String> atualizar(Long id, RendaFixa rendaFixa) {
+    public ResponseEntity<String> atualizar(Long id, RendaFixaDTO rendaFixa) {
         Optional<RendaFixa> opt = rendaFixaRepository.findRendaFixaById(id);
         if(opt.isPresent()){
             RendaFixa r = opt.get();
 
             if(rendaFixa != null){
-                r.setNome(rendaFixa.getNome());
-                r.setPrecoAtual(rendaFixa.getPrecoAtual());
-                r.setPrecoCompra(rendaFixa.getPrecoCompra());
-                r.setDataCadastro(rendaFixa.getDataCadastro());
-                r.setUsuario(rendaFixa.getUsuario());
-                r.setPrecoMinimo(rendaFixa.getPrecoMinimo());
-                r.setPrecoMaximo(rendaFixa.getPrecoMaximo());
-
-                r.setTaxaRetorno(rendaFixa.getTaxaRetorno());
-                r.setDataVencimento(rendaFixa.getDataVencimento());
-
                 try {
+                    r.setNome(rendaFixa.getNome());
+                    r.setPrecoAtual(rendaFixa.getPrecoAtual());
+                    r.setPrecoCompra(rendaFixa.getPrecoCompra());
+                    r.setDataCadastro(rendaFixa.getDataCadastro());
+                    Optional<Usuario> optUsuario = usuarioRepository.findUsuarioByEmail(rendaFixa.getUsuarioEmail());
+                    optUsuario.ifPresent(r::setUsuario);
+                    r.setPrecoMinimo(rendaFixa.getPrecoMinimo());
+                    r.setPrecoMaximo(rendaFixa.getPrecoMaximo());
+
+                    r.setTaxaRetorno(rendaFixa.getTaxaRetorno());
+                    r.setDataVencimento(rendaFixa.getDataVencimento());
+
                     rendaFixaRepository.save(r);
                     return ResponseEntity.status(HttpStatus.CREATED).body("Renda fixa atualizada com sucesso.");
                 }catch (Exception e){
@@ -63,17 +74,24 @@ public class RendaFixaService implements RestService<RendaFixa>{
     }
 
     @Override
-    public ResponseEntity<String> cadastrar(RendaFixa rendaFixa) {
+    public ResponseEntity<String> cadastrar(RendaFixaDTO rendaFixa) {
         try{
             rendaFixa.setDataCadastro(LocalDateTime.now());
+            Optional<Usuario> optUsuario = usuarioRepository.findUsuarioByEmail(rendaFixa.getUsuarioEmail());
+            if(optUsuario.isPresent()){
+                Usuario u = optUsuario.get();
+                List<RendaFixa> lista = u.getRendasFixasFavoritas();
+                if(lista == null) lista = new ArrayList<>();
+                RendaFixa r = rendaFixa.toEntity();
+                r.setUsuario(u);
+                lista.add(r);
+                u.setRendasFixasFavoritas(lista);
 
-            List<RendaFixa> lista = rendaFixa.getUsuario().getRendasFixasFavoritas();
-            if(lista == null) lista = new ArrayList<>();
-            lista.add(rendaFixa);
-            rendaFixa.getUsuario().setRendasFixasFavoritas(lista);
-
-            usuarioRepository.save(rendaFixa.getUsuario());
-            return ResponseEntity.status(HttpStatus.CREATED).body("Renda fixa cadastrada com sucesso.");
+                usuarioRepository.save(u);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Renda fixa cadastrada com sucesso.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não há um usuário com o e-mail registrado pela renda fixa.");
+            }
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O repositório não pôde salvar a renda fixa a ser cadastrada.\n" + e.getLocalizedMessage());
         }

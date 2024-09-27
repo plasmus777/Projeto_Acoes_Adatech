@@ -3,12 +3,10 @@ package plasmus777.github.com.projetoAcoesAdatech.service;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import plasmus777.github.com.projetoAcoesAdatech.api.FinnhubClient;
-import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
-import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiroApi.AcaoApi;
-import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiroApi.AtivoApi;
+import plasmus777.github.com.projetoAcoesAdatech.dto.UsuarioDTO;
 
 import java.util.List;
 
@@ -28,9 +26,9 @@ public class MonitoramentoService {
     //Executa o código para atualizar os clientes de hora em hora
     @Scheduled(fixedDelay = 3600000)
     public void monitorarAtualizacoes(){
-        List<Usuario> usuarios = usuarioService.obterLista();
+        List<UsuarioDTO> usuarios = usuarioService.obterLista();
         if(usuarios != null && !(usuarios.isEmpty())){
-            for(Usuario u: usuarios){
+            for(UsuarioDTO u: usuarios){
                 List<Acao> acoes = u.getAcoesFavoritas();
                 if(acoes != null && !(acoes.isEmpty())){
                     for(Acao a: acoes){

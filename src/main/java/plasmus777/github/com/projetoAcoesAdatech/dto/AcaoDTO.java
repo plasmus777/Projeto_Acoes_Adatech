@@ -1,4 +1,4 @@
-package plasmus777.github.com.projetoAcoesAdatech.model.dto;
+package plasmus777.github.com.projetoAcoesAdatech.dto;
 
 import jakarta.validation.constraints.*;
 
@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 
-public class AcaoDTO implements DTO<AcaoDTO, Acao> {
+public class AcaoDTO {
 
     @NotBlank(message = "O código de negociação não pode ser nulo.")
-    @Pattern(regexp = "^[A-Z0-9]{1,5}$", message = "O código de negociação deve conter apenas letras e números, com até 5 caracteres.")
-    @Size(min = 1, max = 5, message = "O código de negociação deve ter entre 1 a 5 caracteres.")
+    @Pattern(regexp = "^[A-Z0-9]{1,11}$", message = "O código de negociação deve conter apenas letras e números, com até 11 caracteres.")
+    @Size(min = 1, max = 11, message = "O código de negociação deve ter entre 1 a 11 caracteres.")
     private String codigoNegociacao;
 
     @NotNull(message = "A quantidade de ações não pode ser nula.")
@@ -133,7 +133,6 @@ public class AcaoDTO implements DTO<AcaoDTO, Acao> {
         this.precoMaximo = precoMaximo;
     }
 
-    @Override
     public Acao toEntity() {
         Acao acao = new Acao();
         acao.setCodigoNegociacao(this.codigoNegociacao);
@@ -148,8 +147,7 @@ public class AcaoDTO implements DTO<AcaoDTO, Acao> {
         return acao;
     }
 
-    @Override
-    public AcaoDTO fromEntity(Acao acao) {
+    public static AcaoDTO fromEntity(Acao acao) {
         if (acao == null) {
             return null;
         }

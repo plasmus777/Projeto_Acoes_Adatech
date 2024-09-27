@@ -1,21 +1,22 @@
-package plasmus777.github.com.projetoAcoesAdatech.model.dto;
+package plasmus777.github.com.projetoAcoesAdatech.dto;
 
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
+import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
 
-public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
+public class FundoImobiliarioDTO {
 
-    @NotNull(message = "O valor da taxa de retorno não pode ser nulo.")
-    @DecimalMin(value = "0.01", message = "A taxa de retorno deve ser maior que 0.")
-    private BigDecimal taxaRetorno;
+    @NotBlank(message = "O código do FII não pode ser nulo.")
+    @Pattern(regexp = "^[A-Z0-9]{1,11}$", message = "O código do FII deve conter apenas letras e números, com até 11 caracteres.")
+    @Size(min = 1, max = 11, message = "O código do FII deve ter entre 1 e 10 caracteres.")
+    private String codigoFii;
 
-    @NotNull(message = "A data de vencimento não pode ser nula.")
-    @Future(message = "A data de vencimento deve ser uma data futura.")
-    private LocalDateTime dataVencimento;
+    @NotNull(message = "O rendimento mensal não pode ser nulo.")
+    @DecimalMin(value = "0.00", inclusive = false, message = "O rendimento mensal deve ser um valor positivo.")
+    private BigDecimal rendimentoMensal;
 
     @NotBlank(message = "O nome não pode ser nulo.")
     @Size(min = 1, max = 100, message = "O nome deve ter no máximo 100 caracteres.")
@@ -45,12 +46,12 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
     @DecimalMin(value = "0.00", inclusive = false, message = "O preço máximo deve ser um valor positivo.")
     private BigDecimal precoMaximo;
 
-    public RendaFixaDTO() {
+    public FundoImobiliarioDTO() {
     }
 
-    public RendaFixaDTO(BigDecimal taxaRetorno, LocalDateTime dataVencimento, String nome, BigDecimal precoAtual, BigDecimal precoCompra, LocalDateTime dataCadastro, String usuarioEmail, BigDecimal precoMinimo, BigDecimal precoMaximo) {
-        this.taxaRetorno = taxaRetorno;
-        this.dataVencimento = dataVencimento;
+    public FundoImobiliarioDTO(String codigoFii, BigDecimal rendimentoMensal, String nome, BigDecimal precoAtual, BigDecimal precoCompra, LocalDateTime dataCadastro, String usuarioEmail, BigDecimal precoMinimo, BigDecimal precoMaximo) {
+        this.codigoFii = codigoFii;
+        this.rendimentoMensal = rendimentoMensal;
         this.nome = nome;
         this.precoAtual = precoAtual;
         this.precoCompra = precoCompra;
@@ -60,20 +61,20 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
         this.precoMaximo = precoMaximo;
     }
 
-    public BigDecimal getTaxaRetorno() {
-        return taxaRetorno;
+    public String getCodigoFii() {
+        return codigoFii;
     }
 
-    public void setTaxaRetorno(BigDecimal taxaRetorno) {
-        this.taxaRetorno = taxaRetorno;
+    public void setCodigoFii(String codigoFii) {
+        this.codigoFii = codigoFii;
     }
 
-    public LocalDateTime getDataVencimento() {
-        return dataVencimento;
+    public BigDecimal getRendimentoMensal() {
+        return rendimentoMensal;
     }
 
-    public void setDataVencimento(LocalDateTime dataVencimento) {
-        this.dataVencimento = dataVencimento;
+    public void setRendimentoMensal(BigDecimal rendimentoMensal) {
+        this.rendimentoMensal = rendimentoMensal;
     }
 
     public String getNome() {
@@ -132,36 +133,34 @@ public class RendaFixaDTO implements DTO<RendaFixaDTO, RendaFixa> {
         this.precoMaximo = precoMaximo;
     }
 
-    @Override
-    public RendaFixa toEntity() {
-        RendaFixa rendaFixa = new RendaFixa();
-        rendaFixa.setTaxaRetorno(this.taxaRetorno);
-        rendaFixa.setDataVencimento(this.dataVencimento);
-        rendaFixa.setNome(this.nome);
-        rendaFixa.setPrecoAtual(this.precoAtual);
-        rendaFixa.setPrecoCompra(this.precoCompra);
-        rendaFixa.setDataCadastro(this.dataCadastro);
-        //rendaFixa.setUsuario(this.usuario);
-        rendaFixa.setPrecoMinimo(this.precoMinimo);
-        rendaFixa.setPrecoMaximo(this.precoMaximo);
-        return rendaFixa;
+    public FundoImobiliario toEntity() {
+        FundoImobiliario fundoImobiliario = new FundoImobiliario();
+        fundoImobiliario.setCodigoFii(this.codigoFii);
+        fundoImobiliario.setRendimentoMensal(this.rendimentoMensal);
+        fundoImobiliario.setNome(this.nome);
+        fundoImobiliario.setPrecoAtual(this.precoAtual);
+        fundoImobiliario.setPrecoCompra(this.precoCompra);
+        fundoImobiliario.setDataCadastro(this.dataCadastro);
+        //fundoImobiliario.setUsuario(this.usuario);
+        fundoImobiliario.setPrecoMinimo(this.precoMinimo);
+        fundoImobiliario.setPrecoMaximo(this.precoMaximo);
+        return fundoImobiliario;
     }
 
-    @Override
-    public RendaFixaDTO fromEntity(RendaFixa rendaFixa) {
-        if (rendaFixa == null) {
+    public static FundoImobiliarioDTO fromEntity(FundoImobiliario fundoImobiliario) {
+        if (fundoImobiliario == null) {
             return null;
         }
-        RendaFixaDTO dto = new RendaFixaDTO();
-        dto.setTaxaRetorno(rendaFixa.getTaxaRetorno());
-        dto.setDataVencimento(rendaFixa.getDataVencimento());
-        dto.setNome(rendaFixa.getNome());
-        dto.setPrecoAtual(rendaFixa.getPrecoAtual());
-        dto.setPrecoCompra(rendaFixa.getPrecoCompra());
-        dto.setDataCadastro(rendaFixa.getDataCadastro());
-        dto.setUsuarioEmail(rendaFixa.getUsuario().getEmail());
-        dto.setPrecoMinimo(rendaFixa.getPrecoMinimo());
-        dto.setPrecoMaximo(rendaFixa.getPrecoMaximo());
+        FundoImobiliarioDTO dto = new FundoImobiliarioDTO();
+        dto.setCodigoFii(fundoImobiliario.getCodigoFii());
+        dto.setRendimentoMensal(fundoImobiliario.getRendimentoMensal());
+        dto.setNome(fundoImobiliario.getNome());
+        dto.setPrecoAtual(fundoImobiliario.getPrecoAtual());
+        dto.setPrecoCompra(fundoImobiliario.getPrecoCompra());
+        dto.setDataCadastro(fundoImobiliario.getDataCadastro());
+        dto.setUsuarioEmail(fundoImobiliario.getUsuario().getEmail());
+        dto.setPrecoMinimo(fundoImobiliario.getPrecoMinimo());
+        dto.setPrecoMaximo(fundoImobiliario.getPrecoMaximo());
         return dto;
     }
 }

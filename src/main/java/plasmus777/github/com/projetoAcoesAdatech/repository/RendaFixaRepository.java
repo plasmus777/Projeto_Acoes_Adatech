@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface RendaFixaRepository extends JpaRepository<RendaFixa, Long> {
     Optional<RendaFixa> findRendaFixaById(Long id);
+    Optional<RendaFixa> findRendaFixaByCodigo(String codigo);
 }

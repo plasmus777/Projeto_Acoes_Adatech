@@ -1,4 +1,4 @@
-package plasmus777.github.com.projetoAcoesAdatech.model.dto;
+package plasmus777.github.com.projetoAcoesAdatech.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UsuarioDTO implements DTO<UsuarioDTO, Usuario> {
+public class UsuarioDTO {
 
     @Size(min = 3, max = 100, message = "O nome deve ter entre 3 a 100 caracteres")
     @NotBlank(message = "O nome não pode estar em branco.")
@@ -88,7 +88,6 @@ public class UsuarioDTO implements DTO<UsuarioDTO, Usuario> {
         this.rendasFixasFavoritas = rendasFixasFavoritas;
     }
 
-    @Override
     public Usuario toEntity() {
         Usuario usuario = new Usuario();
         usuario.setNome(this.nome);
@@ -115,8 +114,7 @@ public class UsuarioDTO implements DTO<UsuarioDTO, Usuario> {
         return usuario;
     }
 
-    @Override
-    public UsuarioDTO fromEntity(Usuario usuario) {
+    public static UsuarioDTO fromEntity(Usuario usuario) {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNome(usuario.getNome());
         dto.setEmail(usuario.getEmail());

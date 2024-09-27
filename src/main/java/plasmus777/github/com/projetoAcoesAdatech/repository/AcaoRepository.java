@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface AcaoRepository extends JpaRepository<Acao, Long> {
     Optional<Acao> findAcaoById(Long id);
+    Optional<Acao> findAcaoByCodigoNegociacao(String codigoNegociacao);
 }

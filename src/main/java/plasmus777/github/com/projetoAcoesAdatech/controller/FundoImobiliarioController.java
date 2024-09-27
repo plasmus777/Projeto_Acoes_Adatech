@@ -1,8 +1,9 @@
 package plasmus777.github.com.projetoAcoesAdatech.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
+import plasmus777.github.com.projetoAcoesAdatech.dto.FundoImobiliarioDTO;
 import plasmus777.github.com.projetoAcoesAdatech.service.FundoImobiliarioService;
 
 import java.util.List;
@@ -19,24 +20,31 @@ public class FundoImobiliarioController {
     }
 
     @GetMapping()
-    public List<FundoImobiliario> obterFundosImobiliarios() {
+    public List<FundoImobiliarioDTO> obterFundosImobiliarios() {
         return fundoImobiliarioService.obterLista();
     }
 
-    @GetMapping("/{id}")
-    public FundoImobiliario obterFundoImobiliario(@PathVariable Long id){
-        Optional<FundoImobiliario> opt = fundoImobiliarioService.obter(id);
+    @GetMapping("/id/{id}")
+    public FundoImobiliarioDTO obterFundoImobiliario(@PathVariable Long id){
+        Optional<FundoImobiliarioDTO> opt = fundoImobiliarioService.obter(id);
+
+        return opt.orElse(null);
+    }
+
+    @GetMapping("/codigo/{codigoFii}")
+    public FundoImobiliarioDTO obterFundoImobiliarioPorCodigo(@PathVariable String codigoFii){
+        Optional<FundoImobiliarioDTO> opt = fundoImobiliarioService.obterPorCodigoFii(codigoFii);
 
         return opt.orElse(null);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> atualizarFundoImobiliario(@PathVariable Long id, @RequestBody FundoImobiliario novoFundoImobiliario){
+    public ResponseEntity<String> atualizarFundoImobiliario(@PathVariable Long id, @Valid @RequestBody FundoImobiliarioDTO novoFundoImobiliario){
         return fundoImobiliarioService.atualizar(id, novoFundoImobiliario);
     }
 
     @PostMapping
-    public ResponseEntity<String> cadastrarFundoImobiliario(@RequestBody FundoImobiliario fundoImobiliario){
+    public ResponseEntity<String> cadastrarFundoImobiliario(@Valid @RequestBody FundoImobiliarioDTO fundoImobiliario){
         return fundoImobiliarioService.cadastrar(fundoImobiliario);
     }
 

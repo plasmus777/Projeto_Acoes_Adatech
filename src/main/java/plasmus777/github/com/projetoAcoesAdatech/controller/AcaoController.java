@@ -1,8 +1,9 @@
 package plasmus777.github.com.projetoAcoesAdatech.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
+import plasmus777.github.com.projetoAcoesAdatech.dto.AcaoDTO;
 import plasmus777.github.com.projetoAcoesAdatech.service.AcaoService;
 
 import java.util.List;
@@ -19,24 +20,31 @@ public class AcaoController {
     }
 
     @GetMapping()
-    public List<Acao> obterAcoes() {
+    public List<AcaoDTO> obterAcoes() {
         return acaoService.obterLista();
     }
 
-    @GetMapping("/{id}")
-    public Acao obterAcao(@PathVariable Long id){
-        Optional<Acao> opt = acaoService.obter(id);
+    @GetMapping("/id/{id}")
+    public AcaoDTO obterAcao(@PathVariable Long id){
+        Optional<AcaoDTO> opt = acaoService.obter(id);
+
+        return opt.orElse(null);
+    }
+
+    @GetMapping("/codigo/{codigoNegociacao}")
+    public AcaoDTO obterAcaoPorCodigo(@PathVariable String codigoNegociacao){
+        Optional<AcaoDTO> opt = acaoService.obterPorCodigoNegociacao(codigoNegociacao);
 
         return opt.orElse(null);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> atualizarAcao(@PathVariable Long id, @RequestBody Acao novaAcao){
+    public ResponseEntity<String> atualizarAcao(@PathVariable Long id, @Valid @RequestBody AcaoDTO novaAcao){
         return acaoService.atualizar(id, novaAcao);
     }
 
     @PostMapping
-    public ResponseEntity<String> cadastrarAcao(@RequestBody Acao acao){
+    public ResponseEntity<String> cadastrarAcao(@Valid @RequestBody AcaoDTO acao){
         return acaoService.cadastrar(acao);
     }
 

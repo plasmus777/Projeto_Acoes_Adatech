@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 @Table(name = "Rendas_fixas")
 public class RendaFixa extends AtivoFinanceiro {
 
+    @Column(name= "codigo")
+    private String codigo;
+
     @Column(name= "taxa_retorno", precision = 10, scale = 2)
     private BigDecimal taxaRetorno;
 

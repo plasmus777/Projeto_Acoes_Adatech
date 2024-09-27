@@ -1,9 +1,9 @@
 package plasmus777.github.com.projetoAcoesAdatech.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
-import plasmus777.github.com.projetoAcoesAdatech.service.RestService;
+import plasmus777.github.com.projetoAcoesAdatech.dto.UsuarioDTO;
 import plasmus777.github.com.projetoAcoesAdatech.service.UsuarioService;
 
 import java.util.List;
@@ -20,24 +20,24 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public List<Usuario> obterUsuarios() {
+    public List<UsuarioDTO> obterUsuarios() {
         return usuarioService.obterLista();
     }
 
     @GetMapping("/{id}")
-    public Usuario obterUsuario(@PathVariable Long id){
-        Optional<Usuario> opt = usuarioService.obter(id);
+    public UsuarioDTO obterUsuario(@PathVariable Long id){
+        Optional<UsuarioDTO> opt = usuarioService.obter(id);
 
         return opt.orElse(null);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario novoUsuario){
+    public ResponseEntity<String> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioDTO novoUsuario){
         return usuarioService.atualizar(id, novoUsuario);
     }
 
     @PostMapping
-    public ResponseEntity<String> cadastrarUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<String> cadastrarUsuario(@Valid @RequestBody UsuarioDTO usuario){
         return usuarioService.cadastrar(usuario);
     }
 
