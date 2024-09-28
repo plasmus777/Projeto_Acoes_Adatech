@@ -34,6 +34,10 @@ public class UsuarioService implements RestService<UsuarioDTO>{
         return usuarioRepository.findUsuarioById(id).map(UsuarioDTO::fromEntity);
     }
 
+    public Optional<UsuarioDTO> obterPorEmail(String email){
+        return usuarioRepository.findUsuarioByEmail(email).map(UsuarioDTO::fromEntity);
+    }
+
     @Override
     public ResponseEntity<String> atualizar(Long id, UsuarioDTO usuario) {
         Optional<Usuario> opt = usuarioRepository.findUsuarioById(id);

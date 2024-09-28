@@ -24,8 +24,7 @@ public class AcaoController {
 
     @Operation(
             summary = "Retorna todas as ações cadastradas",
-            description = "Retorna uma lista de todas as ações cadastradas por usuários no sistema.",
-            tags = { "ação", "get" })
+            description = "Retorna uma lista de todas as ações cadastradas por usuários no sistema.")
     @GetMapping()
     public List<AcaoDTO> obterAcoes() {
         return acaoService.obterLista();
@@ -33,8 +32,7 @@ public class AcaoController {
 
     @Operation(
             summary = "Retorna uma ação específica cadastrada",
-            description = "Busca por uma ação através de um identificador especificado e a retorna caso encontrada no sistema.",
-            tags = { "ação", "get" })
+            description = "Busca por uma ação através de um identificador especificado e a retorna caso encontrada no sistema.")
     @GetMapping("/id/{id}")
     public AcaoDTO obterAcao(@PathVariable Long id){
         Optional<AcaoDTO> opt = acaoService.obter(id);
@@ -44,8 +42,7 @@ public class AcaoController {
 
     @Operation(
             summary = "Retorna uma ação específica cadastrada",
-            description = "Busca por uma ação através de um código de negociação especificado e a retorna caso encontrada no sistema.",
-            tags = { "ação", "get" })
+            description = "Busca por uma ação através de um código de negociação especificado e a retorna caso encontrada no sistema.")
     @GetMapping("/codigo/{codigoNegociacao}")
     public AcaoDTO obterAcaoPorCodigo(@PathVariable String codigoNegociacao){
         Optional<AcaoDTO> opt = acaoService.obterPorCodigoNegociacao(codigoNegociacao);
@@ -55,8 +52,7 @@ public class AcaoController {
 
     @Operation(
             summary = "Atualiza uma ação específica cadastrada",
-            description = "Atualiza uma ação através de um identificador especificado e retorna uma resposta.",
-            tags = { "ação", "put" })
+            description = "Atualiza uma ação através de um identificador especificado e retorna uma resposta.")
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarAcao(@PathVariable Long id, @Valid @RequestBody AcaoDTO novaAcao){
         return acaoService.atualizar(id, novaAcao);
@@ -64,8 +60,7 @@ public class AcaoController {
 
     @Operation(
             summary = "Cadastra uma ação no sistema",
-            description = "Cadastra uma ação no sistema e retorna uma resposta.",
-            tags = { "ação", "post" })
+            description = "Cadastra uma ação no sistema e retorna uma resposta.")
     @PostMapping
     public ResponseEntity<String> cadastrarAcao(@Valid @RequestBody AcaoDTO acao){
         return acaoService.cadastrar(acao);
@@ -73,8 +68,7 @@ public class AcaoController {
 
     @Operation(
             summary = "Apaga uma ação específica cadastrada",
-            description = "Apaga uma ação do sistema através de um identificador especificado e retorna uma resposta.",
-            tags = { "ação", "delete" })
+            description = "Apaga uma ação do sistema através de um identificador especificado e retorna uma resposta.")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> apagarAcao(@PathVariable Long id){
         return acaoService.apagar(id);

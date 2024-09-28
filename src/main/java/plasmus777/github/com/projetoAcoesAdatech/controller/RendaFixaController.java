@@ -24,8 +24,7 @@ public class RendaFixaController {
 
     @Operation(
             summary = "Retorna todas as rendas fixas cadastradas",
-            description = "Retorna uma lista de todas as rendas fixas cadastradas por usuários no sistema.",
-            tags = { "renda fixa", "get" })
+            description = "Retorna uma lista de todas as rendas fixas cadastradas por usuários no sistema.")
     @GetMapping()
     public List<RendaFixaDTO> obterRendasFixas() {
         return rendaFixaService.obterLista();
@@ -33,8 +32,7 @@ public class RendaFixaController {
 
     @Operation(
             summary = "Retorna uma renda fixa específica cadastrada",
-            description = "Busca por uma renda fixa através de um identificador especificado e a retorna caso encontrada no sistema.",
-            tags = { "renda fixa", "get" })
+            description = "Busca por uma renda fixa através de um identificador especificado e a retorna caso encontrada no sistema.")
     @GetMapping("/id/{id}")
     public RendaFixaDTO obterRendaFixa(@PathVariable Long id){
         Optional<RendaFixaDTO> opt = rendaFixaService.obter(id);
@@ -44,8 +42,7 @@ public class RendaFixaController {
 
     @Operation(
             summary = "Retorna uma renda fixa específica cadastrada",
-            description = "Busca por uma renda fixa através de um código especificado e a retorna caso encontrada no sistema.",
-            tags = { "renda fixa", "get" })
+            description = "Busca por uma renda fixa através de um código especificado e a retorna caso encontrada no sistema.")
     @GetMapping("/codigo/{codigo}")
     public RendaFixaDTO obterRendaFixaPorCodigo(@PathVariable String codigo){
         Optional<RendaFixaDTO> opt = rendaFixaService.obterPorCodigo(codigo);
@@ -55,8 +52,7 @@ public class RendaFixaController {
 
     @Operation(
             summary = "Atualiza uma renda fixa específica cadastrada",
-            description = "Atualiza uma renda fixa através de um identificador especificado e retorna uma resposta.",
-            tags = { "renda fixa", "put" })
+            description = "Atualiza uma renda fixa através de um identificador especificado e retorna uma resposta.")
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarRendaFixa(@PathVariable Long id, @Valid @RequestBody RendaFixaDTO novaRendaFixa){
         return rendaFixaService.atualizar(id, novaRendaFixa);
@@ -64,8 +60,7 @@ public class RendaFixaController {
 
     @Operation(
             summary = "Cadastra uma renda fixa no sistema",
-            description = "Cadastra uma renda fixa no sistema e retorna uma resposta.",
-            tags = { "renda fixa", "post" })
+            description = "Cadastra uma renda fixa no sistema e retorna uma resposta.")
     @PostMapping
     public ResponseEntity<String> cadastrarRendaFixa(@Valid @RequestBody RendaFixaDTO rendaFixa){
         return rendaFixaService.cadastrar(rendaFixa);
@@ -73,8 +68,7 @@ public class RendaFixaController {
 
     @Operation(
             summary = "Apaga uma renda fixa específica cadastrada",
-            description = "Apaga uma renda fixa do sistema através de um identificador especificado e retorna uma resposta.",
-            tags = { "renda fixa", "delete" })
+            description = "Apaga uma renda fixa do sistema através de um identificador especificado e retorna uma resposta.")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> apagarRendaFixa(@PathVariable Long id){
         return rendaFixaService.apagar(id);

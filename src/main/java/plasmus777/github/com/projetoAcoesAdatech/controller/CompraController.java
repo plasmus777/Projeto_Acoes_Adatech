@@ -22,8 +22,7 @@ public class CompraController {
 
     @Operation(
             summary = "Realiza a compra de um ativo",
-            description = "Realiza a compra de um ativo no sistema e retorna uma resposta.",
-            tags = { "compra", "post" })
+            description = "Realiza a compra de um ativo no sistema e retorna uma resposta.")
     @PostMapping("/realizar")
     public ResponseEntity<String> realizarCompra() {
         emailService.enviarEmail("cliente@exemplo.com", "Compra Realizada", "Sua compra foi realizada com sucesso.");

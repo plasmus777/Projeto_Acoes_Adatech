@@ -24,8 +24,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Retorna todos os usuários cadastrados",
-            description = "Retorna uma lista de todos os usuários cadastrados no sistema.",
-            tags = { "usuário", "get" })
+            description = "Retorna uma lista de todos os usuários cadastrados no sistema.")
     @GetMapping
     public List<UsuarioDTO> obterUsuarios() {
         return usuarioService.obterLista();
@@ -33,8 +32,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Retorna um usuário específico cadastrado",
-            description = "Busca por um usuário através de um identificador especificado e o retorna caso encontrado no sistema.",
-            tags = { "usuário", "get" })
+            description = "Busca por um usuário através de um identificador especificado e o retorna caso encontrado no sistema.")
     @GetMapping("/{id}")
     public UsuarioDTO obterUsuario(@PathVariable Long id){
         Optional<UsuarioDTO> opt = usuarioService.obter(id);
@@ -44,8 +42,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Atualiza um usuário específico cadastrado",
-            description = "Atualiza um usuário através de um identificador especificado e retorna uma resposta.",
-            tags = { "usuário", "put" })
+            description = "Atualiza um usuário através de um identificador especificado e retorna uma resposta.")
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioDTO novoUsuario){
         return usuarioService.atualizar(id, novoUsuario);
@@ -53,8 +50,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Cadastra um usuário no sistema",
-            description = "Cadastra um usuário no sistema e retorna uma resposta.",
-            tags = { "usuário", "post" })
+            description = "Cadastra um usuário no sistema e retorna uma resposta.")
     @PostMapping
     public ResponseEntity<String> cadastrarUsuario(@Valid @RequestBody UsuarioDTO usuario){
         return usuarioService.cadastrar(usuario);
@@ -62,8 +58,7 @@ public class UsuarioController {
 
     @Operation(
             summary = "Apaga um usuário específica cadastrado",
-            description = "Apaga um usuário do sistema através de um identificador especificado e retorna uma resposta.",
-            tags = { "usuário", "delete" })
+            description = "Apaga um usuário do sistema através de um identificador especificado e retorna uma resposta.")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> apagarUsuario(@PathVariable Long id){
         return usuarioService.apagar(id);
