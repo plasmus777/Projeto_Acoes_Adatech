@@ -3,6 +3,9 @@ package plasmus777.github.com.projetoAcoesAdatech.service;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import plasmus777.github.com.projetoAcoesAdatech.api.FinnhubClient;
+import plasmus777.github.com.projetoAcoesAdatech.dto.AcaoDTO;
+import plasmus777.github.com.projetoAcoesAdatech.dto.FundoImobiliarioDTO;
+import plasmus777.github.com.projetoAcoesAdatech.dto.RendaFixaDTO;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
@@ -17,11 +20,19 @@ public class MonitoramentoService {
     private final FinnhubClient finnhubClient;
     private final UsuarioService usuarioService;
     private final EmailService emailService;
+    private final AcaoService acaoService;
+    private final FundoImobiliarioService fundoImobiliarioService;
+    private final RendaFixaService rendaFixaService;
 
-    public MonitoramentoService(FinnhubClient finnhubClient, UsuarioService usuarioService, EmailService emailService) {
+    public MonitoramentoService(FinnhubClient finnhubClient, UsuarioService usuarioService, EmailService emailService,
+                                AcaoService acaoService, FundoImobiliarioService fundoImobiliarioService, RendaFixaService rendaFixaService) {
         this.finnhubClient = finnhubClient;
         this.usuarioService = usuarioService;
         this.emailService = emailService;
+
+        this.acaoService = acaoService;
+        this.fundoImobiliarioService = fundoImobiliarioService;
+        this.rendaFixaService = rendaFixaService;
     }
 
     //Executa o código para atualizar os clientes de hora em hora
@@ -36,6 +47,7 @@ public class MonitoramentoService {
                         AcaoApi acaoApi = finnhubClient.buscarInformacoesAtivo(a.getCodigoNegociacao());
                         if(acaoApi != null){
                             a.setPrecoAtual(acaoApi.getPrecoAtual());
+                            acaoService.atualizar(a.getId(), AcaoDTO.fromEntity(a));
                             if(a.getPrecoAtual().compareTo(a.getPrecoMinimo()) < 0){
                                 emailService.enviarEmail(u.getEmail(), "Projeto Ações Adatech - Ação Cadastrada Abaixo do Mínimo", "Olá " + u.getNome() + ",\n\n" +
                                         "Nosso sistema detectou que uma ação registrada pela sua conta possui preço atual abaixo do valor mínimo configurado.\n\n" +
@@ -63,6 +75,7 @@ public class MonitoramentoService {
                         AcaoApi acaoApi = finnhubClient.buscarInformacoesAtivo(f.getCodigoFii());
                         if(acaoApi != null){
                             f.setPrecoAtual(acaoApi.getPrecoAtual());
+                            fundoImobiliarioService.atualizar(f.getId(), FundoImobiliarioDTO.fromEntity(f));
                             if(f.getPrecoAtual().compareTo(f.getPrecoMinimo()) < 0){
                                 emailService.enviarEmail(u.getEmail(), "Projeto Ações Adatech - Fundo Imobiliário Cadastrado Abaixo do Mínimo", "Olá " + u.getNome() + ",\n\n" +
                                         "Nosso sistema detectou que um fundo imobiliário registrado pela sua conta possui preço atual abaixo do valor mínimo configurado.\n\n" +
@@ -90,6 +103,7 @@ public class MonitoramentoService {
                         AcaoApi acaoApi = finnhubClient.buscarInformacoesAtivo(r.getCodigo());
                         if(acaoApi != null){
                             r.setPrecoAtual(acaoApi.getPrecoAtual());
+                            rendaFixaService.atualizar(r.getId(), RendaFixaDTO.fromEntity(r));
                             if(r.getPrecoAtual().compareTo(r.getPrecoMinimo()) < 0){
                                 emailService.enviarEmail(u.getEmail(), "Projeto Ações Adatech - Renda Fixa Cadastrada Abaixo do Mínimo", "Olá " + u.getNome() + ",\n\n" +
                                         "Nosso sistema detectou que uma renda fixa registrada pela sua conta possui preço atual abaixo do valor mínimo configurado.\n\n" +
