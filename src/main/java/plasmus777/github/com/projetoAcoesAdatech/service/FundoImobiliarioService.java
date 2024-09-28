@@ -3,12 +3,14 @@ package plasmus777.github.com.projetoAcoesAdatech.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import plasmus777.github.com.projetoAcoesAdatech.api.FinnhubClient;
 import plasmus777.github.com.projetoAcoesAdatech.dto.FundoImobiliarioDTO;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
 import plasmus777.github.com.projetoAcoesAdatech.repository.FundoImobiliarioRepository;
 import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +21,12 @@ public class FundoImobiliarioService implements RestService<FundoImobiliarioDTO>
 
     private final FundoImobiliarioRepository fundoImobiliarioRepository;
     private final UsuarioRepository usuarioRepository;
+    private final FinnhubClient finnhubClient;
 
-    public FundoImobiliarioService(FundoImobiliarioRepository fundoImobiliarioRepository, UsuarioRepository usuarioRepository){
+    public FundoImobiliarioService(FundoImobiliarioRepository fundoImobiliarioRepository, UsuarioRepository usuarioRepository, FinnhubClient finnhubClient){
         this.fundoImobiliarioRepository = fundoImobiliarioRepository;
         this.usuarioRepository = usuarioRepository;
+        this.finnhubClient = finnhubClient;
     }
 
     @Override
@@ -51,6 +55,9 @@ public class FundoImobiliarioService implements RestService<FundoImobiliarioDTO>
 
             if(fundoImobiliario != null){
                 try {
+                    if(finnhubClient.buscarInformacoesAtivo(fundoImobiliario.getCodigoFii()).getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O fundo imobiliário não pode ser atualizado com um código de um ativo inexistente.");
+
                     f.setNome(fundoImobiliario.getNome());
                     f.setPrecoAtual(fundoImobiliario.getPrecoAtual());
                     f.setPrecoCompra(fundoImobiliario.getPrecoCompra());
@@ -76,6 +83,9 @@ public class FundoImobiliarioService implements RestService<FundoImobiliarioDTO>
     @Override
     public ResponseEntity<String> cadastrar(FundoImobiliarioDTO fundoImobiliario) {
         try{
+            if(finnhubClient.buscarInformacoesAtivo(fundoImobiliario.getCodigoFii()).getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O fundo imobiliário não pode ser cadastrado com um código de um ativo inexistente.");
+
             fundoImobiliario.setDataCadastro(LocalDateTime.now());
             Optional<Usuario> optUsuario = usuarioRepository.findUsuarioByEmail(fundoImobiliario.getUsuarioEmail());
             if(optUsuario.isPresent()) {

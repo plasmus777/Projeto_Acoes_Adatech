@@ -3,12 +3,14 @@ package plasmus777.github.com.projetoAcoesAdatech.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import plasmus777.github.com.projetoAcoesAdatech.api.FinnhubClient;
 import plasmus777.github.com.projetoAcoesAdatech.dto.RendaFixaDTO;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
 import plasmus777.github.com.projetoAcoesAdatech.repository.RendaFixaRepository;
 import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +21,12 @@ public class RendaFixaService implements RestService<RendaFixaDTO>{
 
     private final RendaFixaRepository rendaFixaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final FinnhubClient finnhubClient;
 
-    public RendaFixaService(RendaFixaRepository rendaFixaRepository, UsuarioRepository usuarioRepository){
+    public RendaFixaService(RendaFixaRepository rendaFixaRepository, UsuarioRepository usuarioRepository, FinnhubClient finnhubClient){
         this.rendaFixaRepository = rendaFixaRepository;
         this.usuarioRepository = usuarioRepository;
+        this.finnhubClient = finnhubClient;
     }
 
     @Override
@@ -51,6 +55,9 @@ public class RendaFixaService implements RestService<RendaFixaDTO>{
 
             if(rendaFixa != null){
                 try {
+                    if(finnhubClient.buscarInformacoesAtivo(rendaFixa.getCodigo()).getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A renda fixa não pode ser atualizada com um código de um ativo inexistente.");
+
                     r.setNome(rendaFixa.getNome());
                     r.setPrecoAtual(rendaFixa.getPrecoAtual());
                     r.setPrecoCompra(rendaFixa.getPrecoCompra());
@@ -76,6 +83,9 @@ public class RendaFixaService implements RestService<RendaFixaDTO>{
     @Override
     public ResponseEntity<String> cadastrar(RendaFixaDTO rendaFixa) {
         try{
+            if(finnhubClient.buscarInformacoesAtivo(rendaFixa.getCodigo()).getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A renda fixa não pode ser cadastrada com um código de um ativo inexistente.");
+
             rendaFixa.setDataCadastro(LocalDateTime.now());
             Optional<Usuario> optUsuario = usuarioRepository.findUsuarioByEmail(rendaFixa.getUsuarioEmail());
             if(optUsuario.isPresent()){

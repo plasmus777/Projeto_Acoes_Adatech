@@ -3,12 +3,14 @@ package plasmus777.github.com.projetoAcoesAdatech.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import plasmus777.github.com.projetoAcoesAdatech.api.FinnhubClient;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 import plasmus777.github.com.projetoAcoesAdatech.dto.AcaoDTO;
 import plasmus777.github.com.projetoAcoesAdatech.repository.AcaoRepository;
 import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +21,12 @@ public class AcaoService implements RestService<AcaoDTO> {
 
     private final AcaoRepository acaoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final FinnhubClient finnhubClient;
 
-    public AcaoService(AcaoRepository acaoRepository, UsuarioRepository usuarioRepository){
+    public AcaoService(AcaoRepository acaoRepository, UsuarioRepository usuarioRepository, FinnhubClient finnhubClient){
         this.acaoRepository = acaoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.finnhubClient = finnhubClient;
     }
 
     @Override
@@ -51,6 +55,9 @@ public class AcaoService implements RestService<AcaoDTO> {
 
             if(acao != null){
                 try {
+                    if(finnhubClient.buscarInformacoesAtivo(acao.getCodigoNegociacao()).getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A ação não pode ser atualizada com um código de um ativo inexistente.");
+
                     a.setNome(acao.getNome());
                     a.setPrecoAtual(acao.getPrecoAtual());
                     a.setPrecoCompra(acao.getPrecoCompra());
@@ -76,6 +83,9 @@ public class AcaoService implements RestService<AcaoDTO> {
     @Override
     public ResponseEntity<String> cadastrar(AcaoDTO acao) {
         try{
+            if(finnhubClient.buscarInformacoesAtivo(acao.getCodigoNegociacao()).getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A ação não pode ser cadastrada com um código de um ativo inexistente.");
+
             acao.setDataCadastro(LocalDateTime.now());
             Optional<Usuario> optUsuario = usuarioRepository.findUsuarioByEmail(acao.getUsuarioEmail());
             if(optUsuario.isPresent()){
