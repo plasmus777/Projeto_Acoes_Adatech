@@ -48,9 +48,6 @@ public class UsuarioService implements RestService<UsuarioDTO>{
                 u.setNome(usuario.getNome());
                 u.setEmail(usuario.getEmail());
                 u.setSenha(usuario.getSenha());
-                u.setAcoesFavoritas(usuario.getAcoesFavoritas());
-                u.setFundosImobiliariosFavoritos(usuario.getFundosImobiliariosFavoritos());
-                u.setRendasFixasFavoritas(usuario.getRendasFixasFavoritas());
 
                 try {
                     usuarioRepository.save(u);
