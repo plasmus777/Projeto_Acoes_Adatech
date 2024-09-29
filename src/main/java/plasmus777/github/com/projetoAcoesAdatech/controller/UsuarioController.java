@@ -33,9 +33,19 @@ public class UsuarioController {
     @Operation(
             summary = "Retorna um usuário específico cadastrado",
             description = "Busca por um usuário através de um identificador especificado e o retorna caso encontrado no sistema.")
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public UsuarioDTO obterUsuario(@PathVariable Long id){
         Optional<UsuarioDTO> opt = usuarioService.obter(id);
+
+        return opt.orElse(null);
+    }
+
+    @Operation(
+            summary = "Retorna um usuário específico cadastrado",
+            description = "Busca por um usuário através de seu endereço de e-mail e o retorna caso encontrado no sistema.")
+    @GetMapping("/email/{email}")
+    public UsuarioDTO obterUsuarioPorEmail(@PathVariable String email){
+        Optional<UsuarioDTO> opt = usuarioService.obterPorEmail(email);
 
         return opt.orElse(null);
     }
