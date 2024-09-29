@@ -8,9 +8,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.net.UnknownHostException;
 import java.util.HashMap;
 
 import java.util.Map;
@@ -86,5 +88,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body("Um corpo de requisição esperado está faltando: " + ex.getMessage() + "\n");
+    }
+
+    @ExceptionHandler(UnknownHostException.class)
+    public ResponseEntity<String> handleUnknownHostException(UnknownHostException ex) {
+        ex.printStackTrace();
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("Um host não pôde ser acessado: " + ex.getMessage() + "\n");
+    }
+
+    @ExceptionHandler(ResourceAccessException.class)
+    public ResponseEntity<String> handleResourceAccessException(ResourceAccessException ex) {
+        ex.printStackTrace();
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("Um recurso não pôde ser acessado: " + ex.getMessage() + "\n");
     }
 }
