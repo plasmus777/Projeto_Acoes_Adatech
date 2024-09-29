@@ -7,6 +7,7 @@ import plasmus777.github.com.projetoAcoesAdatech.api.FinnhubClient;
 import plasmus777.github.com.projetoAcoesAdatech.dto.FundoImobiliarioDTO;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.FundoImobiliario;
+import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiroApi.AcaoApi;
 import plasmus777.github.com.projetoAcoesAdatech.repository.FundoImobiliarioRepository;
 import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
 
@@ -83,10 +84,13 @@ public class FundoImobiliarioService implements RestService<FundoImobiliarioDTO>
     @Override
     public ResponseEntity<String> cadastrar(FundoImobiliarioDTO fundoImobiliario) {
         try{
-            if(finnhubClient.buscarInformacoesAtivo(fundoImobiliario.getCodigoFii()).getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
+            AcaoApi api = finnhubClient.buscarInformacoesAtivo(fundoImobiliario.getCodigoFii());
+            if(api.getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O fundo imobiliário não pode ser cadastrado com um código de um ativo inexistente.");
 
+            fundoImobiliario.setPrecoAtual(api.getPrecoAtual());
             fundoImobiliario.setDataCadastro(LocalDateTime.now());
+
             Optional<Usuario> optUsuario = usuarioRepository.findUsuarioByEmail(fundoImobiliario.getUsuarioEmail());
             if(optUsuario.isPresent()) {
                 Usuario u = optUsuario.get();

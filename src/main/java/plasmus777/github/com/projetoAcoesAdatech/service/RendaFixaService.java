@@ -7,6 +7,7 @@ import plasmus777.github.com.projetoAcoesAdatech.api.FinnhubClient;
 import plasmus777.github.com.projetoAcoesAdatech.dto.RendaFixaDTO;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.RendaFixa;
+import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiroApi.AcaoApi;
 import plasmus777.github.com.projetoAcoesAdatech.repository.RendaFixaRepository;
 import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
 
@@ -83,10 +84,13 @@ public class RendaFixaService implements RestService<RendaFixaDTO>{
     @Override
     public ResponseEntity<String> cadastrar(RendaFixaDTO rendaFixa) {
         try{
-            if(finnhubClient.buscarInformacoesAtivo(rendaFixa.getCodigo()).getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
+            AcaoApi api = finnhubClient.buscarInformacoesAtivo(rendaFixa.getCodigo());
+            if(api.getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A renda fixa não pode ser cadastrada com um código de um ativo inexistente.");
 
+            rendaFixa.setPrecoAtual(api.getPrecoAtual());
             rendaFixa.setDataCadastro(LocalDateTime.now());
+
             Optional<Usuario> optUsuario = usuarioRepository.findUsuarioByEmail(rendaFixa.getUsuarioEmail());
             if(optUsuario.isPresent()){
                 Usuario u = optUsuario.get();

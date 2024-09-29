@@ -7,6 +7,7 @@ import plasmus777.github.com.projetoAcoesAdatech.api.FinnhubClient;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiro.Acao;
 import plasmus777.github.com.projetoAcoesAdatech.dto.AcaoDTO;
+import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiroApi.AcaoApi;
 import plasmus777.github.com.projetoAcoesAdatech.repository.AcaoRepository;
 import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
 
@@ -83,10 +84,13 @@ public class AcaoService implements RestService<AcaoDTO> {
     @Override
     public ResponseEntity<String> cadastrar(AcaoDTO acao) {
         try{
-            if(finnhubClient.buscarInformacoesAtivo(acao.getCodigoNegociacao()).getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
+            AcaoApi api = finnhubClient.buscarInformacoesAtivo(acao.getCodigoNegociacao());
+            if(api.getPrecoAtual().compareTo(BigDecimal.ZERO) == 0)
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A ação não pode ser cadastrada com um código de um ativo inexistente.");
 
+            acao.setPrecoAtual(api.getPrecoAtual());
             acao.setDataCadastro(LocalDateTime.now());
+
             Optional<Usuario> optUsuario = usuarioRepository.findUsuarioByEmail(acao.getUsuarioEmail());
             if(optUsuario.isPresent()){
                 Usuario u = optUsuario.get();
