@@ -27,15 +27,15 @@ public class Usuario {
     @Column(nullable = false, length = 255)
     private String senha;
 
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("usuario")
     private List<Acao> acoesFavoritas;
 
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("usuario")
     private List<FundoImobiliario> fundosImobiliariosFavoritos;
 
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("usuario")
     private List<RendaFixa> rendasFixasFavoritas;
 }

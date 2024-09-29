@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.net.UnknownHostException;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 
 import java.util.Map;
@@ -104,5 +105,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body("Um recurso não pôde ser acessado: " + ex.getMessage() + "\n");
+    }
+
+    @ExceptionHandler(ConcurrentModificationException.class)
+    public ResponseEntity<String> handleConcurrentModificationException(ConcurrentModificationException ex) {
+        ex.printStackTrace();
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erro de modificação concorrente: " + ex.getMessage() + "\n");
     }
 }
