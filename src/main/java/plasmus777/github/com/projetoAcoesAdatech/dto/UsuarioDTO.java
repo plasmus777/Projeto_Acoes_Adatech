@@ -1,5 +1,6 @@
 package plasmus777.github.com.projetoAcoesAdatech.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -29,12 +30,15 @@ public class UsuarioDTO {
     private String senha;
 
     @Size(max = 1000, message = "Você pode favoritar no máximo 1000 ações.")
+    @JsonIgnoreProperties("usuario")
     private List<Acao> acoesFavoritas;
 
     @Size(max = 1000, message = "Você pode favoritar no máximo 1000 fundos imobiliários.")
+    @JsonIgnoreProperties("usuario")
     private List<FundoImobiliario> fundosImobiliariosFavoritos;
 
     @Size(max = 1000, message = "Você pode favoritar no máximo 1000 rendas fixas.")
+    @JsonIgnoreProperties("usuario")
     private List<RendaFixa> rendasFixasFavoritas;
 
     public UsuarioDTO() {

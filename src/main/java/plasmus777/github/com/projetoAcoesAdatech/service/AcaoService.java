@@ -113,7 +113,10 @@ public class AcaoService implements RestService<AcaoDTO> {
         if(opt.isPresent()){
             Acao a = opt.get();
             try{
+                Usuario u = a.getUsuario();
+                u.getAcoesFavoritas().remove(a);
                 acaoRepository.delete(a);
+                usuarioRepository.save(u);
                 return ResponseEntity.status(HttpStatus.OK).body("Ação apagada com sucesso.");
             } catch (Exception e){
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O repositório não pôde apagar a ação.\n" + e.getLocalizedMessage());

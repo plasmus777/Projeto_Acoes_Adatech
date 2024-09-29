@@ -113,7 +113,10 @@ public class FundoImobiliarioService implements RestService<FundoImobiliarioDTO>
         if(opt.isPresent()){
             FundoImobiliario f = opt.get();
             try{
+                Usuario u = f.getUsuario();
+                u.getFundosImobiliariosFavoritos().remove(f);
                 fundoImobiliarioRepository.delete(f);
+                usuarioRepository.save(u);
                 return ResponseEntity.status(HttpStatus.OK).body("Fundo imobiliário apagado com sucesso.");
             } catch (Exception e){
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O repositório não pôde apagar o fundo imobiliário.\n" + e.getLocalizedMessage());

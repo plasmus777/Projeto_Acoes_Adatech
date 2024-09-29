@@ -113,7 +113,10 @@ public class RendaFixaService implements RestService<RendaFixaDTO>{
         if(opt.isPresent()){
             RendaFixa r = opt.get();
             try{
+                Usuario u = r.getUsuario();
+                u.getRendasFixasFavoritas().remove(r);
                 rendaFixaRepository.delete(r);
+                usuarioRepository.save(u);
                 return ResponseEntity.status(HttpStatus.OK).body("Renda fixa apagada com sucesso.");
             } catch (Exception e){
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("O repositório não pôde apagar a renda fixa.\n" + e.getLocalizedMessage());
