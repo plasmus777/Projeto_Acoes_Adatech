@@ -23,7 +23,7 @@ Este projeto foi criado para ajudar investidores a monitorar suas carteiras e to
 | ----------- | ----------- | ---- |
 | **Java**    | Linguagem principal utilizada no projeto. | ![Java](https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg) |
 | **Spring Boot** | Framework usado para construção da API. | ![Spring Boot](https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg) |
-| **MySQL**   | Banco de dados utilizado para armazenar informações sobre ativos e usuários. | ![MySQL](https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg) |
+| **H2 Database**   | Banco de dados utilizado para armazenar informações sobre ativos e usuários. |
 | **Notificações via E-mail** | Integração com serviços de notificação para alertas automáticos. | 📧 |
 
 ---
