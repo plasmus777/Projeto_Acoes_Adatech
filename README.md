@@ -47,14 +47,24 @@ Utilizando um terminal, é possível baixar, compilar e executar este programa e
 git clone https://github.com/plasmus777/Projeto_Acoes_Adatech.git
 ```
 
-2 - Compile o projeto:
+2 - Entre na pasta do projeto:
 ```
 cd Projeto_Acoes_Adatech
+```
+Edite o arquivo "src/main/resources/application.properties" com seu editor de texto preferido:
+```
+sudo nano src/main/resources/application.properties
+```
+Agora, troque o campo "api.finnhub.key=" por "api.finnhub.key={SUA_CHAVE_API}", onde {SUA_CHAVE_API} é o valor obtido através da chave de API do [FinnHub](https://finnhub.io/).
+Por fim, salve o arquivo e feche o editor de texto.
 
+
+3 - Compile o projeto:
+```
 ./mvnw package
 ```
 
-3 - Execute o projeto:
+4 - Execute o projeto:
 ```
 cd target
 
