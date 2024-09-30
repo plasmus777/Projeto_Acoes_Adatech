@@ -5,13 +5,17 @@ O **Projeto Ações AdaTech** é uma aplicação Java desenvolvida com **Spring 
 
 Este projeto foi criado para ajudar investidores a monitorar suas carteiras e tomar decisões estratégicas, definindo limites de preço personalizados.
 
+---
+
 ## Funcionalidades ⚙️
 - 📈 **Cadastro de ativos**: Ações, fundos imobiliários e renda fixa.
 - 🚨 **Alertas de preço**: Configure notificações para alertar sobre:
   - Valor mínimo (indicado para compra).
   - Valor máximo (indicado para venda).
 - 📩 **Notificações automáticas**: Receba alertas por e-mail quando os ativos atingirem os limites configurados.
-- 📊 **Relatórios detalhados**: Gere relatórios sobre a performance dos ativos cadastrados, auxiliando na análise de investimentos.
+- 📊 **Relatórios diários**: Gere relatórios sobre a performance dos ativos cadastrados, auxiliando na análise de investimentos.
+
+---
 
 ## Tecnologias Utilizadas 🛠️
 
@@ -22,22 +26,40 @@ Este projeto foi criado para ajudar investidores a monitorar suas carteiras e to
 | **MySQL**   | Banco de dados utilizado para armazenar informações sobre ativos e usuários. | ![MySQL](https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg) |
 | **Notificações via E-mail** | Integração com serviços de notificação para alertas automáticos. | 📧 |
 
+---
+
 ## Requisitos 📋
 - **Java 17+** (ou versão mais recente)
 - **Spring Boot 2.6+** (ou versão mais recente)
 - **MySQL Server**
 - **Maven** (para gerenciamento de dependências)
 
-## Instalação 🚀
-1. Clone este repositório:
-    ```bash
-    git clone https://github.com/seu_usuario/Projeto_Acoes_Adatech.git
-    ```
+---
 
-2. Navegue até o diretório do projeto:
-    ```bash
-    cd Projeto_Acoes_Adatech
-    ```
+## Download, compilação e execução 🚀
+> [!WARNING]
+> Para baixar, compilar e executar este programa, é necessário instalar: [Git](https://git-scm.com/downloads) e o [JDK](https://www.oracle.com/java/technologies/downloads/).
+
+Utilizando um terminal, é possível baixar, compilar e executar este programa em sua máquina local com os seguintes comandos:
+
+1 - Baixe o código deste repositório para a sua máquina:
+```
+git clone https://github.com/plasmus777/Projeto_Acoes_Adatech.git
+```
+
+2 - Compile o projeto:
+```
+cd Projeto_Acoes_Adatech
+
+./mvnw package
+```
+
+3 - Execute o projeto:
+```
+cd target
+
+java -jar ./ProjetoAcoesAdatech-0.0.1-SNAPSHOT.jar
+```
 
 ---
 
