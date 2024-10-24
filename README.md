@@ -30,8 +30,6 @@ Este projeto foi criado para ajudar investidores a monitorar suas carteiras e to
 
 ## Requisitos 📋
 - **Java 17+** (ou versão mais recente)
-- **Spring Boot 2.6+** (ou versão mais recente)
-- **MySQL Server**
 - **Maven** (para gerenciamento de dependências)
 
 ---
