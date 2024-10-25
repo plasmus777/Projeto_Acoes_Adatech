@@ -103,9 +103,16 @@
 						<goals>
 							<goal>report</goal>
 						</goals>
+						<configuration>
+							<includes>
+								<include>**/service/**</include>
+								<include>**/controller/**</include>
+							</includes>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
 
 		</plugins>
 	</build>
