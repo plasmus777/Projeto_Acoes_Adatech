@@ -1,4 +1,4 @@
-# Projeto Ações AdaTech 📊💻
+# Projeto Ações AdaTech 📊 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=plasmus777_Projeto_Acoes_Adatech&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=plasmus777_Projeto_Acoes_Adatech)
 
 ## Descrição
 O **Projeto Ações AdaTech** é uma aplicação Java desenvolvida com **Spring Boot** que facilita o gerenciamento de ativos financeiros, como ações, fundos imobiliários e renda fixa. O sistema permite que os usuários cadastrem seus investimentos e configurem alertas de compra e venda com base em variações nos valores dos ativos.
