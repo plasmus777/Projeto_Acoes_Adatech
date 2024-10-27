@@ -76,7 +76,7 @@ public class FundoImobiliarioRepositoryTest {
         usuario.setSenha("Senha123!");
         usuario.setAcoesFavoritas(new ArrayList<>());
         usuario.setFundosImobiliariosFavoritos(new ArrayList<>());
-        usuario.setFundosImobiliariosFavoritos(new ArrayList<>());
+        usuario.setRendasFixasFavoritas(new ArrayList<>());
         fundoImobiliario.setUsuario(usuario);
         usuario.getFundosImobiliariosFavoritos().add(fundoImobiliario);
 
