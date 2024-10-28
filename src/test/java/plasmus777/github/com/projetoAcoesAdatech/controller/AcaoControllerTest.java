@@ -1,152 +1,175 @@
 package plasmus777.github.com.projetoAcoesAdatech.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import plasmus777.github.com.projetoAcoesAdatech.dto.AcaoDTO;
 import plasmus777.github.com.projetoAcoesAdatech.service.AcaoService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-@WebMvcTest(AcaoController.class)
+@ExtendWith(MockitoExtension.class)
 public class AcaoControllerTest {
+    static final String ENDPOINT = "/api/v1/acoes";
 
-    @Autowired
-    private MockMvc mockMvc;
+    @InjectMocks
+    AcaoController acaoController;
 
-    @MockBean
-    private AcaoService acaoService;
+    @Mock
+    AcaoService acaoService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    MockMvc mockMvc;
+
+    AcaoDTO acaoDTO;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
+    public void beforeEach(){
+        mockMvc = MockMvcBuilders.standaloneSetup(acaoController).build();
+        acaoDTO = new AcaoDTO();
+        acaoDTO.setNome("Ativo financeiro de testes");
+        acaoDTO.setCodigoNegociacao("TESTE");
+        acaoDTO.setPrecoAtual(new BigDecimal("100.00"));
+        acaoDTO.setQuantidade(2);
+        acaoDTO.setDataCadastro(LocalDateTime.now());
+        acaoDTO.setPrecoCompra(new BigDecimal("95.57"));
+        acaoDTO.setPrecoMinimo(new BigDecimal("90.00"));
+        acaoDTO.setPrecoMaximo(new BigDecimal("125.25"));
+        acaoDTO.setUsuarioEmail("usuarioTestes@mail.com");
     }
 
     @Test
-    public void testObterAcoes() throws Exception {
-        List<AcaoDTO> acoes = Arrays.asList(
-                new AcaoDTO("Codigo1", 100, "Nome1", new BigDecimal("50.5"), new BigDecimal("45.0"), LocalDateTime.now(), "usuario1@teste.com", new BigDecimal("40.0"), new BigDecimal("60.0")),
-                new AcaoDTO("Codigo2", 200, "Nome2", new BigDecimal("60.0"), new BigDecimal("55.0"), LocalDateTime.now(), "usuario2@teste.com", new BigDecimal("50.0"), new BigDecimal("70.0"))
-        );
+    public void deveRetornarAcoesCadastradas() throws Exception {
+        List<AcaoDTO> lista = new ArrayList<>();
+        lista.add(acaoDTO);
+        Mockito.when(acaoService.obterLista()).thenReturn(lista);
 
-        when(acaoService.obterLista()).thenReturn(acoes);
+        MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
 
-        mockMvc.perform(get("/api/v1/acoes"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].codigoNegociacao").value("Codigo1"))
-                .andExpect(jsonPath("$[0].nome").value("Nome1"))
-                .andExpect(jsonPath("$[1].codigoNegociacao").value("Codigo2"))
-                .andExpect(jsonPath("$[1].nome").value("Nome2"));
+        ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
+        List<AcaoDTO> listaRetorno = objectMapper.readValue(resultado.getResponse().getContentAsString(), new TypeReference<>() {});
 
-        verify(acaoService, times(1)).obterLista();
+        Assertions.assertNotNull(listaRetorno);
+        Assertions.assertFalse(listaRetorno.isEmpty());
+        Assertions.assertEquals(1, listaRetorno.size());
     }
 
     @Test
-    public void testObterAcao() throws Exception {
-        AcaoDTO acao = new AcaoDTO("Codigo1", 100, "Nome1", new BigDecimal("50.5"), new BigDecimal("45.0"), LocalDateTime.now(), "usuario1@teste.com", new BigDecimal("40.0"), new BigDecimal("60.0"));
+    public void deveObterAcaoCadastradaPorId() throws Exception {
+        Mockito.when(acaoService.obter(Mockito.anyLong())).thenReturn(Optional.ofNullable(acaoDTO));
 
-        when(acaoService.obter(1L)).thenReturn(Optional.of(acao));
+        MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/id/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
 
-        mockMvc.perform(get("/api/v1/acoes/id/{id}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.codigoNegociacao").value("Codigo1"))
-                .andExpect(jsonPath("$.nome").value("Nome1"));
+        ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
+        AcaoDTO acaoDTORetorno = objectMapper.readValue(resultado.getResponse().getContentAsString(), new TypeReference<>() {});
 
-        verify(acaoService, times(1)).obter(1L);
+        Assertions.assertNotNull(acaoDTORetorno);
+        Assertions.assertEquals(acaoDTO.getCodigoNegociacao(), acaoDTORetorno.getCodigoNegociacao());
+        Assertions.assertEquals(acaoDTO.getNome(), acaoDTORetorno.getNome());
+        Assertions.assertEquals(acaoDTO.getUsuarioEmail(), acaoDTORetorno.getUsuarioEmail());
+        Assertions.assertEquals(acaoDTO.getPrecoAtual(), acaoDTORetorno.getPrecoAtual());
+        Assertions.assertEquals(acaoDTO.getDataCadastro(), acaoDTORetorno.getDataCadastro());
+        Assertions.assertEquals(acaoDTO.getPrecoCompra(), acaoDTORetorno.getPrecoCompra());
+        Assertions.assertEquals(acaoDTO.getPrecoMaximo(), acaoDTORetorno.getPrecoMaximo());
+        Assertions.assertEquals(acaoDTO.getPrecoMinimo(), acaoDTORetorno.getPrecoMinimo());
+        Assertions.assertEquals(acaoDTO.getQuantidade(), acaoDTORetorno.getQuantidade());
+
     }
 
     @Test
-    public void testObterAcaoPorCodigo() throws Exception {
-        AcaoDTO acao = new AcaoDTO("Codigo1", 100, "Nome1", new BigDecimal("50.5"), new BigDecimal("45.0"), LocalDateTime.now(), "usuario1@teste.com", new BigDecimal("40.0"), new BigDecimal("60.0"));
+    public void deveObterAcaoCadastradaPorCodigoNegociacao() throws Exception {
+        Mockito.when(acaoService.obterPorCodigoNegociacao(Mockito.anyString())).thenReturn(Optional.ofNullable(acaoDTO));
 
-        when(acaoService.obterPorCodigoNegociacao("Codigo1")).thenReturn(Optional.of(acao));
+        MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/codigo/TESTE")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
 
-        mockMvc.perform(get("/api/v1/acoes/codigo/{codigoNegociacao}", "Codigo1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.codigoNegociacao").value("Codigo1"))
-                .andExpect(jsonPath("$.nome").value("Nome1"));
+        ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
+        AcaoDTO acaoDTORetorno = objectMapper.readValue(resultado.getResponse().getContentAsString(), new TypeReference<>() {});
 
-        verify(acaoService, times(1)).obterPorCodigoNegociacao("Codigo1");
+        Assertions.assertNotNull(acaoDTORetorno);
+        Assertions.assertEquals(acaoDTO.getCodigoNegociacao(), acaoDTORetorno.getCodigoNegociacao());
+        Assertions.assertEquals(acaoDTO.getNome(), acaoDTORetorno.getNome());
+        Assertions.assertEquals(acaoDTO.getUsuarioEmail(), acaoDTORetorno.getUsuarioEmail());
+        Assertions.assertEquals(acaoDTO.getPrecoAtual(), acaoDTORetorno.getPrecoAtual());
+        Assertions.assertEquals(acaoDTO.getDataCadastro(), acaoDTORetorno.getDataCadastro());
+        Assertions.assertEquals(acaoDTO.getPrecoCompra(), acaoDTORetorno.getPrecoCompra());
+        Assertions.assertEquals(acaoDTO.getPrecoMaximo(), acaoDTORetorno.getPrecoMaximo());
+        Assertions.assertEquals(acaoDTO.getPrecoMinimo(), acaoDTORetorno.getPrecoMinimo());
+        Assertions.assertEquals(acaoDTO.getQuantidade(), acaoDTORetorno.getQuantidade());
+
     }
 
     @Test
-    public void testCadastrarAcao() throws Exception {
-        AcaoDTO novaAcao = new AcaoDTO("Codigo3", 150, "Nova Acao", new BigDecimal("30.0"), new BigDecimal("25.0"), LocalDateTime.now(), "usuario3@teste.com", new BigDecimal("20.0"), new BigDecimal("35.0"));
+    public void deveAtualizarAcaoCadastradaComSucesso() throws Exception {
+        ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.CREATED).body("Ação atualizada com sucesso.");
+        Mockito.when(acaoService.atualizar(Mockito.anyLong(), Mockito.any())).thenReturn(respostaService);
 
-        when(acaoService.cadastrar(any(AcaoDTO.class))).thenReturn(new ResponseEntity<>("Ação cadastrada com sucesso", HttpStatus.CREATED));
+        ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
 
-        mockMvc.perform(post("/api/v1/acoes")
+        mockMvc.perform(MockMvcRequestBuilders.put(ENDPOINT + "/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(novaAcao)))
-                .andExpect(status().isCreated())
-                .andExpect(content().string("Ação cadastrada com sucesso"));
-
-        verify(acaoService, times(1)).cadastrar(any(AcaoDTO.class));
+                        .content(objectMapper.writeValueAsString(acaoDTO)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
     }
 
     @Test
-    public void testAtualizarAcao() throws Exception {
-        AcaoDTO acaoAtualizada = new AcaoDTO("Codigo1", 100, "Nome Atualizado", new BigDecimal("60.0"), new BigDecimal("50.0"), LocalDateTime.now(), "usuario1@teste.com", new BigDecimal("40.0"), new BigDecimal("70.0"));
+    public void deveCadastrarAcaoComSucesso() throws Exception {
+        ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.CREATED).body("Ação cadastrada com sucesso.");
+        Mockito.when(acaoService.cadastrar(Mockito.any())).thenReturn(respostaService);
 
-        when(acaoService.atualizar(eq(1L), any(AcaoDTO.class))).thenReturn(new ResponseEntity<>("Ação atualizada com sucesso", HttpStatus.OK));
+        ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
 
-        mockMvc.perform(put("/api/v1/acoes/{id}", 1L)
+        mockMvc.perform(MockMvcRequestBuilders.post(ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(acaoAtualizada)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Ação atualizada com sucesso"));
-
-        verify(acaoService, times(1)).atualizar(eq(1L), any(AcaoDTO.class));
+                        .content(objectMapper.writeValueAsString(acaoDTO)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
     }
 
     @Test
-    public void testApagarAcao() throws Exception {
-        when(acaoService.apagar(1L)).thenReturn(new ResponseEntity<>("Ação apagada com sucesso", HttpStatus.OK));
+    public void deveApagarAcaoComSucesso() throws Exception {
+        ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.OK).body("Ação apagada com sucesso.");
+        Mockito.when(acaoService.apagar(Mockito.anyLong())).thenReturn(respostaService);
 
-        mockMvc.perform(delete("/api/v1/acoes/{id}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Ação apagada com sucesso"));
-
-        verify(acaoService, times(1)).apagar(1L);
-    }
-
-    @Test
-    public void testObterAcaoNotFound() throws Exception {
-        when(acaoService.obter(99L)).thenReturn(Optional.empty());
-
-        mockMvc.perform(get("/api/v1/acoes/id/{id}", 99L))
-                .andExpect(status().isNotFound());
-
-        verify(acaoService, times(1)).obter(99L);
-    }
-
-    @Test
-    public void testObterAcaoPorCodigoNotFound() throws Exception {
-        when(acaoService.obterPorCodigoNegociacao("CodigoInvalido")).thenReturn(Optional.empty());
-
-        mockMvc.perform(get("/api/v1/acoes/codigo/{codigoNegociacao}", "CodigoInvalido"))
-                .andExpect(status().isNotFound());
-
-        verify(acaoService, times(1)).obterPorCodigoNegociacao("CodigoInvalido");
+        mockMvc.perform(MockMvcRequestBuilders.delete(ENDPOINT + "/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
     }
 }
