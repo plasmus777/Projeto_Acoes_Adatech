@@ -14,7 +14,7 @@ import java.util.Optional;
 @Tag(name = "FundoImobiliarioController", description = "Controller para gerenciar fundos imobiliários na aplicação")
 @RestController
 @RequestMapping("api/v1/fundosimobiliarios")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:8080", "https://projeto-acoes-adatech.onrender.com"})
 public class FundoImobiliarioController {
 
     private final FundoImobiliarioService fundoImobiliarioService;

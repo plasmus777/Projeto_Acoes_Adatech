@@ -14,7 +14,7 @@ import java.util.Optional;
 @Tag(name = "RelatorioController", description = "Controller para gerar relatórios de ativos pela aplicação")
 @RestController
 @RequestMapping("/api/v1/relatorios")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:8080", "https://projeto-acoes-adatech.onrender.com"})
 public class RelatorioController {
     private RelatorioService relatorioService;
 

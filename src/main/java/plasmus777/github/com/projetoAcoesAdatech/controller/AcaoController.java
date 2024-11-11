@@ -14,7 +14,7 @@ import java.util.Optional;
 @Tag(name = "AcaoController", description = "Controller para gerenciar ações na aplicação")
 @RestController
 @RequestMapping("api/v1/acoes")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:8080", "https://projeto-acoes-adatech.onrender.com"})
 public class AcaoController {
 
     private final AcaoService acaoService;
