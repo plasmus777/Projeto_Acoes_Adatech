@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 import plasmus777.github.com.projetoAcoesAdatech.dto.UsuarioDTO;
 import plasmus777.github.com.projetoAcoesAdatech.model.Usuario;
 import plasmus777.github.com.projetoAcoesAdatech.repository.UsuarioRepository;
@@ -115,6 +116,40 @@ public class UsuarioServiceTest {
     }
 
     @Test
+    public void deveFalharAoTentarAtualizarUsuarioComValoresInvalidos(){
+        Optional<Usuario> optionalUsuario = Optional.of(usuario);
+        Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(optionalUsuario);
+
+        UsuarioDTO usuarioDTO = UsuarioDTO.fromEntity(usuario);
+        usuarioDTO.setEmail(null);
+        usuarioDTO.setNome("Compra e vendas de ações - atualizado");
+        usuarioDTO.setSenha("Senha1234!");
+
+        Mockito.when(usuarioRepository.save(Mockito.any())).thenThrow(new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar o usuário a ser atualizado."));
+
+        ResponseStatusException resposta = Assertions.assertThrows(ResponseStatusException.class, () -> usuarioService.atualizar(usuario.getId(), usuarioDTO));
+
+        Assertions.assertNotNull(resposta);
+        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(resposta.getReason(), "O repositório não pôde salvar o usuário a ser atualizado.");
+    }
+
+    @Test
+    public void deveFalharAoTentarAtualizarUsuarioInexistente(){
+        Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        UsuarioDTO usuarioDTO = UsuarioDTO.fromEntity(usuario);
+        usuarioDTO.setNome("Compra e vendas de ações - atualizado");
+        usuarioDTO.setSenha("Senha1234!");
+
+        ResponseEntity<String> resposta = usuarioService.atualizar(usuario.getId(), usuarioDTO);
+
+        Assertions.assertNotNull(resposta);
+        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(resposta.getBody(), "O usuário não pôde ser atualizado.");
+    }
+
+    @Test
     public void deveCadastrarUsuarioComSucesso(){
         UsuarioDTO usuarioDTO = UsuarioDTO.fromEntity(usuario);
 
@@ -123,6 +158,19 @@ public class UsuarioServiceTest {
         Assertions.assertNotNull(resposta);
         Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.CREATED);
         Assertions.assertEquals(resposta.getBody(), "Usuário cadastrado com sucesso.");
+    }
+
+    @Test
+    public void deveFalharAoTentarCadastrarUsuarioInvalido(){
+        UsuarioDTO usuarioDTO = UsuarioDTO.fromEntity(usuario);
+        usuarioDTO.setEmail(null);
+
+        Mockito.when(usuarioRepository.save(Mockito.any())).thenThrow(new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde salvar o usuário a ser cadastrado."));
+
+        ResponseStatusException resposta = Assertions.assertThrows(ResponseStatusException.class, () -> usuarioService.cadastrar(usuarioDTO));
+        Assertions.assertNotNull(resposta);
+        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(resposta.getReason(), "O repositório não pôde salvar o usuário a ser cadastrado.");
     }
 
     @Test
@@ -135,5 +183,30 @@ public class UsuarioServiceTest {
         Assertions.assertNotNull(resposta);
         Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.OK);
         Assertions.assertEquals(resposta.getBody(), "Usuário apagado com sucesso.");
+    }
+
+    @Test
+    public void deveFalharAoTentarApagarUsuarioInexistente(){
+        Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        ResponseEntity<String> resposta = usuarioService.apagar(usuario.getId());
+
+        Assertions.assertNotNull(resposta);
+        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(resposta.getBody(), "O usuário não pôde ser apagado.");
+    }
+
+    @Test
+    public void deveFalharAoApagarUsuarioPorErrosDoRepositorio(){
+        Optional<Usuario> usuarioOpt = Optional.of(usuario);
+        Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(usuarioOpt);
+
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.EXPECTATION_FAILED, "O repositório não pôde apagar o usuário.")).when(usuarioRepository).delete(usuario);
+
+        ResponseStatusException resposta = Assertions.assertThrows(ResponseStatusException.class, () -> usuarioService.apagar(usuario.getId()));
+
+        Assertions.assertNotNull(resposta);
+        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(resposta.getReason(), "O repositório não pôde apagar o usuário.");
     }
 }

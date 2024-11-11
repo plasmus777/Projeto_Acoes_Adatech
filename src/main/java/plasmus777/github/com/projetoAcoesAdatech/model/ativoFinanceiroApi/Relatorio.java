@@ -2,10 +2,11 @@ package plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiroApi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Data
+@Data @NoArgsConstructor
 public class Relatorio {
     private String codigoNegociacao;
     private String codigoExibicao;
