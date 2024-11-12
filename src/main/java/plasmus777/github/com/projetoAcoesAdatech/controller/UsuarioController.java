@@ -14,7 +14,7 @@ import java.util.Optional;
 @Tag(name = "UsuarioController", description = "Controller para gerenciar usuários na aplicação")
 @RestController
 @RequestMapping("api/v1/usuarios")
-@CrossOrigin(origins = {"http://localhost:8080", "https://projeto-acoes-adatech.onrender.com"})
+@CrossOrigin(origins = {"http://localhost:5173", "https://projeto-acoes-adatech-react.vercel.app/"})
 public class UsuarioController {
 
     private final UsuarioService usuarioService;

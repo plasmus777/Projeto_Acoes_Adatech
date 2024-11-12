@@ -14,7 +14,7 @@ import java.util.Optional;
 @Tag(name = "RendaFixaController", description = "Controller para gerenciar rendas fixas na aplicação")
 @RestController
 @RequestMapping("api/v1/rendasfixas")
-@CrossOrigin(origins = {"http://localhost:8080", "https://projeto-acoes-adatech.onrender.com"})
+@CrossOrigin(origins = {"http://localhost:5173", "https://projeto-acoes-adatech-react.vercel.app/"})
 public class RendaFixaController {
 
     private final RendaFixaService rendaFixaService;
