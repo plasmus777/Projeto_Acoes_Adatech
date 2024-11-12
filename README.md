@@ -5,6 +5,8 @@ O **Projeto Ações AdaTech** é uma aplicação Java desenvolvida com **Spring 
 
 Este projeto foi criado para ajudar investidores a monitorar suas carteiras e tomar decisões estratégicas, definindo limites de preço personalizados.
 
+Para testar, utilize o [front-end em React](https://projeto-acoes-adatech-react.vercel.app).
+
 ---
 
 ## Funcionalidades ⚙️
