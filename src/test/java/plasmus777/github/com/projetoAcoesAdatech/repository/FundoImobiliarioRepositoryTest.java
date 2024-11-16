@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
-public class FundoImobiliarioRepositoryTest {
+class FundoImobiliarioRepositoryTest {
 
     @Autowired
     FundoImobiliarioRepository fundoImobiliarioRepository;
@@ -27,7 +27,7 @@ public class FundoImobiliarioRepositoryTest {
     FundoImobiliario fundoImobiliario;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         fundoImobiliario = new FundoImobiliario();
         fundoImobiliario.setNome("Ativo financeiro de testes");
         fundoImobiliario.setCodigoFii("TESTE");
@@ -52,14 +52,14 @@ public class FundoImobiliarioRepositoryTest {
     }
 
     @AfterEach
-    public void afterEach(){
+    void afterEach(){
         fundoImobiliarioRepository.delete(fundoImobiliario);
         fundoImobiliario.getUsuario().getFundosImobiliariosFavoritos().remove(fundoImobiliario);
         usuarioRepository.save(fundoImobiliario.getUsuario());
     }
 
     @Test
-    public void deveSalvarFundoImobiliarioComSucesso(){
+    void deveSalvarFundoImobiliarioComSucesso(){
         FundoImobiliario fundoImobiliario = new FundoImobiliario();
         fundoImobiliario.setNome("Ativo financeiro de testes");
         fundoImobiliario.setCodigoFii("TESTE2");
@@ -97,7 +97,7 @@ public class FundoImobiliarioRepositoryTest {
     }
 
     @Test
-    public void deveListarFundosImobiliariosSalvasComSucesso(){
+    void deveListarFundosImobiliariosSalvasComSucesso(){
         List<FundoImobiliario> fundosImobiliarios = fundoImobiliarioRepository.findAll();
 
         Assertions.assertNotNull(fundosImobiliarios);
@@ -105,26 +105,26 @@ public class FundoImobiliarioRepositoryTest {
     }
 
     @Test
-    public void deveEncontrarFundoImobiliarioPorIdComSucesso(){
+    void deveEncontrarFundoImobiliarioPorIdComSucesso(){
         Optional<FundoImobiliario> fundoImobiliarioSalvo = fundoImobiliarioRepository.findFundoImobiliarioById(fundoImobiliario.getId());
 
         Assertions.assertTrue(fundoImobiliarioSalvo.isPresent());
-        Assertions.assertEquals(fundoImobiliarioSalvo.get().getCodigoFii(), "TESTE");
-        Assertions.assertEquals(fundoImobiliarioSalvo.get().getNome(), "Ativo financeiro de testes");
-        Assertions.assertEquals(fundoImobiliarioSalvo.get().getUsuario().getEmail(), "usuarioTestes@mail.com");
+        Assertions.assertEquals("TESTE", fundoImobiliarioSalvo.get().getCodigoFii());
+        Assertions.assertEquals("Ativo financeiro de testes", fundoImobiliarioSalvo.get().getNome());
+        Assertions.assertEquals("usuarioTestes@mail.com", fundoImobiliarioSalvo.get().getUsuario().getEmail());
     }
     @Test
-    public void deveEncontrarFundoImobiliarioPorCodigoComSucesso(){
+    void deveEncontrarFundoImobiliarioPorCodigoComSucesso(){
         Optional<FundoImobiliario> fundoImobiliarioSalvo = fundoImobiliarioRepository.findFundoImobiliarioByCodigoFii(fundoImobiliario.getCodigoFii());
 
         Assertions.assertTrue(fundoImobiliarioSalvo.isPresent());
-        Assertions.assertEquals(fundoImobiliarioSalvo.get().getCodigoFii(), "TESTE");
-        Assertions.assertEquals(fundoImobiliarioSalvo.get().getNome(), "Ativo financeiro de testes");
-        Assertions.assertEquals(fundoImobiliarioSalvo.get().getUsuario().getEmail(), "usuarioTestes@mail.com");
+        Assertions.assertEquals("TESTE", fundoImobiliarioSalvo.get().getCodigoFii());
+        Assertions.assertEquals("Ativo financeiro de testes", fundoImobiliarioSalvo.get().getNome());
+        Assertions.assertEquals("usuarioTestes@mail.com", fundoImobiliarioSalvo.get().getUsuario().getEmail());
     }
 
     @Test
-    public void deveAtualizarFundoImobiliarioComSucesso(){
+    void deveAtualizarFundoImobiliarioComSucesso(){
         Long idAntes = fundoImobiliario.getId();
         String nomeAntes = fundoImobiliario.getNome();
         BigDecimal precoAnterior = fundoImobiliario.getPrecoAtual();
@@ -147,7 +147,7 @@ public class FundoImobiliarioRepositoryTest {
     }
 
     @Test
-    public void deveApagarFundoImobiliarioComSucesso(){
+    void deveApagarFundoImobiliarioComSucesso(){
         fundoImobiliarioRepository.delete(fundoImobiliario);
         fundoImobiliario.getUsuario().getFundosImobiliariosFavoritos().remove(fundoImobiliario);
         usuarioRepository.save(fundoImobiliario.getUsuario());

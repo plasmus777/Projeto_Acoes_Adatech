@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
-public class RendaFixaRepositoryTest {
+class RendaFixaRepositoryTest {
 
     @Autowired
     RendaFixaRepository rendaFixaRepository;
@@ -27,7 +27,7 @@ public class RendaFixaRepositoryTest {
     RendaFixa rendaFixa;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         rendaFixa = new RendaFixa();
         rendaFixa.setNome("Ativo financeiro de testes");
         rendaFixa.setCodigo("TESTE");
@@ -53,14 +53,14 @@ public class RendaFixaRepositoryTest {
     }
 
     @AfterEach
-    public void afterEach(){
+    void afterEach(){
         rendaFixaRepository.delete(rendaFixa);
         rendaFixa.getUsuario().getRendasFixasFavoritas().remove(rendaFixa);
         usuarioRepository.save(rendaFixa.getUsuario());
     }
 
     @Test
-    public void deveSalvarRendaFixaComSucesso(){
+    void deveSalvarRendaFixaComSucesso(){
         RendaFixa rendaFixa = new RendaFixa();
         rendaFixa.setNome("Ativo financeiro de testes");
         rendaFixa.setCodigo("TESTE2");
@@ -100,7 +100,7 @@ public class RendaFixaRepositoryTest {
     }
 
     @Test
-    public void deveListarRendasFixasSalvasComSucesso(){
+    void deveListarRendasFixasSalvasComSucesso(){
         List<RendaFixa> rendasFixas = rendaFixaRepository.findAll();
 
         Assertions.assertNotNull(rendasFixas);
@@ -108,26 +108,26 @@ public class RendaFixaRepositoryTest {
     }
 
     @Test
-    public void deveEncontrarRendaFixaPorIdComSucesso(){
+    void deveEncontrarRendaFixaPorIdComSucesso(){
         Optional<RendaFixa> rendaFixaSalva = rendaFixaRepository.findRendaFixaById(rendaFixa.getId());
 
         Assertions.assertTrue(rendaFixaSalva.isPresent());
-        Assertions.assertEquals(rendaFixaSalva.get().getCodigo(), "TESTE");
-        Assertions.assertEquals(rendaFixaSalva.get().getNome(), "Ativo financeiro de testes");
-        Assertions.assertEquals(rendaFixaSalva.get().getUsuario().getEmail(), "usuarioTestes@mail.com");
+        Assertions.assertEquals("TESTE", rendaFixaSalva.get().getCodigo());
+        Assertions.assertEquals("Ativo financeiro de testes", rendaFixaSalva.get().getNome());
+        Assertions.assertEquals("usuarioTestes@mail.com", rendaFixaSalva.get().getUsuario().getEmail());
     }
     @Test
-    public void deveEncontrarRendaFixaPorCodigoComSucesso(){
+    void deveEncontrarRendaFixaPorCodigoComSucesso(){
         Optional<RendaFixa> rendaFixaSalva = rendaFixaRepository.findRendaFixaByCodigo(rendaFixa.getCodigo());
 
         Assertions.assertTrue(rendaFixaSalva.isPresent());
-        Assertions.assertEquals(rendaFixaSalva.get().getCodigo(), "TESTE");
-        Assertions.assertEquals(rendaFixaSalva.get().getNome(), "Ativo financeiro de testes");
-        Assertions.assertEquals(rendaFixaSalva.get().getUsuario().getEmail(), "usuarioTestes@mail.com");
+        Assertions.assertEquals("TESTE", rendaFixaSalva.get().getCodigo());
+        Assertions.assertEquals("Ativo financeiro de testes", rendaFixaSalva.get().getNome());
+        Assertions.assertEquals("usuarioTestes@mail.com", rendaFixaSalva.get().getUsuario().getEmail());
     }
 
     @Test
-    public void deveAtualizarRendaFixaComSucesso(){
+    void deveAtualizarRendaFixaComSucesso(){
         Long idAntes = rendaFixa.getId();
         String nomeAntes = rendaFixa.getNome();
         BigDecimal precoAnterior = rendaFixa.getPrecoAtual();
@@ -150,7 +150,7 @@ public class RendaFixaRepositoryTest {
     }
 
     @Test
-    public void deveApagarRendaFixaComSucesso(){
+    void deveApagarRendaFixaComSucesso(){
         rendaFixaRepository.delete(rendaFixa);
         rendaFixa.getUsuario().getRendasFixasFavoritas().remove(rendaFixa);
         usuarioRepository.save(rendaFixa.getUsuario());

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class RendaFixaServiceTest {
+class RendaFixaServiceTest {
     @InjectMocks
     RendaFixaService rendaFixaService;
 
@@ -42,7 +42,7 @@ public class RendaFixaServiceTest {
     RendaFixa rendaFixa;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         rendaFixa = new RendaFixa();
         rendaFixa.setId(1l);
         rendaFixa.setNome("Ativo financeiro de testes");
@@ -68,7 +68,7 @@ public class RendaFixaServiceTest {
     }
 
     @Test
-    public void deveObterListaDeRendasFixasComSucesso(){
+    void deveObterListaDeRendasFixasComSucesso(){
         List<RendaFixa> lista = new ArrayList<>();
         lista.add(rendaFixa);
 
@@ -82,7 +82,7 @@ public class RendaFixaServiceTest {
     }
 
     @Test
-    public void deveObterRendaFixaComSucessoAtravesDoId(){
+    void deveObterRendaFixaComSucessoAtravesDoId(){
         Optional<RendaFixa> optionalRendaFixa = Optional.of(rendaFixa);
         Mockito.when(rendaFixaRepository.findRendaFixaById(Mockito.anyLong())).thenReturn(optionalRendaFixa);
 
@@ -103,7 +103,7 @@ public class RendaFixaServiceTest {
     }
 
     @Test
-    public void deveObterRendaFixaComSucessoAtravesDoCodigo(){
+    void deveObterRendaFixaComSucessoAtravesDoCodigo(){
         Optional<RendaFixa> optionalRendaFixa = Optional.of(rendaFixa);
         Mockito.when(rendaFixaRepository.findRendaFixaByCodigo(Mockito.anyString())).thenReturn(optionalRendaFixa);
 
@@ -124,7 +124,7 @@ public class RendaFixaServiceTest {
     }
 
     @Test
-    public void deveAtualizarRendaFixaComSucesso(){
+    void deveAtualizarRendaFixaComSucesso(){
         Optional<RendaFixa> optionalRendaFixa = Optional.of(rendaFixa);
         Mockito.when(rendaFixaRepository.findRendaFixaById(Mockito.anyLong())).thenReturn(optionalRendaFixa);
 
@@ -138,12 +138,12 @@ public class RendaFixaServiceTest {
         ResponseEntity<String> resposta = rendaFixaService.atualizar(rendaFixa.getId(), rendaFixaDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.CREATED);
-        Assertions.assertEquals(resposta.getBody(), "Renda fixa atualizada com sucesso.");
+        Assertions.assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
+        Assertions.assertEquals("Renda fixa atualizada com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarRendaFixaComValorAtualIgualAZero(){
+    void deveFalharAoTentarAtualizarRendaFixaComValorAtualIgualAZero(){
         Optional<RendaFixa> optionalRendaFixa = Optional.of(rendaFixa);
         Mockito.when(rendaFixaRepository.findRendaFixaById(Mockito.anyLong())).thenReturn(optionalRendaFixa);
 
@@ -157,12 +157,12 @@ public class RendaFixaServiceTest {
         ResponseEntity<String> resposta = rendaFixaService.atualizar(rendaFixa.getId(), rendaFixaDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.BAD_REQUEST);
-        Assertions.assertEquals(resposta.getBody(), "A renda fixa não pode ser atualizada com um código de um ativo inexistente.");
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, resposta.getStatusCode());
+        Assertions.assertEquals("A renda fixa não pode ser atualizada com um código de um ativo inexistente.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarRendaFixaComValorInvalido(){
+    void deveFalharAoTentarAtualizarRendaFixaComValorInvalido(){
         Optional<RendaFixa> optionalRendaFixa = Optional.of(rendaFixa);
         Mockito.when(rendaFixaRepository.findRendaFixaById(Mockito.anyLong())).thenReturn(optionalRendaFixa);
 
@@ -177,12 +177,12 @@ public class RendaFixaServiceTest {
 
         ResponseEntity<String> resposta = rendaFixaService.atualizar(rendaFixa.getId(), rendaFixaDTO);
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody() != null && resposta.getBody().contains("O repositório não pôde salvar a renda fixa atualizada."));
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarRendaFixaInexistente(){
+    void deveFalharAoTentarAtualizarRendaFixaInexistente(){
         Mockito.when(rendaFixaRepository.findRendaFixaById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         RendaFixaDTO rendaFixaDTO = RendaFixaDTO.fromEntity(rendaFixa);
@@ -190,12 +190,12 @@ public class RendaFixaServiceTest {
         ResponseEntity<String> resposta = rendaFixaService.atualizar(rendaFixa.getId(), rendaFixaDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getBody(), "A renda fixa não pôde ser atualizada.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("A renda fixa não pôde ser atualizada.", resposta.getBody());
     }
 
     @Test
-    public void deveCadastrarRendaFixaComSucesso(){
+    void deveCadastrarRendaFixaComSucesso(){
         RendaFixaDTO rendaFixaDTO = RendaFixaDTO.fromEntity(rendaFixa);
 
         AcaoApi acaoApi = new AcaoApi();
@@ -207,12 +207,12 @@ public class RendaFixaServiceTest {
         ResponseEntity<String> resposta = rendaFixaService.cadastrar(rendaFixaDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.CREATED);
-        Assertions.assertEquals(resposta.getBody(), "Renda fixa cadastrada com sucesso.");
+        Assertions.assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
+        Assertions.assertEquals("Renda fixa cadastrada com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarCadastrarRendaFixaComValorAtualIgualAZero(){
+    void deveFalharAoTentarCadastrarRendaFixaComValorAtualIgualAZero(){
         RendaFixaDTO rendaFixaDTO = RendaFixaDTO.fromEntity(rendaFixa);
 
         AcaoApi acaoApi = new AcaoApi();
@@ -222,12 +222,12 @@ public class RendaFixaServiceTest {
         ResponseEntity<String> resposta = rendaFixaService.cadastrar(rendaFixaDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.BAD_REQUEST);
-        Assertions.assertEquals(resposta.getBody(), "A renda fixa não pode ser cadastrada com um código de um ativo inexistente.");
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, resposta.getStatusCode());
+        Assertions.assertEquals("A renda fixa não pode ser cadastrada com um código de um ativo inexistente.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarCadastrarRendaFixaInvalida(){
+    void deveFalharAoTentarCadastrarRendaFixaInvalida(){
         RendaFixaDTO rendaFixaDTO = RendaFixaDTO.fromEntity(rendaFixa);
         rendaFixaDTO.setCodigo(null);
 
@@ -240,12 +240,12 @@ public class RendaFixaServiceTest {
         ResponseEntity<String> resposta = rendaFixaService.cadastrar(rendaFixaDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody() != null && resposta.getBody().contains("O repositório não pôde salvar a renda fixa a ser cadastrada."));
     }
 
     @Test
-    public void deveFalharAoTentarCadastrarRendaFixaComUsuarioInexistente(){
+    void deveFalharAoTentarCadastrarRendaFixaComUsuarioInexistente(){
         RendaFixaDTO rendaFixaDTO = RendaFixaDTO.fromEntity(rendaFixa);
 
         AcaoApi acaoApi = new AcaoApi();
@@ -257,35 +257,35 @@ public class RendaFixaServiceTest {
         ResponseEntity<String> resposta = rendaFixaService.cadastrar(rendaFixaDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.NOT_FOUND);
-        Assertions.assertEquals(resposta.getBody(), "Não há um usuário com o e-mail registrado pela renda fixa.");
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, resposta.getStatusCode());
+        Assertions.assertEquals("Não há um usuário com o e-mail registrado pela renda fixa.", resposta.getBody());
     }
 
     @Test
-    public void deveApagarRendaFixaComSucesso(){
+    void deveApagarRendaFixaComSucesso(){
         Optional<RendaFixa> rendaFixaOpt = Optional.of(rendaFixa);
         Mockito.when(rendaFixaRepository.findRendaFixaById(Mockito.anyLong())).thenReturn(rendaFixaOpt);
 
         ResponseEntity<String> resposta = rendaFixaService.apagar(rendaFixa.getId());
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.OK);
-        Assertions.assertEquals(resposta.getBody(), "Renda fixa apagada com sucesso.");
+        Assertions.assertEquals(HttpStatus.OK, resposta.getStatusCode());
+        Assertions.assertEquals("Renda fixa apagada com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarApagarRendaFixaInexistente(){
+    void deveFalharAoTentarApagarRendaFixaInexistente(){
         Mockito.when(rendaFixaRepository.findRendaFixaById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         ResponseEntity<String> resposta = rendaFixaService.apagar(rendaFixa.getId());
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getBody(), "A renda fixa não pôde ser apagado.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("A renda fixa não pôde ser apagado.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoApagarRendaFixaPorErrosDoRepositorio(){
+    void deveFalharAoApagarRendaFixaPorErrosDoRepositorio(){
         Optional<RendaFixa> rendaFixaOpt = Optional.of(rendaFixa);
         Mockito.when(rendaFixaRepository.findRendaFixaById(Mockito.anyLong())).thenReturn(rendaFixaOpt);
 
@@ -294,7 +294,7 @@ public class RendaFixaServiceTest {
         ResponseEntity<String> resposta = rendaFixaService.apagar(rendaFixa.getId());
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody() != null && resposta.getBody().contains("O repositório não pôde apagar a renda fixa."));
     }
 }

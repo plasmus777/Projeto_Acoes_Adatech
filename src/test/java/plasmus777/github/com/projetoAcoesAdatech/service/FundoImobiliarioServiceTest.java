@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class FundoImobiliarioServiceTest {
+class FundoImobiliarioServiceTest {
     @InjectMocks
     FundoImobiliarioService fundoImobiliarioService;
 
@@ -42,7 +42,7 @@ public class FundoImobiliarioServiceTest {
     FundoImobiliario fundoImobiliario;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         fundoImobiliario = new FundoImobiliario();
         fundoImobiliario.setId(1l);
         fundoImobiliario.setNome("Ativo financeiro de testes");
@@ -67,7 +67,7 @@ public class FundoImobiliarioServiceTest {
     }
 
     @Test
-    public void deveObterListaDeFundosImobiliariosComSucesso(){
+    void deveObterListaDeFundosImobiliariosComSucesso(){
         List<FundoImobiliario> lista = new ArrayList<>();
         lista.add(fundoImobiliario);
 
@@ -81,7 +81,7 @@ public class FundoImobiliarioServiceTest {
     }
 
     @Test
-    public void deveObterFundoImobiliarioComSucessoAtravesDoId(){
+    void deveObterFundoImobiliarioComSucessoAtravesDoId(){
         Optional<FundoImobiliario> optionalFundoImobiliario = Optional.of(fundoImobiliario);
         Mockito.when(fundoImobiliarioRepository.findFundoImobiliarioById(Mockito.anyLong())).thenReturn(optionalFundoImobiliario);
 
@@ -101,7 +101,7 @@ public class FundoImobiliarioServiceTest {
     }
 
     @Test
-    public void deveObterFundoImobiliarioComSucessoAtravesDoCodigoFii(){
+    void deveObterFundoImobiliarioComSucessoAtravesDoCodigoFii(){
         Optional<FundoImobiliario> optionalFundoImobiliario = Optional.of(fundoImobiliario);
         Mockito.when(fundoImobiliarioRepository.findFundoImobiliarioByCodigoFii(Mockito.anyString())).thenReturn(optionalFundoImobiliario);
 
@@ -121,7 +121,7 @@ public class FundoImobiliarioServiceTest {
     }
 
     @Test
-    public void deveAtualizarFundoImobiliarioComSucesso(){
+    void deveAtualizarFundoImobiliarioComSucesso(){
         Optional<FundoImobiliario> optionalFundoImobiliario = Optional.of(fundoImobiliario);
         Mockito.when(fundoImobiliarioRepository.findFundoImobiliarioById(Mockito.anyLong())).thenReturn(optionalFundoImobiliario);
 
@@ -135,12 +135,12 @@ public class FundoImobiliarioServiceTest {
         ResponseEntity<String> resposta = fundoImobiliarioService.atualizar(fundoImobiliario.getId(), fundoImobiliarioDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.CREATED);
-        Assertions.assertEquals(resposta.getBody(), "Fundo Imobiliário atualizado com sucesso.");
+        Assertions.assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
+        Assertions.assertEquals("Fundo Imobiliário atualizado com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarFundoImobiliarioComValorAtualIgualAZero(){
+    void deveFalharAoTentarAtualizarFundoImobiliarioComValorAtualIgualAZero(){
         Optional<FundoImobiliario> optionalFundoImobiliario = Optional.of(fundoImobiliario);
         Mockito.when(fundoImobiliarioRepository.findFundoImobiliarioById(Mockito.anyLong())).thenReturn(optionalFundoImobiliario);
 
@@ -154,12 +154,12 @@ public class FundoImobiliarioServiceTest {
         ResponseEntity<String> resposta = fundoImobiliarioService.atualizar(fundoImobiliario.getId(), fundoImobiliarioDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.BAD_REQUEST);
-        Assertions.assertEquals(resposta.getBody(), "O fundo imobiliário não pode ser atualizado com um código de um ativo inexistente.");
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, resposta.getStatusCode());
+        Assertions.assertEquals("O fundo imobiliário não pode ser atualizado com um código de um ativo inexistente.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarFundoImobiliarioComValorInvalido(){
+    void deveFalharAoTentarAtualizarFundoImobiliarioComValorInvalido(){
         Optional<FundoImobiliario> optionalFundoImobiliario = Optional.of(fundoImobiliario);
         Mockito.when(fundoImobiliarioRepository.findFundoImobiliarioById(Mockito.anyLong())).thenReturn(optionalFundoImobiliario);
 
@@ -174,12 +174,12 @@ public class FundoImobiliarioServiceTest {
 
         ResponseEntity<String> resposta = fundoImobiliarioService.atualizar(fundoImobiliario.getId(), fundoImobiliarioDTO);
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody() != null && resposta.getBody().contains("O repositório não pôde salvar o fundo imobiliário atualizado."));
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarFundoImobiliarioInexistente(){
+    void deveFalharAoTentarAtualizarFundoImobiliarioInexistente(){
         Mockito.when(fundoImobiliarioRepository.findFundoImobiliarioById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         FundoImobiliarioDTO fundoImobiliarioDTO = FundoImobiliarioDTO.fromEntity(fundoImobiliario);
@@ -187,12 +187,12 @@ public class FundoImobiliarioServiceTest {
         ResponseEntity<String> resposta = fundoImobiliarioService.atualizar(fundoImobiliario.getId(), fundoImobiliarioDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getBody(), "O fundo imobiliário não pôde ser atualizado.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("O fundo imobiliário não pôde ser atualizado.", resposta.getBody());
     }
 
     @Test
-    public void deveCadastrarFundoImobiliarioComSucesso(){
+    void deveCadastrarFundoImobiliarioComSucesso(){
         FundoImobiliarioDTO fundoImobiliarioDTO = FundoImobiliarioDTO.fromEntity(fundoImobiliario);
 
         AcaoApi acaoApi = new AcaoApi();
@@ -204,12 +204,12 @@ public class FundoImobiliarioServiceTest {
         ResponseEntity<String> resposta = fundoImobiliarioService.cadastrar(fundoImobiliarioDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.CREATED);
-        Assertions.assertEquals(resposta.getBody(), "Fundo imobiliário cadastrado com sucesso.");
+        Assertions.assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
+        Assertions.assertEquals("Fundo imobiliário cadastrado com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarCadastrarFundoImobiliarioComValorAtualIgualAZero(){
+    void deveFalharAoTentarCadastrarFundoImobiliarioComValorAtualIgualAZero(){
         FundoImobiliarioDTO fundoImobiliarioDTO = FundoImobiliarioDTO.fromEntity(fundoImobiliario);
 
         AcaoApi acaoApi = new AcaoApi();
@@ -219,12 +219,12 @@ public class FundoImobiliarioServiceTest {
         ResponseEntity<String> resposta = fundoImobiliarioService.cadastrar(fundoImobiliarioDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.BAD_REQUEST);
-        Assertions.assertEquals(resposta.getBody(), "O fundo imobiliário não pode ser cadastrado com um código de um ativo inexistente.");
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, resposta.getStatusCode());
+        Assertions.assertEquals("O fundo imobiliário não pode ser cadastrado com um código de um ativo inexistente.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarCadastrarFundoImobiliarioInvalida(){
+    void deveFalharAoTentarCadastrarFundoImobiliarioInvalida(){
         FundoImobiliarioDTO fundoImobiliarioDTO = FundoImobiliarioDTO.fromEntity(fundoImobiliario);
         fundoImobiliarioDTO.setCodigoFii(null);
 
@@ -237,12 +237,12 @@ public class FundoImobiliarioServiceTest {
         ResponseEntity<String> resposta = fundoImobiliarioService.cadastrar(fundoImobiliarioDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody() != null && resposta.getBody().contains("O repositório não pôde salvar o fundo imobiliário a ser cadastrado."));
     }
 
     @Test
-    public void deveFalharAoTentarCadastrarFundoImobiliarioComUsuarioInexistente(){
+    void deveFalharAoTentarCadastrarFundoImobiliarioComUsuarioInexistente(){
         FundoImobiliarioDTO fundoImobiliarioDTO = FundoImobiliarioDTO.fromEntity(fundoImobiliario);
 
         AcaoApi acaoApi = new AcaoApi();
@@ -254,35 +254,35 @@ public class FundoImobiliarioServiceTest {
         ResponseEntity<String> resposta = fundoImobiliarioService.cadastrar(fundoImobiliarioDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.NOT_FOUND);
-        Assertions.assertEquals(resposta.getBody(), "Não há um usuário com o e-mail registrado pelo fundo imobiliário.");
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, resposta.getStatusCode());
+        Assertions.assertEquals("Não há um usuário com o e-mail registrado pelo fundo imobiliário.", resposta.getBody());
     }
 
     @Test
-    public void deveApagarFundoImobiliarioComSucesso(){
+    void deveApagarFundoImobiliarioComSucesso(){
         Optional<FundoImobiliario> fundoImobiliarioOpt = Optional.of(fundoImobiliario);
         Mockito.when(fundoImobiliarioRepository.findFundoImobiliarioById(Mockito.anyLong())).thenReturn(fundoImobiliarioOpt);
 
         ResponseEntity<String> resposta = fundoImobiliarioService.apagar(fundoImobiliario.getId());
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.OK);
-        Assertions.assertEquals(resposta.getBody(), "Fundo imobiliário apagado com sucesso.");
+        Assertions.assertEquals(HttpStatus.OK, resposta.getStatusCode());
+        Assertions.assertEquals("Fundo imobiliário apagado com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarApagarFundoImobiliarioInexistente(){
+    void deveFalharAoTentarApagarFundoImobiliarioInexistente(){
         Mockito.when(fundoImobiliarioRepository.findFundoImobiliarioById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         ResponseEntity<String> resposta = fundoImobiliarioService.apagar(fundoImobiliario.getId());
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getBody(), "O fundo imobiliário não pôde ser apagado.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("O fundo imobiliário não pôde ser apagado.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoApagarFundoImobiliarioPorErrosDoRepositorio(){
+    void deveFalharAoApagarFundoImobiliarioPorErrosDoRepositorio(){
         Optional<FundoImobiliario> fundoImobiliarioOpt = Optional.of(fundoImobiliario);
         Mockito.when(fundoImobiliarioRepository.findFundoImobiliarioById(Mockito.anyLong())).thenReturn(fundoImobiliarioOpt);
 
@@ -291,7 +291,7 @@ public class FundoImobiliarioServiceTest {
         ResponseEntity<String> resposta = fundoImobiliarioService.apagar(fundoImobiliario.getId());
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody() != null && resposta.getBody().contains("O repositório não pôde apagar o fundo imobiliário."));
     }
 }

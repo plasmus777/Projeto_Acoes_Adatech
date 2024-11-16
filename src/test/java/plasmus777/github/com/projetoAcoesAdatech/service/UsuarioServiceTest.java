@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class UsuarioServiceTest {
+class UsuarioServiceTest {
 
     @InjectMocks
     UsuarioService usuarioService;
@@ -31,7 +31,7 @@ public class UsuarioServiceTest {
     Usuario usuario;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         usuario = new Usuario();
         usuario.setId(1l);
         usuario.setEmail("usuarioTestes@mail.com");
@@ -43,7 +43,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void deveObterListaDeUsuariosComSucesso(){
+    void deveObterListaDeUsuariosComSucesso(){
         List<Usuario> usuarios = new ArrayList<>();
         for(int i = 1; i <= 3; i++){
             Usuario usuario = new Usuario();
@@ -66,7 +66,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void deveObterUsuarioComSucessoAtravesDoId(){
+    void deveObterUsuarioComSucessoAtravesDoId(){
         Optional<Usuario> optionalUsuario = Optional.of(usuario);
         Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(optionalUsuario);
 
@@ -83,7 +83,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void deveObterUsuarioComSucessoAtravesDoEmail(){
+    void deveObterUsuarioComSucessoAtravesDoEmail(){
         Optional<Usuario> optionalUsuario = Optional.of(usuario);
         Mockito.when(usuarioRepository.findUsuarioByEmail(Mockito.anyString())).thenReturn(optionalUsuario);
 
@@ -100,7 +100,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void deveAtualizarUsuarioComSucesso(){
+    void deveAtualizarUsuarioComSucesso(){
         Optional<Usuario> optionalUsuario = Optional.of(usuario);
         Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(optionalUsuario);
 
@@ -111,12 +111,12 @@ public class UsuarioServiceTest {
         ResponseEntity<String> resposta = usuarioService.atualizar(usuario.getId(), usuarioDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.CREATED);
-        Assertions.assertEquals(resposta.getBody(), "Usuário atualizado com sucesso.");
+        Assertions.assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
+        Assertions.assertEquals("Usuário atualizado com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarUsuarioComValoresInvalidos(){
+    void deveFalharAoTentarAtualizarUsuarioComValoresInvalidos(){
         Optional<Usuario> optionalUsuario = Optional.of(usuario);
         Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(optionalUsuario);
 
@@ -130,12 +130,12 @@ public class UsuarioServiceTest {
         ResponseStatusException resposta = Assertions.assertThrows(ResponseStatusException.class, () -> usuarioService.atualizar(usuario.getId(), usuarioDTO));
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getReason(), "O repositório não pôde salvar o usuário a ser atualizado.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("O repositório não pôde salvar o usuário a ser atualizado.", resposta.getReason());
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarUsuarioInexistente(){
+    void deveFalharAoTentarAtualizarUsuarioInexistente(){
         Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         UsuarioDTO usuarioDTO = UsuarioDTO.fromEntity(usuario);
@@ -145,23 +145,23 @@ public class UsuarioServiceTest {
         ResponseEntity<String> resposta = usuarioService.atualizar(usuario.getId(), usuarioDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getBody(), "O usuário não pôde ser atualizado.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("O usuário não pôde ser atualizado.", resposta.getBody());
     }
 
     @Test
-    public void deveCadastrarUsuarioComSucesso(){
+    void deveCadastrarUsuarioComSucesso(){
         UsuarioDTO usuarioDTO = UsuarioDTO.fromEntity(usuario);
 
         ResponseEntity<String> resposta = usuarioService.cadastrar(usuarioDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.CREATED);
-        Assertions.assertEquals(resposta.getBody(), "Usuário cadastrado com sucesso.");
+        Assertions.assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
+        Assertions.assertEquals("Usuário cadastrado com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarCadastrarUsuarioInvalido(){
+    void deveFalharAoTentarCadastrarUsuarioInvalido(){
         UsuarioDTO usuarioDTO = UsuarioDTO.fromEntity(usuario);
         usuarioDTO.setEmail(null);
 
@@ -169,35 +169,35 @@ public class UsuarioServiceTest {
 
         ResponseStatusException resposta = Assertions.assertThrows(ResponseStatusException.class, () -> usuarioService.cadastrar(usuarioDTO));
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getReason(), "O repositório não pôde salvar o usuário a ser cadastrado.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("O repositório não pôde salvar o usuário a ser cadastrado.", resposta.getReason());
     }
 
     @Test
-    public void deveApagarUsuarioComSucesso(){
+    void deveApagarUsuarioComSucesso(){
         Optional<Usuario> usuarioOpt = Optional.of(usuario);
         Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(usuarioOpt);
 
         ResponseEntity<String> resposta = usuarioService.apagar(usuario.getId());
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.OK);
-        Assertions.assertEquals(resposta.getBody(), "Usuário apagado com sucesso.");
+        Assertions.assertEquals(HttpStatus.OK, resposta.getStatusCode());
+        Assertions.assertEquals("Usuário apagado com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarApagarUsuarioInexistente(){
+    void deveFalharAoTentarApagarUsuarioInexistente(){
         Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         ResponseEntity<String> resposta = usuarioService.apagar(usuario.getId());
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getBody(), "O usuário não pôde ser apagado.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("O usuário não pôde ser apagado.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoApagarUsuarioPorErrosDoRepositorio(){
+    void deveFalharAoApagarUsuarioPorErrosDoRepositorio(){
         Optional<Usuario> usuarioOpt = Optional.of(usuario);
         Mockito.when(usuarioRepository.findUsuarioById(Mockito.anyLong())).thenReturn(usuarioOpt);
 
@@ -206,7 +206,7 @@ public class UsuarioServiceTest {
         ResponseStatusException resposta = Assertions.assertThrows(ResponseStatusException.class, () -> usuarioService.apagar(usuario.getId()));
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getReason(), "O repositório não pôde apagar o usuário.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("O repositório não pôde apagar o usuário.", resposta.getReason());
     }
 }

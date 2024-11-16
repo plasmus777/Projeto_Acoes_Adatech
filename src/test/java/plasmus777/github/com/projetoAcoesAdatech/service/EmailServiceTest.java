@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-public class EmailServiceTest {
+class EmailServiceTest {
 
     @Mock
     private JavaMailSender mailSender;
@@ -20,12 +20,12 @@ public class EmailServiceTest {
     private EmailService emailService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void deveEnviarEmailComSucesso() {
+    void deveEnviarEmailComSucesso() {
         String to = "destinatario@example.com";
         String subject = "Assunto do Email";
         String body = "Corpo do email.";

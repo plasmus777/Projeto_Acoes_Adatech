@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class RelatorioServiceTest {
+class RelatorioServiceTest {
 
     @InjectMocks
     RelatorioService relatorioService;
@@ -35,7 +35,7 @@ public class RelatorioServiceTest {
     AcaoApi acaoApi;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         ativoApi = new AtivoApi();
         ativoApi.setSymbol("TESTE");
         ativoApi.setDisplaySymbol("TESTE");
@@ -60,7 +60,7 @@ public class RelatorioServiceTest {
     }
 
     @Test
-    public void deveGerarRelatorioDeAtivoFinanceiroComSucesso(){
+    void deveGerarRelatorioDeAtivoFinanceiroComSucesso(){
         Mockito.when(finnhubClient.buscarInformacoesAtivos(Mockito.anyString())).thenReturn(searchAtivoApi);
 
         Mockito.when(finnhubClient.buscarInformacoesAtivo(Mockito.anyString())).thenReturn(acaoApi);
@@ -69,24 +69,24 @@ public class RelatorioServiceTest {
 
         Assertions.assertTrue(retorno.isPresent());
 
-        Assertions.assertEquals(retorno.get().getPrecoAtual(), acaoApi.getPrecoAtual());
-        Assertions.assertEquals(retorno.get().getAlteracao(), acaoApi.getAlteracao());
-        Assertions.assertEquals(retorno.get().getPorcentagemAlteracao(), acaoApi.getPorcentagemAlteracao());
-        Assertions.assertEquals(retorno.get().getTimestamp(), acaoApi.getTimestamp());
-        Assertions.assertEquals(retorno.get().getMaiorPrecoDiario(), acaoApi.getMaiorPrecoDiario());
-        Assertions.assertEquals(retorno.get().getMenorPrecoDiario(), acaoApi.getMenorPrecoDiario());
-        Assertions.assertEquals(retorno.get().getPrecoAbertura(), acaoApi.getPrecoAbertura());
-        Assertions.assertEquals(retorno.get().getPrecoFechamentoAnterior(), acaoApi.getPrecoFechamentoAnterior());
+        Assertions.assertEquals(acaoApi.getPrecoAtual(), retorno.get().getPrecoAtual());
+        Assertions.assertEquals(acaoApi.getAlteracao(), retorno.get().getAlteracao());
+        Assertions.assertEquals(acaoApi.getPorcentagemAlteracao(), retorno.get().getPorcentagemAlteracao());
+        Assertions.assertEquals(acaoApi.getTimestamp(), retorno.get().getTimestamp());
+        Assertions.assertEquals(acaoApi.getMaiorPrecoDiario(), retorno.get().getMaiorPrecoDiario());
+        Assertions.assertEquals(acaoApi.getMenorPrecoDiario(), retorno.get().getMenorPrecoDiario());
+        Assertions.assertEquals(acaoApi.getPrecoAbertura(), retorno.get().getPrecoAbertura());
+        Assertions.assertEquals(acaoApi.getPrecoFechamentoAnterior(), retorno.get().getPrecoFechamentoAnterior());
 
-        Assertions.assertEquals(retorno.get().getCodigoNegociacao(), ativoApi.getSymbol());
-        Assertions.assertEquals(retorno.get().getCodigoExibicao(), ativoApi.getDisplaySymbol());
-        Assertions.assertEquals(retorno.get().getTipo(), ativoApi.getType());
-        Assertions.assertEquals(retorno.get().getDescricao(), ativoApi.getDescription());
+        Assertions.assertEquals(ativoApi.getSymbol(), retorno.get().getCodigoNegociacao());
+        Assertions.assertEquals(ativoApi.getDisplaySymbol(), retorno.get().getCodigoExibicao());
+        Assertions.assertEquals(ativoApi.getType(), retorno.get().getTipo());
+        Assertions.assertEquals(ativoApi.getDescription(), retorno.get().getDescricao());
 
     }
 
     @Test
-    public void deveFalharAoTentarGerarRelatorioDeAtivoFinanceiroComCodigoInvalido(){
+    void deveFalharAoTentarGerarRelatorioDeAtivoFinanceiroComCodigoInvalido(){
         Optional<Relatorio> retorno1 = relatorioService.gerarRelatorio(null);
         Optional<Relatorio> retorno2 = relatorioService.gerarRelatorio("");
 
@@ -95,14 +95,14 @@ public class RelatorioServiceTest {
     }
 
     @Test
-    public void deveFalharAoTentarGerarRelatorioDeAtivoFinanceiroPorEncontrarResultadosInvalidosDePesquisaDaApiParaSearchAtivoApi(){
+    void deveFalharAoTentarGerarRelatorioDeAtivoFinanceiroPorEncontrarResultadosInvalidosDePesquisaDaApiParaSearchAtivoApi(){
         Mockito.when(finnhubClient.buscarInformacoesAtivos(Mockito.anyString())).thenReturn(null);
 
         Assertions.assertThrows(NullPointerException.class, () -> relatorioService.gerarRelatorio(ativoApi.getSymbol()));
     }
 
     @Test
-    public void deveFalharAoTentarGerarRelatorioDeAtivoFinanceiroPorEncontrarResultadosVaziosDePesquisaDaApiParaSearchAtivoApi(){
+    void deveFalharAoTentarGerarRelatorioDeAtivoFinanceiroPorEncontrarResultadosVaziosDePesquisaDaApiParaSearchAtivoApi(){
         searchAtivoApi.setCount(0);
         searchAtivoApi.setResult(new ArrayList<>());
 
@@ -114,7 +114,7 @@ public class RelatorioServiceTest {
     }
 
     @Test
-    public void deveFalharAoTentarGerarRelatorioDeAtivoFinanceiroPorEncontrarResultadosInvalidosDePesquisaDaApiParaAcaoapi(){
+    void deveFalharAoTentarGerarRelatorioDeAtivoFinanceiroPorEncontrarResultadosInvalidosDePesquisaDaApiParaAcaoapi(){
         Mockito.when(finnhubClient.buscarInformacoesAtivos(Mockito.anyString())).thenReturn(searchAtivoApi);
 
         Mockito.when(finnhubClient.buscarInformacoesAtivo(Mockito.anyString())).thenReturn(null);

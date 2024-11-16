@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
-public class UsuarioRepositoryTest {
+class UsuarioRepositoryTest {
     @Autowired
     UsuarioRepository usuarioRepository;
 
     Usuario usuarioTestes;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         usuarioTestes = new Usuario();
         usuarioTestes.setEmail("compraevendas.acoes@gmail.com");
         usuarioTestes.setNome("Compra e vendas de ações");
@@ -33,12 +33,12 @@ public class UsuarioRepositoryTest {
     }
 
     @AfterEach
-    public void afterEach(){
+    void afterEach(){
         usuarioRepository.delete(usuarioTestes);
     }
 
     @Test
-    public void deveSalvarUsuarioComSucesso(){
+    void deveSalvarUsuarioComSucesso(){
         Usuario usuario = new Usuario();
         usuario.setEmail("usuarioTestes1@mail.com");
         usuario.setNome("Compra e vendas de ações");
@@ -59,7 +59,7 @@ public class UsuarioRepositoryTest {
     }
 
     @Test
-    public void deveListarUsuariosSalvosComSucesso(){
+    void deveListarUsuariosSalvosComSucesso(){
         List<Usuario> usuarios = usuarioRepository.findAll();
 
         Assertions.assertNotNull(usuarios);
@@ -67,7 +67,7 @@ public class UsuarioRepositoryTest {
     }
 
     @Test
-    public void deveEncontrarUsuarioPorIdComSucesso(){
+    void deveEncontrarUsuarioPorIdComSucesso(){
         Optional<Usuario> usuarioSalvo = usuarioRepository.findUsuarioById(usuarioTestes.getId());
 
         Assertions.assertTrue(usuarioSalvo.isPresent());
@@ -80,7 +80,7 @@ public class UsuarioRepositoryTest {
     }
 
     @Test
-    public void deveEncontrarUsuarioPorEmailComSucesso(){
+    void deveEncontrarUsuarioPorEmailComSucesso(){
         Optional<Usuario> usuarioSalvo = usuarioRepository.findUsuarioByEmail(usuarioTestes.getEmail());
 
         Assertions.assertTrue(usuarioSalvo.isPresent());
@@ -93,7 +93,7 @@ public class UsuarioRepositoryTest {
     }
 
     @Test
-    public void deveAtualizarUsuarioComSucesso(){
+    void deveAtualizarUsuarioComSucesso(){
         Long idAntes = usuarioTestes.getId();
         String nomeAntes = usuarioTestes.getNome();
         String senhaAntes = usuarioTestes.getSenha();
@@ -116,7 +116,7 @@ public class UsuarioRepositoryTest {
     }
 
     @Test
-    public void deveApagarUsuarioComSucesso(){
+    void deveApagarUsuarioComSucesso(){
         usuarioRepository.delete(usuarioTestes);
 
         Optional<Usuario> usuario = usuarioRepository.findUsuarioByEmail("compraevendas.acoes@gmail.com");

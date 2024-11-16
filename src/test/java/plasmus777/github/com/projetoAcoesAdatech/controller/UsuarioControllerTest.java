@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class UsuarioControllerTest {
+class UsuarioControllerTest {
 
     static final String ENDPOINT = "/api/v1/usuarios";
 
@@ -42,7 +42,7 @@ public class UsuarioControllerTest {
     UsuarioDTO usuarioDTO;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         mockMvc = MockMvcBuilders.standaloneSetup(usuarioController).build();
         usuarioDTO = new UsuarioDTO();
         usuarioDTO.setEmail("usuarioTestes@mail.com");
@@ -54,7 +54,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    public void deveRetornarUsuariosCadastrados() throws Exception {
+    void deveRetornarUsuariosCadastrados() throws Exception {
         List<UsuarioDTO> lista = new ArrayList<>();
         lista.add(usuarioDTO);
         Mockito.when(usuarioService.obterLista()).thenReturn(lista);
@@ -74,7 +74,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    public void deveObterUsuarioCadastradoPorId() throws Exception {
+    void deveObterUsuarioCadastradoPorId() throws Exception {
         Mockito.when(usuarioService.obter(Mockito.anyLong())).thenReturn(Optional.ofNullable(usuarioDTO));
 
         MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/id/1")
@@ -96,7 +96,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    public void deveObterUsuarioCadastradoPorEmail() throws Exception {
+    void deveObterUsuarioCadastradoPorEmail() throws Exception {
         Mockito.when(usuarioService.obterPorEmail(Mockito.anyString())).thenReturn(Optional.ofNullable(usuarioDTO));
 
         MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/email/" + usuarioDTO.getEmail())
@@ -118,7 +118,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    public void deveAtualizarUsuarioCadastradoComSucesso() throws Exception {
+    void deveAtualizarUsuarioCadastradoComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.CREATED).body("Usuário atualizado com sucesso.");
         Mockito.when(usuarioService.atualizar(Mockito.anyLong(), Mockito.any())).thenReturn(respostaService);
 
@@ -133,7 +133,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    public void deveCadastrarUsuarioComSucesso() throws Exception {
+    void deveCadastrarUsuarioComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso.");
         Mockito.when(usuarioService.cadastrar(Mockito.any())).thenReturn(respostaService);
 
@@ -148,7 +148,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    public void deveApagarUsuarioComSucesso() throws Exception {
+    void deveApagarUsuarioComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.OK).body("Usuário apagado com sucesso.");
         Mockito.when(usuarioService.apagar(Mockito.anyLong())).thenReturn(respostaService);
 

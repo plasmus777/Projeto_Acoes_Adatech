@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-public class MonitoramentoServiceTest {
+class MonitoramentoServiceTest {
 
     @InjectMocks
     MonitoramentoService monitoramentoService;
@@ -53,7 +53,7 @@ public class MonitoramentoServiceTest {
     AcaoApi acaoApi;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         acao = new Acao();
         acao.setId(1l);
         acao.setNome("Ativo financeiro de testes");
@@ -105,7 +105,7 @@ public class MonitoramentoServiceTest {
     }
 
     @Test
-    public void deveMonitorarAtualizacoesDeDadosComSucessoParaPreçosEntreMinimoEMaximo(){
+    void deveMonitorarAtualizacoesDeDadosComSucessoParaPreçosEntreMinimoEMaximo(){
         List<UsuarioDTO> usuarios = new ArrayList<>();
         for(int i = 1; i <= 3; i++){
             UsuarioDTO usuarioDTO = new UsuarioDTO();
@@ -145,7 +145,7 @@ public class MonitoramentoServiceTest {
     }
 
     @Test
-    public void deveMonitorarAtualizacoesDeDadosComSucessoParaPreçosMaioresQueOMaximo(){
+    void deveMonitorarAtualizacoesDeDadosComSucessoParaPreçosMaioresQueOMaximo(){
         List<UsuarioDTO> usuarios = new ArrayList<>();
         for(int i = 1; i <= 3; i++){
             UsuarioDTO usuarioDTO = new UsuarioDTO();
@@ -186,7 +186,7 @@ public class MonitoramentoServiceTest {
     }
 
     @Test
-    public void deveMonitorarAtualizacoesDeDadosComSucessoParaPreçosMenoresQueOMinimo(){
+    void deveMonitorarAtualizacoesDeDadosComSucessoParaPreçosMenoresQueOMinimo(){
         List<UsuarioDTO> usuarios = new ArrayList<>();
         for(int i = 1; i <= 3; i++){
             UsuarioDTO usuarioDTO = new UsuarioDTO();
@@ -227,7 +227,7 @@ public class MonitoramentoServiceTest {
     }
 
     @Test
-    public void deveRemoverAtivosAntigosComSucesso(){
+    void deveRemoverAtivosAntigosComSucesso(){
         Assertions.assertDoesNotThrow(() -> monitoramentoService.removerAtivosAntigos());
 
         List<?> acoes = (List<?>) ReflectionTestUtils.getField(monitoramentoService, "acoesMarkedForRemoval");

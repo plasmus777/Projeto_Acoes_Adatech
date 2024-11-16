@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class RendaFixaControllerTest {
+class RendaFixaControllerTest {
     static final String ENDPOINT = "/api/v1/rendasfixas";
 
     @InjectMocks
@@ -45,7 +45,7 @@ public class RendaFixaControllerTest {
     RendaFixaDTO rendaFixaDTO;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         mockMvc = MockMvcBuilders.standaloneSetup(rendaFixaController).build();
         rendaFixaDTO = new RendaFixaDTO();
         rendaFixaDTO.setNome("Ativo financeiro de testes");
@@ -61,7 +61,7 @@ public class RendaFixaControllerTest {
     }
 
     @Test
-    public void deveRetornarRendasFixasCadastradas() throws Exception {
+    void deveRetornarRendasFixasCadastradas() throws Exception {
         List<RendaFixaDTO> lista = new ArrayList<>();
         lista.add(rendaFixaDTO);
         Mockito.when(rendaFixaService.obterLista()).thenReturn(lista);
@@ -81,7 +81,7 @@ public class RendaFixaControllerTest {
     }
 
     @Test
-    public void deveObterRendaFixaCadastradaPorId() throws Exception {
+    void deveObterRendaFixaCadastradaPorId() throws Exception {
         Mockito.when(rendaFixaService.obter(Mockito.anyLong())).thenReturn(Optional.ofNullable(rendaFixaDTO));
 
         MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/id/1")
@@ -108,7 +108,7 @@ public class RendaFixaControllerTest {
     }
 
     @Test
-    public void deveObterRendaFixaCadastradaPorCodigo() throws Exception {
+    void deveObterRendaFixaCadastradaPorCodigo() throws Exception {
         Mockito.when(rendaFixaService.obterPorCodigo(Mockito.anyString())).thenReturn(Optional.ofNullable(rendaFixaDTO));
 
         MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/codigo/TESTE")
@@ -135,7 +135,7 @@ public class RendaFixaControllerTest {
     }
 
     @Test
-    public void deveAtualizarRendaFixaCadastradaComSucesso() throws Exception {
+    void deveAtualizarRendaFixaCadastradaComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.CREATED).body("Renda fixa atualizada com sucesso.");
         Mockito.when(rendaFixaService.atualizar(Mockito.anyLong(), Mockito.any())).thenReturn(respostaService);
 
@@ -150,7 +150,7 @@ public class RendaFixaControllerTest {
     }
 
     @Test
-    public void deveCadastrarRendaFixaComSucesso() throws Exception {
+    void deveCadastrarRendaFixaComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.CREATED).body("Renda fixa cadastrada com sucesso.");
         Mockito.when(rendaFixaService.cadastrar(Mockito.any())).thenReturn(respostaService);
 
@@ -165,7 +165,7 @@ public class RendaFixaControllerTest {
     }
 
     @Test
-    public void deveApagarRendaFixaComSucesso() throws Exception {
+    void deveApagarRendaFixaComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.OK).body("Renda fixa apagada com sucesso.");
         Mockito.when(rendaFixaService.apagar(Mockito.anyLong())).thenReturn(respostaService);
 

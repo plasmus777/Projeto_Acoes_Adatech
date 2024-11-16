@@ -20,7 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class AcaoRepositoryTest {
+class AcaoRepositoryTest {
 
     @Autowired
     AcaoRepository acaoRepository;
@@ -31,7 +31,7 @@ public class AcaoRepositoryTest {
     Acao acao;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         acao = new Acao();
         acao.setNome("Ativo financeiro de testes");
         acao.setCodigoNegociacao("TESTE");
@@ -56,15 +56,15 @@ public class AcaoRepositoryTest {
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         acaoRepository.delete(acao);
         acao.getUsuario().getAcoesFavoritas().remove(acao);
         usuarioRepository.save(acao.getUsuario());
     }
 
     @Test
-    public void deveSalvarAcaoComSucesso() {
-        Acao acao = new Acao();
+    void deveSalvarAcaoComSucesso() {
+        acao = new Acao();
         acao.setNome("Ativo financeiro de testes");
         acao.setCodigoNegociacao("TESTE2");
         acao.setPrecoAtual(new BigDecimal("100.00"));
@@ -101,7 +101,7 @@ public class AcaoRepositoryTest {
     }
 
     @Test
-    public void deveListarAcoesSalvasComSucesso() {
+    void deveListarAcoesSalvasComSucesso() {
         List<Acao> acoes = acaoRepository.findAll();
 
         Assertions.assertNotNull(acoes);
@@ -109,27 +109,27 @@ public class AcaoRepositoryTest {
     }
 
     @Test
-    public void deveEncontrarAcaoPorIdComSucesso() {
+    void deveEncontrarAcaoPorIdComSucesso() {
         Optional<Acao> acaoSalva = acaoRepository.findAcaoById(acao.getId());
 
         Assertions.assertTrue(acaoSalva.isPresent());
-        Assertions.assertEquals(acaoSalva.get().getCodigoNegociacao(), "TESTE");
-        Assertions.assertEquals(acaoSalva.get().getNome(), "Ativo financeiro de testes");
-        Assertions.assertEquals(acaoSalva.get().getUsuario().getEmail(), "usuarioTestes@mail.com");
+        Assertions.assertEquals("TESTE", acaoSalva.get().getCodigoNegociacao());
+        Assertions.assertEquals("Ativo financeiro de testes", acaoSalva.get().getNome());
+        Assertions.assertEquals("usuarioTestes@mail.com", acaoSalva.get().getUsuario().getEmail());
     }
 
     @Test
-    public void deveEncontrarAcaoPorCodigoComSucesso() {
+    void deveEncontrarAcaoPorCodigoComSucesso() {
         Optional<Acao> acaoSalva = acaoRepository.findAcaoByCodigoNegociacao(acao.getCodigoNegociacao());
 
         Assertions.assertTrue(acaoSalva.isPresent());
-        Assertions.assertEquals(acaoSalva.get().getCodigoNegociacao(), "TESTE");
-        Assertions.assertEquals(acaoSalva.get().getNome(), "Ativo financeiro de testes");
-        Assertions.assertEquals(acaoSalva.get().getUsuario().getEmail(), "usuarioTestes@mail.com");
+        Assertions.assertEquals("TESTE", acaoSalva.get().getCodigoNegociacao());
+        Assertions.assertEquals("Ativo financeiro de testes", acaoSalva.get().getNome());
+        Assertions.assertEquals("usuarioTestes@mail.com", acaoSalva.get().getUsuario().getEmail());
     }
 
     @Test
-    public void deveAtualizarAcaoComSucesso() {
+    void deveAtualizarAcaoComSucesso() {
         Long idAntes = acao.getId();
         String nomeAntes = acao.getNome();
         BigDecimal precoAnterior = acao.getPrecoAtual();
@@ -152,7 +152,7 @@ public class AcaoRepositoryTest {
     }
 
     @Test
-    public void deveApagarAcaoComSucesso() {
+    void deveApagarAcaoComSucesso() {
         acaoRepository.delete(acao);
         acao.getUsuario().getAcoesFavoritas().remove(acao);
         usuarioRepository.save(acao.getUsuario());

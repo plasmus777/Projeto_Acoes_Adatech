@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class AcaoServiceTest {
+class AcaoServiceTest {
     @InjectMocks
     AcaoService acaoService;
 
@@ -42,7 +42,7 @@ public class AcaoServiceTest {
     Acao acao;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         acao = new Acao();
         acao.setId(1l);
         acao.setNome("Ativo financeiro de testes");
@@ -67,7 +67,7 @@ public class AcaoServiceTest {
     }
 
     @Test
-    public void deveObterListaDeAcoesComSucesso(){
+    void deveObterListaDeAcoesComSucesso(){
         List<Acao> lista = new ArrayList<>();
         lista.add(acao);
 
@@ -81,7 +81,7 @@ public class AcaoServiceTest {
     }
 
     @Test
-    public void deveObterAcaoComSucessoAtravesDoId(){
+    void deveObterAcaoComSucessoAtravesDoId(){
         Optional<Acao> optionalAcao = Optional.of(acao);
         Mockito.when(acaoRepository.findAcaoById(Mockito.anyLong())).thenReturn(optionalAcao);
 
@@ -101,7 +101,7 @@ public class AcaoServiceTest {
     }
 
     @Test
-    public void deveObterAcaoComSucessoAtravesDoCodigoDeNegociacao(){
+    void deveObterAcaoComSucessoAtravesDoCodigoDeNegociacao(){
         Optional<Acao> optionalAcao = Optional.of(acao);
         Mockito.when(acaoRepository.findAcaoByCodigoNegociacao(Mockito.anyString())).thenReturn(optionalAcao);
 
@@ -121,7 +121,7 @@ public class AcaoServiceTest {
     }
 
     @Test
-    public void deveAtualizarAcaoComSucesso(){
+    void deveAtualizarAcaoComSucesso(){
         Optional<Acao> optionalAcao = Optional.of(acao);
         Mockito.when(acaoRepository.findAcaoById(Mockito.anyLong())).thenReturn(optionalAcao);
 
@@ -135,12 +135,12 @@ public class AcaoServiceTest {
         ResponseEntity<String> resposta = acaoService.atualizar(acao.getId(), acaoDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.CREATED);
-        Assertions.assertEquals(resposta.getBody(), "Ação atualizada com sucesso.");
+        Assertions.assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
+        Assertions.assertEquals("Ação atualizada com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarAcaoComValorAtualIgualAZero(){
+    void deveFalharAoTentarAtualizarAcaoComValorAtualIgualAZero(){
         Optional<Acao> optionalAcao = Optional.of(acao);
         Mockito.when(acaoRepository.findAcaoById(Mockito.anyLong())).thenReturn(optionalAcao);
 
@@ -154,12 +154,12 @@ public class AcaoServiceTest {
         ResponseEntity<String> resposta = acaoService.atualizar(acao.getId(), acaoDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.BAD_REQUEST);
-        Assertions.assertEquals(resposta.getBody(), "A ação não pode ser atualizada com um código de um ativo inexistente.");
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, resposta.getStatusCode());
+        Assertions.assertEquals("A ação não pode ser atualizada com um código de um ativo inexistente.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarAcaoComValorInvalido(){
+    void deveFalharAoTentarAtualizarAcaoComValorInvalido(){
         Optional<Acao> optionalAcao = Optional.of(acao);
         Mockito.when(acaoRepository.findAcaoById(Mockito.anyLong())).thenReturn(optionalAcao);
 
@@ -174,12 +174,12 @@ public class AcaoServiceTest {
 
         ResponseEntity<String> resposta = acaoService.atualizar(acao.getId(), acaoDTO);
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody() != null && resposta.getBody().contains("O repositório não pôde salvar a ação atualizada."));
     }
 
     @Test
-    public void deveFalharAoTentarAtualizarAcaoInexistente(){
+    void deveFalharAoTentarAtualizarAcaoInexistente(){
         Mockito.when(acaoRepository.findAcaoById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         AcaoDTO acaoDTO = AcaoDTO.fromEntity(acao);
@@ -187,12 +187,12 @@ public class AcaoServiceTest {
         ResponseEntity<String> resposta = acaoService.atualizar(acao.getId(), acaoDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getBody(), "A ação não pôde ser atualizada.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("A ação não pôde ser atualizada.", resposta.getBody());
     }
 
     @Test
-    public void deveCadastrarAcaoComSucesso(){
+    void deveCadastrarAcaoComSucesso(){
         AcaoDTO acaoDTO = AcaoDTO.fromEntity(acao);
 
         AcaoApi acaoApi = new AcaoApi();
@@ -204,12 +204,12 @@ public class AcaoServiceTest {
         ResponseEntity<String> resposta = acaoService.cadastrar(acaoDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.CREATED);
-        Assertions.assertEquals(resposta.getBody(), "Ação cadastrada com sucesso.");
+        Assertions.assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
+        Assertions.assertEquals("Ação cadastrada com sucesso.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarCadastrarAcaoComValorAtualIgualAZero(){
+    void deveFalharAoTentarCadastrarAcaoComValorAtualIgualAZero(){
         AcaoDTO acaoDTO = AcaoDTO.fromEntity(acao);
 
         AcaoApi acaoApi = new AcaoApi();
@@ -219,12 +219,12 @@ public class AcaoServiceTest {
         ResponseEntity<String> resposta = acaoService.cadastrar(acaoDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.BAD_REQUEST);
-        Assertions.assertEquals(resposta.getBody(), "A ação não pode ser cadastrada com um código de um ativo inexistente.");
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, resposta.getStatusCode());
+        Assertions.assertEquals("A ação não pode ser cadastrada com um código de um ativo inexistente.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoTentarCadastrarAcaoInvalida(){
+    void deveFalharAoTentarCadastrarAcaoInvalida(){
         AcaoDTO acaoDTO = AcaoDTO.fromEntity(acao);
         acaoDTO.setCodigoNegociacao(null);
 
@@ -237,12 +237,12 @@ public class AcaoServiceTest {
         ResponseEntity<String> resposta = acaoService.cadastrar(acaoDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody() != null && resposta.getBody().contains("O repositório não pôde salvar a ação a ser cadastrada."));
     }
 
     @Test
-    public void deveFalharAoTentarCadastrarAcaoComUsuarioInexistente(){
+    void deveFalharAoTentarCadastrarAcaoComUsuarioInexistente(){
         AcaoDTO acaoDTO = AcaoDTO.fromEntity(acao);
 
         AcaoApi acaoApi = new AcaoApi();
@@ -254,12 +254,12 @@ public class AcaoServiceTest {
         ResponseEntity<String> resposta = acaoService.cadastrar(acaoDTO);
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.NOT_FOUND);
-        Assertions.assertEquals(resposta.getBody(), "Não há um usuário com o e-mail registrado pela ação.");
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, resposta.getStatusCode());
+        Assertions.assertEquals("Não há um usuário com o e-mail registrado pela ação.", resposta.getBody());
     }
 
     @Test
-    public void deveApagarAcaoComSucesso(){
+    void deveApagarAcaoComSucesso(){
         Optional<Acao> acaoOpt = Optional.of(acao);
         Mockito.when(acaoRepository.findAcaoById(Mockito.anyLong())).thenReturn(acaoOpt);
 
@@ -271,18 +271,18 @@ public class AcaoServiceTest {
     }
 
     @Test
-    public void deveFalharAoTentarApagarAcaoInexistente(){
+    void deveFalharAoTentarApagarAcaoInexistente(){
         Mockito.when(acaoRepository.findAcaoById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         ResponseEntity<String> resposta = acaoService.apagar(acao.getId());
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
-        Assertions.assertEquals(resposta.getBody(), "A ação não pôde ser apagada.");
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
+        Assertions.assertEquals("A ação não pôde ser apagada.", resposta.getBody());
     }
 
     @Test
-    public void deveFalharAoApagarAcaoPorErrosDoRepositorio(){
+    void deveFalharAoApagarAcaoPorErrosDoRepositorio(){
         Optional<Acao> acaoOpt = Optional.of(acao);
         Mockito.when(acaoRepository.findAcaoById(Mockito.anyLong())).thenReturn(acaoOpt);
 
@@ -291,7 +291,7 @@ public class AcaoServiceTest {
         ResponseEntity<String> resposta = acaoService.apagar(acao.getId());
 
         Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getStatusCode(), HttpStatus.EXPECTATION_FAILED);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody() != null && resposta.getBody().contains("O repositório não pôde apagar a ação."));
     }
 }

@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.server.ResponseStatusException;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiroApi.AcaoApi;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiroApi.AtivoApi;
 import plasmus777.github.com.projetoAcoesAdatech.model.ativoFinanceiroApi.Relatorio;
@@ -29,7 +28,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class RelatorioControllerTest {
+class RelatorioControllerTest {
     static final String ENDPOINT = "/api/v1/relatorios";
 
     @InjectMocks
@@ -43,7 +42,7 @@ public class RelatorioControllerTest {
     Relatorio relatorio;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         mockMvc = MockMvcBuilders.standaloneSetup(relatorioController).build();
 
         AtivoApi ativoApi = new AtivoApi();
@@ -66,7 +65,7 @@ public class RelatorioControllerTest {
     }
 
     @Test
-    public void deveRetornarRelatorioDeAtivoFinanceiroAtravesDoCodigoComSucesso() throws Exception {
+    void deveRetornarRelatorioDeAtivoFinanceiroAtravesDoCodigoComSucesso() throws Exception {
         Mockito.when(relatorioService.gerarRelatorio(Mockito.anyString())).thenReturn(Optional.ofNullable(relatorio));
 
         MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/TESTE")
@@ -96,7 +95,7 @@ public class RelatorioControllerTest {
     }
 
     @Test
-    public void deveFalharAoTentarRetornarRelatorioDeAtivoFinanceiroAtravesDoCodigoPorErrosEmRelatorioService() throws Exception {
+    void deveFalharAoTentarRetornarRelatorioDeAtivoFinanceiroAtravesDoCodigoPorErrosEmRelatorioService() throws Exception {
         Mockito.when(relatorioService.gerarRelatorio(Mockito.anyString())).thenReturn(Optional.empty());
 
         MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/TESTE")

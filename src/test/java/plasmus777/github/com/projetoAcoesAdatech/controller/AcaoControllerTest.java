@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class AcaoControllerTest {
+class AcaoControllerTest {
     static final String ENDPOINT = "/api/v1/acoes";
 
     @InjectMocks
@@ -45,7 +45,7 @@ public class AcaoControllerTest {
     AcaoDTO acaoDTO;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         mockMvc = MockMvcBuilders.standaloneSetup(acaoController).build();
         acaoDTO = new AcaoDTO();
         acaoDTO.setNome("Ativo financeiro de testes");
@@ -60,7 +60,7 @@ public class AcaoControllerTest {
     }
 
     @Test
-    public void deveRetornarAcoesCadastradas() throws Exception {
+    void deveRetornarAcoesCadastradas() throws Exception {
         List<AcaoDTO> lista = new ArrayList<>();
         lista.add(acaoDTO);
         Mockito.when(acaoService.obterLista()).thenReturn(lista);
@@ -80,7 +80,7 @@ public class AcaoControllerTest {
     }
 
     @Test
-    public void deveObterAcaoCadastradaPorId() throws Exception {
+    void deveObterAcaoCadastradaPorId() throws Exception {
         Mockito.when(acaoService.obter(Mockito.anyLong())).thenReturn(Optional.ofNullable(acaoDTO));
 
         MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/id/1")
@@ -106,7 +106,7 @@ public class AcaoControllerTest {
     }
 
     @Test
-    public void deveObterAcaoCadastradaPorCodigoNegociacao() throws Exception {
+    void deveObterAcaoCadastradaPorCodigoNegociacao() throws Exception {
         Mockito.when(acaoService.obterPorCodigoNegociacao(Mockito.anyString())).thenReturn(Optional.ofNullable(acaoDTO));
 
         MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/codigo/TESTE")
@@ -132,7 +132,7 @@ public class AcaoControllerTest {
     }
 
     @Test
-    public void deveAtualizarAcaoCadastradaComSucesso() throws Exception {
+    void deveAtualizarAcaoCadastradaComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.CREATED).body("Ação atualizada com sucesso.");
         Mockito.when(acaoService.atualizar(Mockito.anyLong(), Mockito.any())).thenReturn(respostaService);
 
@@ -147,7 +147,7 @@ public class AcaoControllerTest {
     }
 
     @Test
-    public void deveCadastrarAcaoComSucesso() throws Exception {
+    void deveCadastrarAcaoComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.CREATED).body("Ação cadastrada com sucesso.");
         Mockito.when(acaoService.cadastrar(Mockito.any())).thenReturn(respostaService);
 
@@ -162,7 +162,7 @@ public class AcaoControllerTest {
     }
 
     @Test
-    public void deveApagarAcaoComSucesso() throws Exception {
+    void deveApagarAcaoComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.OK).body("Ação apagada com sucesso.");
         Mockito.when(acaoService.apagar(Mockito.anyLong())).thenReturn(respostaService);
 

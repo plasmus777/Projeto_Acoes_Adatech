@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class FundoImobiliarioControllerTest {
+class FundoImobiliarioControllerTest {
     static final String ENDPOINT = "/api/v1/fundosimobiliarios";
 
     @InjectMocks
@@ -45,7 +45,7 @@ public class FundoImobiliarioControllerTest {
     FundoImobiliarioDTO fundoImobiliarioDTO;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach(){
         mockMvc = MockMvcBuilders.standaloneSetup(fundoImobiliarioController).build();
         fundoImobiliarioDTO = new FundoImobiliarioDTO();
         fundoImobiliarioDTO.setNome("Ativo financeiro de testes");
@@ -60,7 +60,7 @@ public class FundoImobiliarioControllerTest {
     }
 
     @Test
-    public void deveRetornarFundosImobiliariosCadastrados() throws Exception {
+    void deveRetornarFundosImobiliariosCadastrados() throws Exception {
         List<FundoImobiliarioDTO> lista = new ArrayList<>();
         lista.add(fundoImobiliarioDTO);
         Mockito.when(fundoImobiliarioService.obterLista()).thenReturn(lista);
@@ -80,7 +80,7 @@ public class FundoImobiliarioControllerTest {
     }
 
     @Test
-    public void deveObterFundoImobiliarioCadastradoPorId() throws Exception {
+    void deveObterFundoImobiliarioCadastradoPorId() throws Exception {
         Mockito.when(fundoImobiliarioService.obter(Mockito.anyLong())).thenReturn(Optional.ofNullable(fundoImobiliarioDTO));
 
         MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/id/1")
@@ -106,7 +106,7 @@ public class FundoImobiliarioControllerTest {
     }
 
     @Test
-    public void deveObterFundoImobiliarioCadastradoPorCodigoFii() throws Exception {
+    void deveObterFundoImobiliarioCadastradoPorCodigoFii() throws Exception {
         Mockito.when(fundoImobiliarioService.obterPorCodigoFii(Mockito.anyString())).thenReturn(Optional.ofNullable(fundoImobiliarioDTO));
 
         MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.get(ENDPOINT + "/codigo/TESTE")
@@ -132,7 +132,7 @@ public class FundoImobiliarioControllerTest {
     }
 
     @Test
-    public void deveAtualizarFundoImobiliarioCadastradoComSucesso() throws Exception {
+    void deveAtualizarFundoImobiliarioCadastradoComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.CREATED).body("Fundo imobiliário atualizado com sucesso.");
         Mockito.when(fundoImobiliarioService.atualizar(Mockito.anyLong(), Mockito.any())).thenReturn(respostaService);
 
@@ -147,7 +147,7 @@ public class FundoImobiliarioControllerTest {
     }
 
     @Test
-    public void deveCadastrarFundoImobiliarioComSucesso() throws Exception {
+    void deveCadastrarFundoImobiliarioComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.CREATED).body("Fundo imobiliário cadastrado com sucesso.");
         Mockito.when(fundoImobiliarioService.cadastrar(Mockito.any())).thenReturn(respostaService);
 
@@ -162,7 +162,7 @@ public class FundoImobiliarioControllerTest {
     }
 
     @Test
-    public void deveApagarFundoImobiliarioComSucesso() throws Exception {
+    void deveApagarFundoImobiliarioComSucesso() throws Exception {
         ResponseEntity<String> respostaService = ResponseEntity.status(HttpStatus.OK).body("Fundo imobiliário apagado com sucesso.");
         Mockito.when(fundoImobiliarioService.apagar(Mockito.anyLong())).thenReturn(respostaService);
 
